@@ -340,9 +340,9 @@
 
                 <!-- Hot Cue Row -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="CUE 1" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
-                    <Button Content="CUE 2" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
-                    <Button Content="CUE 3" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
+                    <Button x:Name="btnLeftCue1" Content="CUE 1" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
+                    <Button x:Name="btnLeftCue2" Content="CUE 2" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
+                    <Button x:Name="btnLeftCue3" Content="CUE 3" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                 </StackPanel>
 
                 <!-- FX Row -->
@@ -406,9 +406,9 @@
 
                 <!-- Hot Cue Row -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Button Content="CUE 1" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
-                    <Button Content="CUE 2" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
-                    <Button Content="CUE 3" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
+                    <Button x:Name="btnRightCue1" Content="CUE 1" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
+                    <Button x:Name="btnRightCue2" Content="CUE 2" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
+                    <Button x:Name="btnRightCue3" Content="CUE 3" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                 </StackPanel>
 
                 <!-- FX Row -->

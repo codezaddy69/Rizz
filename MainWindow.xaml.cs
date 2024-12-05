@@ -2,9 +2,11 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Input;
 using Microsoft.Win32;
 using DJMixMaster.Audio;
 using DJMixMaster.Visualization;
+using System.Collections.Generic;
 
 namespace DJMixMaster
 {
@@ -18,6 +20,10 @@ namespace DJMixMaster
         {
             InitializeComponent();
             audioEngine = new AudioEngine();
+
+            // Wire up audio engine events
+            audioEngine.PlaybackPositionChanged += OnPlaybackPositionChanged;
+            audioEngine.BeatGridUpdated += OnBeatGridUpdated;
 
             // Wire up button click events for left deck
             btnLeftLoad.Click += (s, e) => LoadTrack(1);
@@ -35,6 +41,14 @@ namespace DJMixMaster
             sliderLeftVolume.ValueChanged += (s, e) => UpdateVolume(1, (float)e.NewValue);
             sliderRightVolume.ValueChanged += (s, e) => UpdateVolume(2, (float)e.NewValue);
             sliderCrossfader.ValueChanged += (s, e) => UpdateCrossfader((float)e.NewValue);
+
+            // Wire up hot cue buttons
+            btnLeftCue1.Click += (s, e) => HandleCuePoint(1, 0);
+            btnLeftCue2.Click += (s, e) => HandleCuePoint(1, 1);
+            btnLeftCue3.Click += (s, e) => HandleCuePoint(1, 2);
+            btnRightCue1.Click += (s, e) => HandleCuePoint(2, 0);
+            btnRightCue2.Click += (s, e) => HandleCuePoint(2, 1);
+            btnRightCue3.Click += (s, e) => HandleCuePoint(2, 2);
         }
 
         private void LoadTrack(int deckNumber)
@@ -48,7 +62,16 @@ namespace DJMixMaster
             if (openFileDialog.ShowDialog() == true)
             {
                 audioEngine.LoadTrack(deckNumber, openFileDialog.FileName);
-                UpdateWaveform(deckNumber);
+                var (waveformData, trackLength) = audioEngine.GetWaveformData(deckNumber);
+                
+                if (deckNumber == 1)
+                {
+                    leftWaveform.UpdateWaveform(waveformData, trackLength);
+                }
+                else
+                {
+                    rightWaveform.UpdateWaveform(waveformData, trackLength);
+                }
             }
         }
 
@@ -86,15 +109,11 @@ namespace DJMixMaster
 
         private void Rewind(int deckNumber)
         {
-            // For now, seek back 5 seconds
-            // Later we can implement variable speed seeking based on button hold duration
             audioEngine.Seek(deckNumber, TimeSpan.FromSeconds(-5));
         }
 
         private void FastForward(int deckNumber)
         {
-            // For now, seek forward 5 seconds
-            // Later we can implement variable speed seeking based on button hold duration
             audioEngine.Seek(deckNumber, TimeSpan.FromSeconds(5));
         }
 
@@ -105,21 +124,56 @@ namespace DJMixMaster
 
         private void UpdateCrossfader(float position)
         {
-            // Convert slider value (0 to 1) to crossfader range (-1 to 1)
-            float crossfaderPosition = (position * 2) - 1;
-            audioEngine.SetCrossfader(crossfaderPosition);
+            audioEngine.SetCrossfader(position);
         }
 
-        private void UpdateWaveform(int deckNumber)
+        private void HandleCuePoint(int deckNumber, int cueIndex)
         {
-            var waveformData = audioEngine.GetWaveformData(deckNumber);
-            if (deckNumber == 1)
+            // If shift is held, set cue point, otherwise jump to it
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                leftWaveform.UpdateWaveform(waveformData);
+                audioEngine.AddCuePoint(deckNumber);
+                UpdateCueButtonStyle(deckNumber, cueIndex, true);
             }
             else
             {
-                rightWaveform.UpdateWaveform(waveformData);
+                audioEngine.JumpToCuePoint(deckNumber, cueIndex);
+            }
+        }
+
+        private void UpdateCueButtonStyle(int deckNumber, int cueIndex, bool isSet)
+        {
+            var button = deckNumber == 1 ? 
+                new[] { btnLeftCue1, btnLeftCue2, btnLeftCue3 }[cueIndex] :
+                new[] { btnRightCue1, btnRightCue2, btnRightCue3 }[cueIndex];
+
+            if (isSet)
+            {
+                button.Background = new SolidColorBrush(Color.FromRgb(0, 255, 0));
+            }
+        }
+
+        private void OnPlaybackPositionChanged(object? sender, (int DeckNumber, double Position) e)
+        {
+            if (e.DeckNumber == 1)
+            {
+                leftWaveform.UpdatePlaybackPosition(e.Position);
+            }
+            else
+            {
+                rightWaveform.UpdatePlaybackPosition(e.Position);
+            }
+        }
+
+        private void OnBeatGridUpdated(object? sender, (int DeckNumber, List<double> BeatPositions, double BPM) e)
+        {
+            if (e.DeckNumber == 1)
+            {
+                leftWaveform.UpdateBeatGrid(e.BeatPositions);
+            }
+            else
+            {
+                rightWaveform.UpdateBeatGrid(e.BeatPositions);
             }
         }
 
