@@ -67,28 +67,51 @@ namespace DJMixMaster.Visualization
 
         public void UpdateWaveform(float[] data, double trackLength)
         {
+            if (data == null || data.Length == 0)
+            {
+                System.Diagnostics.Debug.WriteLine("No waveform data to display");
+                return;
+            }
+
             waveformData = data;
             trackLengthSeconds = trackLength;
+            System.Diagnostics.Debug.WriteLine($"Updating waveform with {data.Length} points, track length: {trackLength}s");
+            
             DrawWaveform();
         }
 
         public void UpdatePlaybackPosition(double timeSeconds)
         {
-            currentPlaybackTime = timeSeconds;
-
-            // Auto-scroll viewport if playback position is outside visible range
-            if (currentPlaybackTime < viewportStartTime || 
-                currentPlaybackTime > viewportStartTime + (VIEWPORT_SECONDS / zoomFactor))
+            if (waveformData == null || waveformData.Length == 0)
             {
-                viewportStartTime = currentPlaybackTime - (VIEWPORT_SECONDS / zoomFactor / 2);
-                viewportStartTime = Math.Max(0, Math.Min(viewportStartTime, 
-                    trackLengthSeconds - (VIEWPORT_SECONDS / zoomFactor)));
+                return;
             }
 
-            DrawWaveform();
+            Dispatcher.Invoke(() =>
+            {
+                try
+                {
+                    currentPlaybackTime = timeSeconds;
+
+                    // Auto-scroll viewport if playback position is outside visible range
+                    if (currentPlaybackTime < viewportStartTime || 
+                        currentPlaybackTime > viewportStartTime + (VIEWPORT_SECONDS / zoomFactor))
+                    {
+                        viewportStartTime = currentPlaybackTime - (VIEWPORT_SECONDS / zoomFactor / 2);
+                        viewportStartTime = Math.Max(0, Math.Min(viewportStartTime, 
+                            trackLengthSeconds - (VIEWPORT_SECONDS / zoomFactor)));
+                    }
+
+                    DrawWaveform();
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to update playback position", ex);
+                }
+            });
         }
 
-        public void UpdateBeatGrid(List<double> beatPositions)
+        public void UpdateBeatGrid(double[] beatPositions)
         {
             // Clear existing beat lines
             foreach (var line in beatLines)
@@ -98,20 +121,20 @@ namespace DJMixMaster.Visualization
             beatLines.Clear();
 
             // Create new beat lines
-            foreach (var beatPos in beatPositions)
+            foreach (var position in beatPositions)
             {
-                var beatLine = new Line
+                var line = new Line
                 {
-                    Stroke = Brushes.LightBlue,
+                    Stroke = Brushes.Yellow,
                     StrokeThickness = 1,
-                    Opacity = 0.5,
-                    Y1 = 0
+                    X1 = position * ActualWidth / trackLengthSeconds,
+                    X2 = position * ActualWidth / trackLengthSeconds,
+                    Y1 = 0,
+                    Y2 = ActualHeight
                 };
-                beatLines.Add(beatLine);
-                Children.Add(beatLine);
+                beatLines.Add(line);
+                Children.Add(line);
             }
-
-            DrawWaveform();
         }
 
         public void AddCuePoint(double timeSeconds)
@@ -130,61 +153,74 @@ namespace DJMixMaster.Visualization
 
         private void DrawWaveform()
         {
-            if (waveformData == null || waveformData.Length == 0) return;
-
-            double width = ActualWidth;
-            double height = ActualHeight;
-            double centerY = height / 2;
-            double scaleY = height / 2;
-
-            // Calculate visible sample range
-            double samplesPerSecond = waveformData.Length / trackLengthSeconds;
-            int startSample = (int)(viewportStartTime * samplesPerSecond);
-            int visibleSamples = (int)((VIEWPORT_SECONDS / zoomFactor) * samplesPerSecond);
-            
-            // Create waveform path
-            var figure = new PathFigure();
-            var segments = new PathSegmentCollection();
-
-            for (int i = 0; i < visibleSamples && (startSample + i) < waveformData.Length; i++)
+            if (waveformData == null || waveformData.Length == 0)
             {
-                double x = (width * i) / visibleSamples;
-                double y = centerY + (waveformData[startSample + i] * scaleY);
-
-                if (i == 0)
-                    figure.StartPoint = new Point(x, y);
-                else
-                    segments.Add(new LineSegment(new Point(x, y), true));
+                return;
             }
 
-            figure.Segments = segments;
-            waveformPath.Figures = new PathFigureCollection { figure };
-
-            // Update playback line position
-            double playbackX = ((currentPlaybackTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
-            playbackLine.X1 = playbackX;
-            playbackLine.X2 = playbackX;
-            playbackLine.Y2 = height;
-
-            // Update beat lines
-            foreach (var beatLine in beatLines)
+            Dispatcher.Invoke(() =>
             {
-                double beatTime = beatLines.IndexOf(beatLine); // Time in seconds
-                double beatX = ((beatTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
-                beatLine.X1 = beatX;
-                beatLine.X2 = beatX;
-                beatLine.Y2 = height;
-            }
+                try
+                {
+                    double width = ActualWidth;
+                    double height = ActualHeight;
+                    double centerY = height / 2;
+                    double scaleY = height / 2;
 
-            // Update cue points
-            foreach (var cueLine in cuePoints)
-            {
-                double cueTime = cuePoints.IndexOf(cueLine); // Time in seconds
-                double cueX = ((cueTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
-                cueLine.X1 = cueX;
-                cueLine.X2 = cueX;
-                cueLine.Y2 = height;
-            }
+                    // Calculate visible sample range
+                    double samplesPerSecond = waveformData.Length / trackLengthSeconds;
+                    int startSample = (int)(viewportStartTime * samplesPerSecond);
+                    int visibleSamples = (int)((VIEWPORT_SECONDS / zoomFactor) * samplesPerSecond);
+                    
+                    // Create waveform path
+                    var figure = new PathFigure();
+                    var segments = new PathSegmentCollection();
+
+                    for (int i = 0; i < visibleSamples && (startSample + i) < waveformData.Length; i++)
+                    {
+                        double x = (width * i) / visibleSamples;
+                        double y = centerY + (waveformData[startSample + i] * scaleY);
+
+                        if (i == 0)
+                            figure.StartPoint = new Point(x, y);
+                        else
+                            segments.Add(new LineSegment(new Point(x, y), true));
+                    }
+
+                    figure.Segments = segments;
+                    waveformPath.Figures = new PathFigureCollection { figure };
+
+                    // Update playback line position
+                    double playbackX = ((currentPlaybackTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
+                    playbackLine.X1 = playbackX;
+                    playbackLine.X2 = playbackX;
+                    playbackLine.Y2 = height;
+
+                    // Update beat lines
+                    foreach (var beatLine in beatLines)
+                    {
+                        double beatTime = beatLines.IndexOf(beatLine); // Time in seconds
+                        double beatX = ((beatTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
+                        beatLine.X1 = beatX;
+                        beatLine.X2 = beatX;
+                        beatLine.Y2 = height;
+                    }
+
+                    // Update cue points
+                    foreach (var cueLine in cuePoints)
+                    {
+                        double cueTime = cuePoints.IndexOf(cueLine); // Time in seconds
+                        double cueX = ((cueTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
+                        cueLine.X1 = cueX;
+                        cueLine.X2 = cueX;
+                        cueLine.Y2 = height;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Failed to draw waveform", ex);
+                }
+            });
         }
 
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)

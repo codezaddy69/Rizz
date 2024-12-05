@@ -1,8 +1,10 @@
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using NAudio.CoreAudioApi;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
+using DJMixMaster.Controls;
 
 namespace DJMixMaster.Audio
 {
@@ -16,17 +18,22 @@ namespace DJMixMaster.Audio
         private bool isDisposed;
 
         public event EventHandler<(int DeckNumber, double Position)>? PlaybackPositionChanged;
-        public event EventHandler<(int DeckNumber, List<double> BeatPositions, double BPM)>? BeatGridUpdated;
+        public event EventHandler<(int DeckNumber, double[] BeatPositions, double BPM)>? BeatGridUpdated;
 
         public AudioEngine()
         {
             try
             {
+                Logger.LogDebug("Initializing AudioEngine...");
+                var faderLeft = new FaderControl();
+                var faderRight = new FaderControl();
                 decks = new Dictionary<int, DeckPlayer>
                 {
-                    { 1, new DeckPlayer(SAMPLE_RATE, CHANNELS) },
-                    { 2, new DeckPlayer(SAMPLE_RATE, CHANNELS) }
+                    { 1, new DeckPlayer(faderLeft, faderRight) },
+                    { 2, new DeckPlayer(faderLeft, faderRight) }
                 };
+
+                InitializeAudioOutput();
 
                 // Wire up playback position tracking for each deck
                 foreach (var deck in decks)
@@ -36,10 +43,11 @@ namespace DJMixMaster.Audio
                         PlaybackPositionChanged?.Invoke(this, (deckNumber, position));
                 }
 
-                InitializeAudioOutput();
+                Logger.LogDebug("AudioEngine initialized successfully");
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to initialize AudioEngine: {ex}", ex);
                 throw new Exception($"Failed to initialize audio engine: {ex.Message}", ex);
             }
         }
@@ -48,64 +56,118 @@ namespace DJMixMaster.Audio
         {
             try
             {
-                var format = WaveFormat.CreateIeeeFloatWaveFormat(SAMPLE_RATE, CHANNELS);
-                mixer = new MixingSampleProvider(format);
-                mixer.ReadFully = true;
-
-                foreach (var deck in decks.Values)
+                Logger.LogDebug("Initializing audio output...");
+                
+                // Clean up existing output
+                if (outputDevice != null)
                 {
-                    mixer.AddMixerInput(deck.GetSampleProvider());
+                    Logger.LogDebug("Cleaning up existing output device");
+                    outputDevice.Stop();
+                    outputDevice.Dispose();
+                    outputDevice = null;
                 }
 
-                outputDevice?.Dispose();
-                outputDevice = new WasapiOut();
-                outputDevice.Init(mixer);
+                // Create mixer with default format
+                var format = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+                mixer = new MixingSampleProvider(format)
+                {
+                    ReadFully = true
+                };
+
+                // Get the default audio device
+                var enumerator = new MMDeviceEnumerator();
+                var defaultDevice = enumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                Logger.LogDebug($"Using audio device: {defaultDevice.FriendlyName}");
+
+                // Create output device using WASAPI
+                outputDevice = new WasapiOut(defaultDevice, NAudio.CoreAudioApi.AudioClientShareMode.Shared, true, 50);
+                Logger.LogDebug($"Created WASAPI output with format: {format}");
+                
+                // Initialize output
+                if (outputDevice != null && mixer != null)
+                {
+                    outputDevice.Init(mixer);
+                    Logger.LogDebug("Audio output initialized successfully");
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to initialize audio output: {ex.Message}", ex);
+                Logger.LogError("Failed to initialize audio output", ex);
+                throw;
             }
         }
 
-        public void LoadTrack(int deckNumber, string filePath)
+        public void LoadFile(int deckNumber, string filePath)
         {
-            if (!decks.ContainsKey(deckNumber)) return;
+            if (!decks.ContainsKey(deckNumber))
+            {
+                Logger.LogWarning($"Invalid deck number: {deckNumber}");
+                return;
+            }
 
             try
             {
-                decks[deckNumber].LoadTrack(filePath);
+                Logger.LogDebug($"Loading file into deck {deckNumber}: {filePath}");
                 
-                // Notify about the beat grid
-                BeatGridUpdated?.Invoke(this, (
-                    deckNumber,
-                    decks[deckNumber].BeatPositions,
-                    decks[deckNumber].BPM
-                ));
+                // Load the file into the deck
+                decks[deckNumber].LoadAudioFile(filePath);
 
-                // Reinitialize audio output to update the mixer inputs
+                // Reinitialize audio output with the new deck
                 InitializeAudioOutput();
+
+                // Add the deck's provider to the mixer
+                if (mixer != null)
+                {
+                    var provider = decks[deckNumber].GetSampleProvider();
+                    Logger.LogDebug($"Adding deck {deckNumber} to mixer");
+                    mixer.AddMixerInput(provider);
+                }
+
+                // Raise the beat grid updated event
+                BeatGridUpdated?.Invoke(this, (deckNumber, Array.Empty<double>(), 0.0));
+                Logger.LogDebug($"File loaded successfully into deck {deckNumber}");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to load track on deck {deckNumber}: {ex.Message}", ex);
+                Logger.LogError($"Failed to load file into deck {deckNumber}", ex);
+                throw;
             }
         }
 
         public void Play(int deckNumber)
         {
-            if (!decks.ContainsKey(deckNumber)) return;
+            if (!decks.ContainsKey(deckNumber))
+            {
+                Logger.LogWarning($"Invalid deck number: {deckNumber}");
+                return;
+            }
 
             try
             {
+                Logger.LogDebug($"Playing deck {deckNumber}");
+                
+                // Ensure output is initialized
+                if (outputDevice == null || mixer == null)
+                {
+                    Logger.LogDebug("Reinitializing audio output");
+                    InitializeAudioOutput();
+                }
+
+                // Start deck playback
                 decks[deckNumber].Play();
+                
+                // Start output if not playing
                 if (outputDevice?.PlaybackState != PlaybackState.Playing)
                 {
+                    Logger.LogDebug("Starting output device");
                     outputDevice?.Play();
+                    Logger.LogDebug($"Output state: {outputDevice?.PlaybackState}");
                 }
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to play deck {deckNumber}: {ex.Message}", ex);
+                Logger.LogError($"Failed to play deck {deckNumber}", ex);
+                throw;
             }
         }
 
@@ -116,23 +178,47 @@ namespace DJMixMaster.Audio
             try
             {
                 decks[deckNumber].Pause();
+                
+                // Check if both decks are paused
+                bool allDecksPaused = true;
+                foreach (var deck in decks)
+                {
+                    if (deck.Value.IsPlaying)
+                    {
+                        allDecksPaused = false;
+                        break;
+                    }
+                }
+
+                // If all decks are paused, pause the output device
+                if (allDecksPaused && outputDevice != null)
+                {
+                    outputDevice.Pause();
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to pause deck {deckNumber}: {ex.Message}", ex);
+                Logger.LogError($"Error pausing track: {ex}", ex);
+                throw new Exception($"Failed to pause track: {ex.Message}", ex);
             }
         }
 
         public void SetVolume(int deckNumber, float volume)
         {
-            if (!decks.ContainsKey(deckNumber)) return;
+            if (!decks.ContainsKey(deckNumber))
+            {
+                Logger.LogWarning($"Deck {deckNumber} does not exist in the decks dictionary.");
+                return;
+            }
 
             try
             {
+                Logger.LogDebug($"Setting volume for deck {deckNumber} to {volume}");
                 decks[deckNumber].SetVolume(volume);
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to set volume for deck {deckNumber}: {ex}", ex);
                 throw new Exception($"Failed to set volume for deck {deckNumber}: {ex.Message}", ex);
             }
         }
@@ -150,48 +236,67 @@ namespace DJMixMaster.Audio
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to set crossfader: {ex}", ex);
                 throw new Exception($"Failed to set crossfader: {ex.Message}", ex);
             }
         }
 
         public void Seek(int deckNumber, TimeSpan position)
         {
-            if (!decks.ContainsKey(deckNumber)) return;
+            if (!decks.ContainsKey(deckNumber))
+            {
+                Logger.LogWarning($"Invalid deck number: {deckNumber}");
+                return;
+            }
 
             try
             {
+                Logger.LogDebug($"Seeking deck {deckNumber} to {position}");
                 decks[deckNumber].Seek(position);
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to seek on deck {deckNumber}: {ex}", ex);
                 throw new Exception($"Failed to seek on deck {deckNumber}: {ex.Message}", ex);
             }
         }
 
         public void AddCuePoint(int deckNumber)
         {
-            if (!decks.ContainsKey(deckNumber)) return;
+            if (!decks.ContainsKey(deckNumber))
+            {
+                Logger.LogWarning($"Invalid deck number: {deckNumber}");
+                return;
+            }
 
             try
             {
+                Logger.LogDebug($"Adding cue point on deck {deckNumber}");
                 decks[deckNumber].AddCuePoint();
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to add cue point on deck {deckNumber}: {ex}", ex);
                 throw new Exception($"Failed to add cue point on deck {deckNumber}: {ex.Message}", ex);
             }
         }
 
         public void JumpToCuePoint(int deckNumber, int cueIndex)
         {
-            if (!decks.ContainsKey(deckNumber)) return;
+            if (!decks.ContainsKey(deckNumber))
+            {
+                Logger.LogWarning($"Invalid deck number: {deckNumber}");
+                return;
+            }
 
             try
             {
+                Logger.LogDebug($"Jumping to cue point {cueIndex} on deck {deckNumber}");
                 decks[deckNumber].JumpToCuePoint(cueIndex);
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to jump to cue point on deck {deckNumber}: {ex}", ex);
                 throw new Exception($"Failed to jump to cue point on deck {deckNumber}: {ex.Message}", ex);
             }
         }
@@ -207,6 +312,7 @@ namespace DJMixMaster.Audio
             }
             catch (Exception ex)
             {
+                Logger.LogError($"Failed to get waveform data for deck {deckNumber}: {ex}", ex);
                 throw new Exception($"Failed to get waveform data for deck {deckNumber}: {ex.Message}", ex);
             }
         }
@@ -216,10 +322,18 @@ namespace DJMixMaster.Audio
             if (!isDisposed)
             {
                 isDisposed = true;
-                outputDevice?.Dispose();
-                foreach (var deck in decks.Values)
+                try
                 {
-                    deck.Dispose();
+                    outputDevice?.Stop();
+                    outputDevice?.Dispose();
+                    foreach (var deck in decks.Values)
+                    {
+                        deck.Dispose();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError($"Error during disposal: {ex}", ex);
                 }
             }
         }

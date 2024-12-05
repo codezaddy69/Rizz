@@ -26,13 +26,13 @@ namespace DJMixMaster
             audioEngine.BeatGridUpdated += OnBeatGridUpdated;
 
             // Wire up button click events for left deck
-            btnLeftLoad.Click += (s, e) => LoadTrack(1);
+            btnLeftLoad.Click += (s, e) => LoadButton_Click(s, e);
             btnLeftPlay.Click += (s, e) => TogglePlay(1);
             btnLeftRew.Click += (s, e) => Rewind(1);
             btnLeftFF.Click += (s, e) => FastForward(1);
             
             // Wire up button click events for right deck
-            btnRightLoad.Click += (s, e) => LoadTrack(2);
+            btnRightLoad.Click += (s, e) => LoadButton_Click(s, e);
             btnRightPlay.Click += (s, e) => TogglePlay(2);
             btnRightRew.Click += (s, e) => Rewind(2);
             btnRightFF.Click += (s, e) => FastForward(2);
@@ -51,27 +51,34 @@ namespace DJMixMaster
             btnRightCue3.Click += (s, e) => HandleCuePoint(2, 2);
         }
 
-        private void LoadTrack(int deckNumber)
+        private void LoadButton_Click(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog
+            try
             {
-                Filter = "Audio Files|*.mp3;*.wav;*.m4a;*.aac|All Files|*.*",
-                Title = $"Select Track for Deck {deckNumber}"
-            };
+                var openFileDialog = new Microsoft.Win32.OpenFileDialog
+                {
+                    Filter = "Audio Files|*.mp3;*.wav|All Files|*.*"
+                };
 
-            if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    int deckNumber = GetDeckNumber(sender);
+                    audioEngine.LoadFile(deckNumber, openFileDialog.FileName);
+                    var (waveformData, trackLength) = audioEngine.GetWaveformData(deckNumber);
+                    
+                    if (deckNumber == 1)
+                    {
+                        leftWaveform.UpdateWaveform(waveformData, trackLength);
+                    }
+                    else
+                    {
+                        rightWaveform.UpdateWaveform(waveformData, trackLength);
+                    }
+                }
+            }
+            catch (Exception ex)
             {
-                audioEngine.LoadTrack(deckNumber, openFileDialog.FileName);
-                var (waveformData, trackLength) = audioEngine.GetWaveformData(deckNumber);
-                
-                if (deckNumber == 1)
-                {
-                    leftWaveform.UpdateWaveform(waveformData, trackLength);
-                }
-                else
-                {
-                    rightWaveform.UpdateWaveform(waveformData, trackLength);
-                }
+                MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -119,6 +126,8 @@ namespace DJMixMaster
 
         private void UpdateVolume(int deckNumber, float volume)
         {
+            Logger.LogDebug($"Volume slider for deck {deckNumber} changed to {volume}.");
+            Logger.LogDebug($"UI setting volume for deck {deckNumber} to {volume}");
             audioEngine.SetVolume(deckNumber, volume);
         }
 
@@ -165,14 +174,17 @@ namespace DJMixMaster
             }
         }
 
-        private void OnBeatGridUpdated(object? sender, (int DeckNumber, List<double> BeatPositions, double BPM) e)
+        private void OnBeatGridUpdated(object? sender, (int DeckNumber, double[] BeatPositions, double BPM) e)
         {
+            // Update beat grid visualization if needed
             if (e.DeckNumber == 1)
             {
+                // Update left deck beat grid
                 leftWaveform.UpdateBeatGrid(e.BeatPositions);
             }
             else
             {
+                // Update right deck beat grid
                 rightWaveform.UpdateBeatGrid(e.BeatPositions);
             }
         }
@@ -181,6 +193,22 @@ namespace DJMixMaster
         {
             base.OnClosed(e);
             audioEngine.Dispose();
+        }
+
+        private int GetDeckNumber(object sender)
+        {
+            if (sender == btnLeftLoad)
+            {
+                return 1;
+            }
+            else if (sender == btnRightLoad)
+            {
+                return 2;
+            }
+            else
+            {
+                throw new Exception("Unknown deck number");
+            }
         }
     }
 }

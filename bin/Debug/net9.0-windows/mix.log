@@ -1,0 +1,509 @@
+[2024-12-05 01:05:03.327] [Debug] Initializing AudioEngine...
+[2024-12-05 01:05:03.338] [Debug] DeckPlayer initialized
+[2024-12-05 01:05:03.338] [Debug] DeckPlayer initialized
+[2024-12-05 01:05:03.339] [Debug] Initializing audio output...
+[2024-12-05 01:05:03.534] [Debug] Using audio device: Headphones (Realtek(R) Audio)
+[2024-12-05 01:05:03.538] [Debug] Created WASAPI output with format: 32 bit IEEFloat: 44100Hz 2 channels
+[2024-12-05 01:05:03.551] [Debug] Audio output initialized successfully
+[2024-12-05 01:05:03.552] [Debug] AudioEngine initialized successfully
+[2024-12-05 01:05:10.529] [Debug] Loading file into deck 1: C:\Music\Glass Pipe Dreams.mp3
+[2024-12-05 01:05:10.531] [Debug] VolumeProvider is null, recreating...
+[2024-12-05 01:05:10.531] [Debug] VolumeProvider recreated: False
+[2024-12-05 01:05:10.531] [Debug] VolumeProvider disposed
+[2024-12-05 01:05:10.531] [Debug] Loading audio file: C:\Music\Glass Pipe Dreams.mp3
+[2024-12-05 01:05:10.551] [Debug] Track length: 196.704s
+[2024-12-05 01:05:10.551] [Debug] VolumeProvider is null, recreating...
+[2024-12-05 01:05:10.552] [Debug] VolumeProvider recreated: True
+[2024-12-05 01:05:10.552] [Debug] VolumeProvider created: True
+[2024-12-05 01:05:10.552] [Debug] VolumeProvider is null: False
+[2024-12-05 01:05:10.552] [Debug] audioFile is null: False
+[2024-12-05 01:05:11.257] [Debug] Waveform data generated successfully
+[2024-12-05 01:05:11.258] [Debug] Audio file loaded successfully
+[2024-12-05 01:05:11.258] [Debug] Sample rate: 48000
+[2024-12-05 01:05:11.258] [Debug] Channels: 2
+[2024-12-05 01:05:11.259] [Debug] Encoding: Pcm
+[2024-12-05 01:05:11.259] [Debug] Initializing audio output...
+[2024-12-05 01:05:11.259] [Debug] Cleaning up existing output device
+[2024-12-05 01:05:11.457] [Debug] Using audio device: Headphones (Realtek(R) Audio)
+[2024-12-05 01:05:11.458] [Debug] Created WASAPI output with format: 32 bit IEEFloat: 44100Hz 2 channels
+[2024-12-05 01:05:11.468] [Debug] Audio output initialized successfully
+[2024-12-05 01:05:11.468] [Debug] Returning silence. volumeProvider null: False, isPlaying: False
+[2024-12-05 01:05:11.469] [Debug] Adding deck 1 to mixer
+[2024-12-05 01:05:11.470] [Debug] File loaded successfully into deck 1
+[2024-12-05 01:05:11.701] [Debug] Playing deck 1
+[2024-12-05 01:05:11.702] [Debug] Attempting to start playback
+[2024-12-05 01:05:11.704] [Debug] Starting playback at position: 0, Format: 16 bit PCM: 48000Hz 2 channels, Volume: 1
+[2024-12-05 01:05:11.704] [Debug] VolumeProvider state: True
+[2024-12-05 01:05:11.704] [Debug] Playback started: isPlaying = True
+[2024-12-05 01:05:11.705] [Debug] Playback state: isPlaying = True, Position = 00:00:00, Bytes read = 0
+[2024-12-05 01:05:11.706] [Debug] Starting position tracking
+[2024-12-05 01:05:11.707] [Debug] Starting output device
+[2024-12-05 01:05:11.707] [Debug] Output state: Playing
+[2024-12-05 01:05:11.708] [Debug] Position: 0.00s, Bytes read: 0, Total length: 37767168
+[2024-12-05 01:05:11.766] [Debug] Position: 0.02s, Bytes read: 4096, Total length: 37767168
+[2024-12-05 01:05:11.812] [Debug] Position: 0.04s, Bytes read: 8192, Total length: 37767168
+[2024-12-05 01:05:11.860] [Debug] Position: 0.06s, Bytes read: 12288, Total length: 37767168
+[2024-12-05 01:05:11.908] [Debug] Position: 0.09s, Bytes read: 16384, Total length: 37767168
+[2024-12-05 01:05:11.971] [Debug] Position: 0.11s, Bytes read: 20480, Total length: 37767168
+[2024-12-05 01:05:12.019] [Debug] Position: 0.13s, Bytes read: 24576, Total length: 37767168
+[2024-12-05 01:05:12.056] [Debug] Position: 0.15s, Bytes read: 28672, Total length: 37767168
+[2024-12-05 01:05:12.105] [Debug] Position: 0.17s, Bytes read: 32768, Total length: 37767168
+[2024-12-05 01:05:12.156] [Debug] Position: 0.19s, Bytes read: 36864, Total length: 37767168
+[2024-12-05 01:05:12.206] [Debug] Position: 0.21s, Bytes read: 40960, Total length: 37767168
+[2024-12-05 01:05:12.256] [Debug] Position: 0.23s, Bytes read: 45056, Total length: 37767168
+[2024-12-05 01:05:12.306] [Debug] Position: 0.26s, Bytes read: 49152, Total length: 37767168
+[2024-12-05 01:05:12.356] [Debug] Position: 0.28s, Bytes read: 53248, Total length: 37767168
+[2024-12-05 01:05:12.408] [Debug] Position: 0.30s, Bytes read: 57344, Total length: 37767168
+[2024-12-05 01:05:12.471] [Debug] Position: 0.32s, Bytes read: 61440, Total length: 37767168
+[2024-12-05 01:05:12.519] [Debug] Position: 0.34s, Bytes read: 65536, Total length: 37767168
+[2024-12-05 01:05:12.567] [Debug] Position: 0.36s, Bytes read: 69632, Total length: 37767168
+[2024-12-05 01:05:12.615] [Debug] Position: 0.38s, Bytes read: 73728, Total length: 37767168
+[2024-12-05 01:05:12.662] [Debug] Position: 0.41s, Bytes read: 77824, Total length: 37767168
+[2024-12-05 01:05:12.709] [Debug] Position: 0.43s, Bytes read: 81920, Total length: 37767168
+[2024-12-05 01:05:12.710] [Debug] Volume slider for deck 1 changed to 0.98888886.
+[2024-12-05 01:05:12.710] [Debug] UI setting volume for deck 1 to 0.98888886
+[2024-12-05 01:05:12.710] [Debug] Setting volume for deck 1 to 0.98888886
+[2024-12-05 01:05:12.711] [Debug] Setting volume to: 0.98888886
+[2024-12-05 01:05:12.711] [Debug] VolumeProvider is active. Volume set to: 0.98888886
+[2024-12-05 01:05:12.715] [Debug] Volume slider for deck 1 changed to 0.9777778.
+[2024-12-05 01:05:12.716] [Debug] UI setting volume for deck 1 to 0.9777778
+[2024-12-05 01:05:12.716] [Debug] Setting volume for deck 1 to 0.9777778
+[2024-12-05 01:05:12.716] [Debug] Setting volume to: 0.9777778
+[2024-12-05 01:05:12.716] [Debug] VolumeProvider is active. Volume set to: 0.9777778
+[2024-12-05 01:05:12.718] [Debug] Volume slider for deck 1 changed to 0.96666664.
+[2024-12-05 01:05:12.718] [Debug] UI setting volume for deck 1 to 0.96666664
+[2024-12-05 01:05:12.719] [Debug] Setting volume for deck 1 to 0.96666664
+[2024-12-05 01:05:12.719] [Debug] Setting volume to: 0.96666664
+[2024-12-05 01:05:12.719] [Debug] VolumeProvider is active. Volume set to: 0.96666664
+[2024-12-05 01:05:12.722] [Debug] Volume slider for deck 1 changed to 0.95555556.
+[2024-12-05 01:05:12.722] [Debug] UI setting volume for deck 1 to 0.95555556
+[2024-12-05 01:05:12.723] [Debug] Setting volume for deck 1 to 0.95555556
+[2024-12-05 01:05:12.723] [Debug] Setting volume to: 0.95555556
+[2024-12-05 01:05:12.723] [Debug] VolumeProvider is active. Volume set to: 0.95555556
+[2024-12-05 01:05:12.725] [Debug] Volume slider for deck 1 changed to 0.9444444.
+[2024-12-05 01:05:12.726] [Debug] UI setting volume for deck 1 to 0.9444444
+[2024-12-05 01:05:12.726] [Debug] Setting volume for deck 1 to 0.9444444
+[2024-12-05 01:05:12.726] [Debug] Setting volume to: 0.9444444
+[2024-12-05 01:05:12.726] [Debug] VolumeProvider is active. Volume set to: 0.9444444
+[2024-12-05 01:05:12.727] [Debug] Volume slider for deck 1 changed to 0.93333334.
+[2024-12-05 01:05:12.727] [Debug] UI setting volume for deck 1 to 0.93333334
+[2024-12-05 01:05:12.728] [Debug] Setting volume for deck 1 to 0.93333334
+[2024-12-05 01:05:12.728] [Debug] Setting volume to: 0.93333334
+[2024-12-05 01:05:12.728] [Debug] VolumeProvider is active. Volume set to: 0.93333334
+[2024-12-05 01:05:12.730] [Debug] Volume slider for deck 1 changed to 0.9222222.
+[2024-12-05 01:05:12.731] [Debug] UI setting volume for deck 1 to 0.9222222
+[2024-12-05 01:05:12.731] [Debug] Setting volume for deck 1 to 0.9222222
+[2024-12-05 01:05:12.731] [Debug] Setting volume to: 0.9222222
+[2024-12-05 01:05:12.731] [Debug] VolumeProvider is active. Volume set to: 0.9222222
+[2024-12-05 01:05:12.732] [Debug] Volume slider for deck 1 changed to 0.9111111.
+[2024-12-05 01:05:12.732] [Debug] UI setting volume for deck 1 to 0.9111111
+[2024-12-05 01:05:12.733] [Debug] Setting volume for deck 1 to 0.9111111
+[2024-12-05 01:05:12.733] [Debug] Setting volume to: 0.9111111
+[2024-12-05 01:05:12.733] [Debug] VolumeProvider is active. Volume set to: 0.9111111
+[2024-12-05 01:05:12.734] [Debug] Volume slider for deck 1 changed to 0.9.
+[2024-12-05 01:05:12.734] [Debug] UI setting volume for deck 1 to 0.9
+[2024-12-05 01:05:12.735] [Debug] Setting volume for deck 1 to 0.9
+[2024-12-05 01:05:12.735] [Debug] Setting volume to: 0.9
+[2024-12-05 01:05:12.735] [Debug] VolumeProvider is active. Volume set to: 0.9
+[2024-12-05 01:05:12.737] [Debug] Volume slider for deck 1 changed to 0.8888889.
+[2024-12-05 01:05:12.738] [Debug] UI setting volume for deck 1 to 0.8888889
+[2024-12-05 01:05:12.738] [Debug] Setting volume for deck 1 to 0.8888889
+[2024-12-05 01:05:12.738] [Debug] Setting volume to: 0.8888889
+[2024-12-05 01:05:12.738] [Debug] VolumeProvider is active. Volume set to: 0.8888889
+[2024-12-05 01:05:12.739] [Debug] Volume slider for deck 1 changed to 0.87777776.
+[2024-12-05 01:05:12.739] [Debug] UI setting volume for deck 1 to 0.87777776
+[2024-12-05 01:05:12.740] [Debug] Setting volume for deck 1 to 0.87777776
+[2024-12-05 01:05:12.740] [Debug] Setting volume to: 0.87777776
+[2024-12-05 01:05:12.740] [Debug] VolumeProvider is active. Volume set to: 0.87777776
+[2024-12-05 01:05:12.740] [Debug] Volume slider for deck 1 changed to 0.8666667.
+[2024-12-05 01:05:12.741] [Debug] UI setting volume for deck 1 to 0.8666667
+[2024-12-05 01:05:12.741] [Debug] Setting volume for deck 1 to 0.8666667
+[2024-12-05 01:05:12.741] [Debug] Setting volume to: 0.8666667
+[2024-12-05 01:05:12.741] [Debug] VolumeProvider is active. Volume set to: 0.8666667
+[2024-12-05 01:05:12.744] [Debug] Volume slider for deck 1 changed to 0.85555553.
+[2024-12-05 01:05:12.745] [Debug] UI setting volume for deck 1 to 0.85555553
+[2024-12-05 01:05:12.745] [Debug] Setting volume for deck 1 to 0.85555553
+[2024-12-05 01:05:12.745] [Debug] Setting volume to: 0.85555553
+[2024-12-05 01:05:12.745] [Debug] VolumeProvider is active. Volume set to: 0.85555553
+[2024-12-05 01:05:12.746] [Debug] Volume slider for deck 1 changed to 0.84444445.
+[2024-12-05 01:05:12.746] [Debug] UI setting volume for deck 1 to 0.84444445
+[2024-12-05 01:05:12.746] [Debug] Setting volume for deck 1 to 0.84444445
+[2024-12-05 01:05:12.747] [Debug] Setting volume to: 0.84444445
+[2024-12-05 01:05:12.747] [Debug] VolumeProvider is active. Volume set to: 0.84444445
+[2024-12-05 01:05:12.747] [Debug] Volume slider for deck 1 changed to 0.8333333.
+[2024-12-05 01:05:12.747] [Debug] UI setting volume for deck 1 to 0.8333333
+[2024-12-05 01:05:12.748] [Debug] Setting volume for deck 1 to 0.8333333
+[2024-12-05 01:05:12.748] [Debug] Setting volume to: 0.8333333
+[2024-12-05 01:05:12.748] [Debug] VolumeProvider is active. Volume set to: 0.8333333
+[2024-12-05 01:05:12.751] [Debug] Volume slider for deck 1 changed to 0.82222223.
+[2024-12-05 01:05:12.751] [Debug] UI setting volume for deck 1 to 0.82222223
+[2024-12-05 01:05:12.752] [Debug] Setting volume for deck 1 to 0.82222223
+[2024-12-05 01:05:12.752] [Debug] Setting volume to: 0.82222223
+[2024-12-05 01:05:12.752] [Debug] VolumeProvider is active. Volume set to: 0.82222223
+[2024-12-05 01:05:12.752] [Debug] Volume slider for deck 1 changed to 0.8111111.
+[2024-12-05 01:05:12.752] [Debug] UI setting volume for deck 1 to 0.8111111
+[2024-12-05 01:05:12.753] [Debug] Setting volume for deck 1 to 0.8111111
+[2024-12-05 01:05:12.753] [Debug] Setting volume to: 0.8111111
+[2024-12-05 01:05:12.753] [Debug] VolumeProvider is active. Volume set to: 0.8111111
+[2024-12-05 01:05:12.754] [Debug] Volume slider for deck 1 changed to 0.8.
+[2024-12-05 01:05:12.754] [Debug] UI setting volume for deck 1 to 0.8
+[2024-12-05 01:05:12.755] [Debug] Setting volume for deck 1 to 0.8
+[2024-12-05 01:05:12.755] [Debug] Setting volume to: 0.8
+[2024-12-05 01:05:12.755] [Debug] VolumeProvider is active. Volume set to: 0.8
+[2024-12-05 01:05:12.756] [Debug] Volume slider for deck 1 changed to 0.7888889.
+[2024-12-05 01:05:12.756] [Debug] Position: 0.45s, Bytes read: 86016, Total length: 37767168
+[2024-12-05 01:05:12.756] [Debug] UI setting volume for deck 1 to 0.7888889
+[2024-12-05 01:05:12.757] [Debug] Setting volume for deck 1 to 0.7888889
+[2024-12-05 01:05:12.757] [Debug] Setting volume to: 0.7888889
+[2024-12-05 01:05:12.757] [Debug] VolumeProvider is active. Volume set to: 0.7888889
+[2024-12-05 01:05:12.759] [Debug] Volume slider for deck 1 changed to 0.7777778.
+[2024-12-05 01:05:12.759] [Debug] UI setting volume for deck 1 to 0.7777778
+[2024-12-05 01:05:12.759] [Debug] Setting volume for deck 1 to 0.7777778
+[2024-12-05 01:05:12.759] [Debug] Setting volume to: 0.7777778
+[2024-12-05 01:05:12.759] [Debug] VolumeProvider is active. Volume set to: 0.7777778
+[2024-12-05 01:05:12.760] [Debug] Volume slider for deck 1 changed to 0.76666665.
+[2024-12-05 01:05:12.760] [Debug] UI setting volume for deck 1 to 0.76666665
+[2024-12-05 01:05:12.760] [Debug] Setting volume for deck 1 to 0.76666665
+[2024-12-05 01:05:12.760] [Debug] Setting volume to: 0.76666665
+[2024-12-05 01:05:12.761] [Debug] VolumeProvider is active. Volume set to: 0.76666665
+[2024-12-05 01:05:12.761] [Debug] Volume slider for deck 1 changed to 0.75555557.
+[2024-12-05 01:05:12.761] [Debug] UI setting volume for deck 1 to 0.75555557
+[2024-12-05 01:05:12.762] [Debug] Setting volume for deck 1 to 0.75555557
+[2024-12-05 01:05:12.762] [Debug] Setting volume to: 0.75555557
+[2024-12-05 01:05:12.762] [Debug] VolumeProvider is active. Volume set to: 0.75555557
+[2024-12-05 01:05:12.763] [Debug] Volume slider for deck 1 changed to 0.74444443.
+[2024-12-05 01:05:12.763] [Debug] UI setting volume for deck 1 to 0.74444443
+[2024-12-05 01:05:12.764] [Debug] Setting volume for deck 1 to 0.74444443
+[2024-12-05 01:05:12.764] [Debug] Setting volume to: 0.74444443
+[2024-12-05 01:05:12.764] [Debug] VolumeProvider is active. Volume set to: 0.74444443
+[2024-12-05 01:05:12.765] [Debug] Volume slider for deck 1 changed to 0.73333335.
+[2024-12-05 01:05:12.766] [Debug] UI setting volume for deck 1 to 0.73333335
+[2024-12-05 01:05:12.766] [Debug] Setting volume for deck 1 to 0.73333335
+[2024-12-05 01:05:12.766] [Debug] Setting volume to: 0.73333335
+[2024-12-05 01:05:12.766] [Debug] VolumeProvider is active. Volume set to: 0.73333335
+[2024-12-05 01:05:12.767] [Debug] Volume slider for deck 1 changed to 0.7222222.
+[2024-12-05 01:05:12.767] [Debug] UI setting volume for deck 1 to 0.7222222
+[2024-12-05 01:05:12.768] [Debug] Setting volume for deck 1 to 0.7222222
+[2024-12-05 01:05:12.768] [Debug] Setting volume to: 0.7222222
+[2024-12-05 01:05:12.768] [Debug] VolumeProvider is active. Volume set to: 0.7222222
+[2024-12-05 01:05:12.768] [Debug] Volume slider for deck 1 changed to 0.7111111.
+[2024-12-05 01:05:12.769] [Debug] UI setting volume for deck 1 to 0.7111111
+[2024-12-05 01:05:12.769] [Debug] Setting volume for deck 1 to 0.7111111
+[2024-12-05 01:05:12.769] [Debug] Setting volume to: 0.7111111
+[2024-12-05 01:05:12.769] [Debug] VolumeProvider is active. Volume set to: 0.7111111
+[2024-12-05 01:05:12.770] [Debug] Volume slider for deck 1 changed to 0.7.
+[2024-12-05 01:05:12.770] [Debug] UI setting volume for deck 1 to 0.7
+[2024-12-05 01:05:12.770] [Debug] Setting volume for deck 1 to 0.7
+[2024-12-05 01:05:12.771] [Debug] Setting volume to: 0.7
+[2024-12-05 01:05:12.771] [Debug] VolumeProvider is active. Volume set to: 0.7
+[2024-12-05 01:05:12.772] [Debug] Volume slider for deck 1 changed to 0.6888889.
+[2024-12-05 01:05:12.772] [Debug] UI setting volume for deck 1 to 0.6888889
+[2024-12-05 01:05:12.773] [Debug] Setting volume for deck 1 to 0.6888889
+[2024-12-05 01:05:12.773] [Debug] Setting volume to: 0.6888889
+[2024-12-05 01:05:12.773] [Debug] VolumeProvider is active. Volume set to: 0.6888889
+[2024-12-05 01:05:12.773] [Debug] Volume slider for deck 1 changed to 0.67777777.
+[2024-12-05 01:05:12.774] [Debug] UI setting volume for deck 1 to 0.67777777
+[2024-12-05 01:05:12.774] [Debug] Setting volume for deck 1 to 0.67777777
+[2024-12-05 01:05:12.774] [Debug] Setting volume to: 0.67777777
+[2024-12-05 01:05:12.774] [Debug] VolumeProvider is active. Volume set to: 0.67777777
+[2024-12-05 01:05:12.775] [Debug] Volume slider for deck 1 changed to 0.6666667.
+[2024-12-05 01:05:12.775] [Debug] UI setting volume for deck 1 to 0.6666667
+[2024-12-05 01:05:12.776] [Debug] Setting volume for deck 1 to 0.6666667
+[2024-12-05 01:05:12.776] [Debug] Setting volume to: 0.6666667
+[2024-12-05 01:05:12.776] [Debug] VolumeProvider is active. Volume set to: 0.6666667
+[2024-12-05 01:05:12.776] [Debug] Volume slider for deck 1 changed to 0.65555555.
+[2024-12-05 01:05:12.777] [Debug] UI setting volume for deck 1 to 0.65555555
+[2024-12-05 01:05:12.777] [Debug] Setting volume for deck 1 to 0.65555555
+[2024-12-05 01:05:12.777] [Debug] Setting volume to: 0.65555555
+[2024-12-05 01:05:12.777] [Debug] VolumeProvider is active. Volume set to: 0.65555555
+[2024-12-05 01:05:12.778] [Debug] Volume slider for deck 1 changed to 0.64444447.
+[2024-12-05 01:05:12.778] [Debug] UI setting volume for deck 1 to 0.64444447
+[2024-12-05 01:05:12.778] [Debug] Setting volume for deck 1 to 0.64444447
+[2024-12-05 01:05:12.779] [Debug] Setting volume to: 0.64444447
+[2024-12-05 01:05:12.779] [Debug] VolumeProvider is active. Volume set to: 0.64444447
+[2024-12-05 01:05:12.780] [Debug] Volume slider for deck 1 changed to 0.6333333.
+[2024-12-05 01:05:12.780] [Debug] UI setting volume for deck 1 to 0.6333333
+[2024-12-05 01:05:12.781] [Debug] Setting volume for deck 1 to 0.6333333
+[2024-12-05 01:05:12.781] [Debug] Setting volume to: 0.6333333
+[2024-12-05 01:05:12.781] [Debug] VolumeProvider is active. Volume set to: 0.6333333
+[2024-12-05 01:05:12.782] [Debug] Volume slider for deck 1 changed to 0.62222224.
+[2024-12-05 01:05:12.782] [Debug] UI setting volume for deck 1 to 0.62222224
+[2024-12-05 01:05:12.782] [Debug] Setting volume for deck 1 to 0.62222224
+[2024-12-05 01:05:12.782] [Debug] Setting volume to: 0.62222224
+[2024-12-05 01:05:12.782] [Debug] VolumeProvider is active. Volume set to: 0.62222224
+[2024-12-05 01:05:12.783] [Debug] Volume slider for deck 1 changed to 0.6111111.
+[2024-12-05 01:05:12.783] [Debug] UI setting volume for deck 1 to 0.6111111
+[2024-12-05 01:05:12.783] [Debug] Setting volume for deck 1 to 0.6111111
+[2024-12-05 01:05:12.784] [Debug] Setting volume to: 0.6111111
+[2024-12-05 01:05:12.784] [Debug] VolumeProvider is active. Volume set to: 0.6111111
+[2024-12-05 01:05:12.784] [Debug] Volume slider for deck 1 changed to 0.6.
+[2024-12-05 01:05:12.784] [Debug] UI setting volume for deck 1 to 0.6
+[2024-12-05 01:05:12.785] [Debug] Setting volume for deck 1 to 0.6
+[2024-12-05 01:05:12.785] [Debug] Setting volume to: 0.6
+[2024-12-05 01:05:12.785] [Debug] VolumeProvider is active. Volume set to: 0.6
+[2024-12-05 01:05:12.785] [Debug] Volume slider for deck 1 changed to 0.5888889.
+[2024-12-05 01:05:12.785] [Debug] UI setting volume for deck 1 to 0.5888889
+[2024-12-05 01:05:12.786] [Debug] Setting volume for deck 1 to 0.5888889
+[2024-12-05 01:05:12.786] [Debug] Setting volume to: 0.5888889
+[2024-12-05 01:05:12.786] [Debug] VolumeProvider is active. Volume set to: 0.5888889
+[2024-12-05 01:05:12.789] [Debug] Volume slider for deck 1 changed to 0.5777778.
+[2024-12-05 01:05:12.789] [Debug] UI setting volume for deck 1 to 0.5777778
+[2024-12-05 01:05:12.789] [Debug] Setting volume for deck 1 to 0.5777778
+[2024-12-05 01:05:12.789] [Debug] Setting volume to: 0.5777778
+[2024-12-05 01:05:12.789] [Debug] VolumeProvider is active. Volume set to: 0.5777778
+[2024-12-05 01:05:12.790] [Debug] Volume slider for deck 1 changed to 0.56666666.
+[2024-12-05 01:05:12.790] [Debug] UI setting volume for deck 1 to 0.56666666
+[2024-12-05 01:05:12.790] [Debug] Setting volume for deck 1 to 0.56666666
+[2024-12-05 01:05:12.790] [Debug] Setting volume to: 0.56666666
+[2024-12-05 01:05:12.790] [Debug] VolumeProvider is active. Volume set to: 0.56666666
+[2024-12-05 01:05:12.791] [Debug] Volume slider for deck 1 changed to 0.5555556.
+[2024-12-05 01:05:12.791] [Debug] UI setting volume for deck 1 to 0.5555556
+[2024-12-05 01:05:12.792] [Debug] Setting volume for deck 1 to 0.5555556
+[2024-12-05 01:05:12.792] [Debug] Setting volume to: 0.5555556
+[2024-12-05 01:05:12.792] [Debug] VolumeProvider is active. Volume set to: 0.5555556
+[2024-12-05 01:05:12.793] [Debug] Volume slider for deck 1 changed to 0.54444444.
+[2024-12-05 01:05:12.794] [Debug] UI setting volume for deck 1 to 0.54444444
+[2024-12-05 01:05:12.794] [Debug] Setting volume for deck 1 to 0.54444444
+[2024-12-05 01:05:12.794] [Debug] Setting volume to: 0.54444444
+[2024-12-05 01:05:12.794] [Debug] VolumeProvider is active. Volume set to: 0.54444444
+[2024-12-05 01:05:12.795] [Debug] Volume slider for deck 1 changed to 0.53333336.
+[2024-12-05 01:05:12.796] [Debug] UI setting volume for deck 1 to 0.53333336
+[2024-12-05 01:05:12.796] [Debug] Setting volume for deck 1 to 0.53333336
+[2024-12-05 01:05:12.796] [Debug] Setting volume to: 0.53333336
+[2024-12-05 01:05:12.796] [Debug] VolumeProvider is active. Volume set to: 0.53333336
+[2024-12-05 01:05:12.797] [Debug] Volume slider for deck 1 changed to 0.5222222.
+[2024-12-05 01:05:12.797] [Debug] UI setting volume for deck 1 to 0.5222222
+[2024-12-05 01:05:12.798] [Debug] Setting volume for deck 1 to 0.5222222
+[2024-12-05 01:05:12.798] [Debug] Setting volume to: 0.5222222
+[2024-12-05 01:05:12.798] [Debug] VolumeProvider is active. Volume set to: 0.5222222
+[2024-12-05 01:05:12.799] [Debug] Volume slider for deck 1 changed to 0.51111114.
+[2024-12-05 01:05:12.799] [Debug] UI setting volume for deck 1 to 0.51111114
+[2024-12-05 01:05:12.800] [Debug] Setting volume for deck 1 to 0.51111114
+[2024-12-05 01:05:12.800] [Debug] Setting volume to: 0.51111114
+[2024-12-05 01:05:12.800] [Debug] VolumeProvider is active. Volume set to: 0.51111114
+[2024-12-05 01:05:12.801] [Debug] Volume slider for deck 1 changed to 0.5.
+[2024-12-05 01:05:12.801] [Debug] UI setting volume for deck 1 to 0.5
+[2024-12-05 01:05:12.802] [Debug] Setting volume for deck 1 to 0.5
+[2024-12-05 01:05:12.802] [Debug] Setting volume to: 0.5
+[2024-12-05 01:05:12.802] [Debug] VolumeProvider is active. Volume set to: 0.5
+[2024-12-05 01:05:12.803] [Debug] Volume slider for deck 1 changed to 0.4888889.
+[2024-12-05 01:05:12.803] [Debug] UI setting volume for deck 1 to 0.4888889
+[2024-12-05 01:05:12.804] [Debug] Setting volume for deck 1 to 0.4888889
+[2024-12-05 01:05:12.804] [Debug] Setting volume to: 0.4888889
+[2024-12-05 01:05:12.804] [Debug] VolumeProvider is active. Volume set to: 0.4888889
+[2024-12-05 01:05:12.805] [Debug] Volume slider for deck 1 changed to 0.47777778.
+[2024-12-05 01:05:12.805] [Debug] UI setting volume for deck 1 to 0.47777778
+[2024-12-05 01:05:12.806] [Debug] Setting volume for deck 1 to 0.47777778
+[2024-12-05 01:05:12.806] [Debug] Setting volume to: 0.47777778
+[2024-12-05 01:05:12.806] [Debug] VolumeProvider is active. Volume set to: 0.47777778
+[2024-12-05 01:05:12.807] [Debug] Volume slider for deck 1 changed to 0.46666667.
+[2024-12-05 01:05:12.807] [Debug] UI setting volume for deck 1 to 0.46666667
+[2024-12-05 01:05:12.808] [Debug] Setting volume for deck 1 to 0.46666667
+[2024-12-05 01:05:12.808] [Debug] Setting volume to: 0.46666667
+[2024-12-05 01:05:12.808] [Debug] VolumeProvider is active. Volume set to: 0.46666667
+[2024-12-05 01:05:12.809] [Debug] Volume slider for deck 1 changed to 0.45555556.
+[2024-12-05 01:05:12.809] [Debug] UI setting volume for deck 1 to 0.45555556
+[2024-12-05 01:05:12.810] [Debug] Setting volume for deck 1 to 0.45555556
+[2024-12-05 01:05:12.810] [Debug] Setting volume to: 0.45555556
+[2024-12-05 01:05:12.810] [Debug] VolumeProvider is active. Volume set to: 0.45555556
+[2024-12-05 01:05:12.810] [Debug] Volume slider for deck 1 changed to 0.44444445.
+[2024-12-05 01:05:12.811] [Debug] UI setting volume for deck 1 to 0.44444445
+[2024-12-05 01:05:12.811] [Debug] Setting volume for deck 1 to 0.44444445
+[2024-12-05 01:05:12.811] [Debug] Setting volume to: 0.44444445
+[2024-12-05 01:05:12.811] [Debug] VolumeProvider is active. Volume set to: 0.44444445
+[2024-12-05 01:05:12.813] [Debug] Volume slider for deck 1 changed to 0.43333334.
+[2024-12-05 01:05:12.813] [Debug] UI setting volume for deck 1 to 0.43333334
+[2024-12-05 01:05:12.814] [Debug] Setting volume for deck 1 to 0.43333334
+[2024-12-05 01:05:12.814] [Debug] Setting volume to: 0.43333334
+[2024-12-05 01:05:12.814] [Debug] VolumeProvider is active. Volume set to: 0.43333334
+[2024-12-05 01:05:12.815] [Debug] Volume slider for deck 1 changed to 0.42222223.
+[2024-12-05 01:05:12.815] [Debug] UI setting volume for deck 1 to 0.42222223
+[2024-12-05 01:05:12.816] [Debug] Setting volume for deck 1 to 0.42222223
+[2024-12-05 01:05:12.816] [Debug] Setting volume to: 0.42222223
+[2024-12-05 01:05:12.816] [Debug] VolumeProvider is active. Volume set to: 0.42222223
+[2024-12-05 01:05:12.816] [Debug] Volume slider for deck 1 changed to 0.41111112.
+[2024-12-05 01:05:12.817] [Debug] UI setting volume for deck 1 to 0.41111112
+[2024-12-05 01:05:12.817] [Debug] Setting volume for deck 1 to 0.41111112
+[2024-12-05 01:05:12.817] [Debug] Setting volume to: 0.41111112
+[2024-12-05 01:05:12.817] [Debug] VolumeProvider is active. Volume set to: 0.41111112
+[2024-12-05 01:05:12.818] [Debug] Volume slider for deck 1 changed to 0.4.
+[2024-12-05 01:05:12.818] [Debug] UI setting volume for deck 1 to 0.4
+[2024-12-05 01:05:12.818] [Debug] Setting volume for deck 1 to 0.4
+[2024-12-05 01:05:12.818] [Debug] Setting volume to: 0.4
+[2024-12-05 01:05:12.818] [Debug] VolumeProvider is active. Volume set to: 0.4
+[2024-12-05 01:05:12.819] [Debug] Volume slider for deck 1 changed to 0.3888889.
+[2024-12-05 01:05:12.819] [Debug] UI setting volume for deck 1 to 0.3888889
+[2024-12-05 01:05:12.820] [Debug] Setting volume for deck 1 to 0.3888889
+[2024-12-05 01:05:12.820] [Debug] Setting volume to: 0.3888889
+[2024-12-05 01:05:12.820] [Debug] VolumeProvider is active. Volume set to: 0.3888889
+[2024-12-05 01:05:12.820] [Debug] Position: 0.47s, Bytes read: 90112, Total length: 37767168
+[2024-12-05 01:05:12.821] [Debug] Volume slider for deck 1 changed to 0.37777779.
+[2024-12-05 01:05:12.821] [Debug] UI setting volume for deck 1 to 0.37777779
+[2024-12-05 01:05:12.822] [Debug] Setting volume for deck 1 to 0.37777779
+[2024-12-05 01:05:12.822] [Debug] Setting volume to: 0.37777779
+[2024-12-05 01:05:12.822] [Debug] VolumeProvider is active. Volume set to: 0.37777779
+[2024-12-05 01:05:12.822] [Debug] Volume slider for deck 1 changed to 0.36666667.
+[2024-12-05 01:05:12.823] [Debug] UI setting volume for deck 1 to 0.36666667
+[2024-12-05 01:05:12.823] [Debug] Setting volume for deck 1 to 0.36666667
+[2024-12-05 01:05:12.823] [Debug] Setting volume to: 0.36666667
+[2024-12-05 01:05:12.823] [Debug] VolumeProvider is active. Volume set to: 0.36666667
+[2024-12-05 01:05:12.824] [Debug] Volume slider for deck 1 changed to 0.35555556.
+[2024-12-05 01:05:12.824] [Debug] UI setting volume for deck 1 to 0.35555556
+[2024-12-05 01:05:12.824] [Debug] Setting volume for deck 1 to 0.35555556
+[2024-12-05 01:05:12.824] [Debug] Setting volume to: 0.35555556
+[2024-12-05 01:05:12.824] [Debug] VolumeProvider is active. Volume set to: 0.35555556
+[2024-12-05 01:05:12.825] [Debug] Volume slider for deck 1 changed to 0.34444445.
+[2024-12-05 01:05:12.825] [Debug] UI setting volume for deck 1 to 0.34444445
+[2024-12-05 01:05:12.826] [Debug] Setting volume for deck 1 to 0.34444445
+[2024-12-05 01:05:12.826] [Debug] Setting volume to: 0.34444445
+[2024-12-05 01:05:12.826] [Debug] VolumeProvider is active. Volume set to: 0.34444445
+[2024-12-05 01:05:12.827] [Debug] Volume slider for deck 1 changed to 0.33333334.
+[2024-12-05 01:05:12.828] [Debug] UI setting volume for deck 1 to 0.33333334
+[2024-12-05 01:05:12.828] [Debug] Setting volume for deck 1 to 0.33333334
+[2024-12-05 01:05:12.828] [Debug] Setting volume to: 0.33333334
+[2024-12-05 01:05:12.828] [Debug] VolumeProvider is active. Volume set to: 0.33333334
+[2024-12-05 01:05:12.829] [Debug] Volume slider for deck 1 changed to 0.32222223.
+[2024-12-05 01:05:12.829] [Debug] UI setting volume for deck 1 to 0.32222223
+[2024-12-05 01:05:12.829] [Debug] Setting volume for deck 1 to 0.32222223
+[2024-12-05 01:05:12.829] [Debug] Setting volume to: 0.32222223
+[2024-12-05 01:05:12.829] [Debug] VolumeProvider is active. Volume set to: 0.32222223
+[2024-12-05 01:05:12.830] [Debug] Volume slider for deck 1 changed to 0.31111112.
+[2024-12-05 01:05:12.830] [Debug] UI setting volume for deck 1 to 0.31111112
+[2024-12-05 01:05:12.830] [Debug] Setting volume for deck 1 to 0.31111112
+[2024-12-05 01:05:12.830] [Debug] Setting volume to: 0.31111112
+[2024-12-05 01:05:12.830] [Debug] VolumeProvider is active. Volume set to: 0.31111112
+[2024-12-05 01:05:12.831] [Debug] Volume slider for deck 1 changed to 0.3.
+[2024-12-05 01:05:12.831] [Debug] UI setting volume for deck 1 to 0.3
+[2024-12-05 01:05:12.831] [Debug] Setting volume for deck 1 to 0.3
+[2024-12-05 01:05:12.831] [Debug] Setting volume to: 0.3
+[2024-12-05 01:05:12.832] [Debug] VolumeProvider is active. Volume set to: 0.3
+[2024-12-05 01:05:12.832] [Debug] Volume slider for deck 1 changed to 0.2888889.
+[2024-12-05 01:05:12.832] [Debug] UI setting volume for deck 1 to 0.2888889
+[2024-12-05 01:05:12.833] [Debug] Setting volume for deck 1 to 0.2888889
+[2024-12-05 01:05:12.833] [Debug] Setting volume to: 0.2888889
+[2024-12-05 01:05:12.833] [Debug] VolumeProvider is active. Volume set to: 0.2888889
+[2024-12-05 01:05:12.833] [Debug] Volume slider for deck 1 changed to 0.26666668.
+[2024-12-05 01:05:12.833] [Debug] UI setting volume for deck 1 to 0.26666668
+[2024-12-05 01:05:12.834] [Debug] Setting volume for deck 1 to 0.26666668
+[2024-12-05 01:05:12.834] [Debug] Setting volume to: 0.26666668
+[2024-12-05 01:05:12.834] [Debug] VolumeProvider is active. Volume set to: 0.26666668
+[2024-12-05 01:05:12.835] [Debug] Volume slider for deck 1 changed to 0.25555557.
+[2024-12-05 01:05:12.835] [Debug] UI setting volume for deck 1 to 0.25555557
+[2024-12-05 01:05:12.836] [Debug] Setting volume for deck 1 to 0.25555557
+[2024-12-05 01:05:12.836] [Debug] Setting volume to: 0.25555557
+[2024-12-05 01:05:12.836] [Debug] VolumeProvider is active. Volume set to: 0.25555557
+[2024-12-05 01:05:12.837] [Debug] Volume slider for deck 1 changed to 0.23333333.
+[2024-12-05 01:05:12.837] [Debug] UI setting volume for deck 1 to 0.23333333
+[2024-12-05 01:05:12.837] [Debug] Setting volume for deck 1 to 0.23333333
+[2024-12-05 01:05:12.837] [Debug] Setting volume to: 0.23333333
+[2024-12-05 01:05:12.837] [Debug] VolumeProvider is active. Volume set to: 0.23333333
+[2024-12-05 01:05:12.838] [Debug] Volume slider for deck 1 changed to 0.22222222.
+[2024-12-05 01:05:12.839] [Debug] UI setting volume for deck 1 to 0.22222222
+[2024-12-05 01:05:12.839] [Debug] Setting volume for deck 1 to 0.22222222
+[2024-12-05 01:05:12.839] [Debug] Setting volume to: 0.22222222
+[2024-12-05 01:05:12.839] [Debug] VolumeProvider is active. Volume set to: 0.22222222
+[2024-12-05 01:05:12.840] [Debug] Volume slider for deck 1 changed to 0.21111111.
+[2024-12-05 01:05:12.840] [Debug] UI setting volume for deck 1 to 0.21111111
+[2024-12-05 01:05:12.840] [Debug] Setting volume for deck 1 to 0.21111111
+[2024-12-05 01:05:12.840] [Debug] Setting volume to: 0.21111111
+[2024-12-05 01:05:12.840] [Debug] VolumeProvider is active. Volume set to: 0.21111111
+[2024-12-05 01:05:12.841] [Debug] Volume slider for deck 1 changed to 0.18888889.
+[2024-12-05 01:05:12.841] [Debug] UI setting volume for deck 1 to 0.18888889
+[2024-12-05 01:05:12.841] [Debug] Setting volume for deck 1 to 0.18888889
+[2024-12-05 01:05:12.841] [Debug] Setting volume to: 0.18888889
+[2024-12-05 01:05:12.842] [Debug] VolumeProvider is active. Volume set to: 0.18888889
+[2024-12-05 01:05:12.842] [Debug] Volume slider for deck 1 changed to 0.16666667.
+[2024-12-05 01:05:12.843] [Debug] UI setting volume for deck 1 to 0.16666667
+[2024-12-05 01:05:12.843] [Debug] Setting volume for deck 1 to 0.16666667
+[2024-12-05 01:05:12.843] [Debug] Setting volume to: 0.16666667
+[2024-12-05 01:05:12.843] [Debug] VolumeProvider is active. Volume set to: 0.16666667
+[2024-12-05 01:05:12.844] [Debug] Volume slider for deck 1 changed to 0.15555556.
+[2024-12-05 01:05:12.844] [Debug] UI setting volume for deck 1 to 0.15555556
+[2024-12-05 01:05:12.844] [Debug] Setting volume for deck 1 to 0.15555556
+[2024-12-05 01:05:12.844] [Debug] Setting volume to: 0.15555556
+[2024-12-05 01:05:12.845] [Debug] VolumeProvider is active. Volume set to: 0.15555556
+[2024-12-05 01:05:12.845] [Debug] Volume slider for deck 1 changed to 0.13333334.
+[2024-12-05 01:05:12.845] [Debug] UI setting volume for deck 1 to 0.13333334
+[2024-12-05 01:05:12.846] [Debug] Setting volume for deck 1 to 0.13333334
+[2024-12-05 01:05:12.846] [Debug] Setting volume to: 0.13333334
+[2024-12-05 01:05:12.846] [Debug] VolumeProvider is active. Volume set to: 0.13333334
+[2024-12-05 01:05:12.846] [Debug] Volume slider for deck 1 changed to 0.12222222.
+[2024-12-05 01:05:12.847] [Debug] UI setting volume for deck 1 to 0.12222222
+[2024-12-05 01:05:12.847] [Debug] Setting volume for deck 1 to 0.12222222
+[2024-12-05 01:05:12.847] [Debug] Setting volume to: 0.12222222
+[2024-12-05 01:05:12.847] [Debug] VolumeProvider is active. Volume set to: 0.12222222
+[2024-12-05 01:05:12.848] [Debug] Volume slider for deck 1 changed to 0.11111111.
+[2024-12-05 01:05:12.848] [Debug] UI setting volume for deck 1 to 0.11111111
+[2024-12-05 01:05:12.848] [Debug] Setting volume for deck 1 to 0.11111111
+[2024-12-05 01:05:12.848] [Debug] Setting volume to: 0.11111111
+[2024-12-05 01:05:12.848] [Debug] VolumeProvider is active. Volume set to: 0.11111111
+[2024-12-05 01:05:12.849] [Debug] Volume slider for deck 1 changed to 0.08888889.
+[2024-12-05 01:05:12.849] [Debug] UI setting volume for deck 1 to 0.08888889
+[2024-12-05 01:05:12.849] [Debug] Setting volume for deck 1 to 0.08888889
+[2024-12-05 01:05:12.849] [Debug] Setting volume to: 0.08888889
+[2024-12-05 01:05:12.849] [Debug] VolumeProvider is active. Volume set to: 0.08888889
+[2024-12-05 01:05:12.850] [Debug] Volume slider for deck 1 changed to 0.07777778.
+[2024-12-05 01:05:12.850] [Debug] UI setting volume for deck 1 to 0.07777778
+[2024-12-05 01:05:12.851] [Debug] Setting volume for deck 1 to 0.07777778
+[2024-12-05 01:05:12.851] [Debug] Setting volume to: 0.07777778
+[2024-12-05 01:05:12.851] [Debug] VolumeProvider is active. Volume set to: 0.07777778
+[2024-12-05 01:05:12.851] [Debug] Volume slider for deck 1 changed to 0.055555556.
+[2024-12-05 01:05:12.852] [Debug] UI setting volume for deck 1 to 0.055555556
+[2024-12-05 01:05:12.852] [Debug] Setting volume for deck 1 to 0.055555556
+[2024-12-05 01:05:12.852] [Debug] Setting volume to: 0.055555556
+[2024-12-05 01:05:12.852] [Debug] VolumeProvider is active. Volume set to: 0.055555556
+[2024-12-05 01:05:12.853] [Debug] Volume slider for deck 1 changed to 0.044444446.
+[2024-12-05 01:05:12.853] [Debug] UI setting volume for deck 1 to 0.044444446
+[2024-12-05 01:05:12.853] [Debug] Setting volume for deck 1 to 0.044444446
+[2024-12-05 01:05:12.853] [Debug] Setting volume to: 0.044444446
+[2024-12-05 01:05:12.853] [Debug] VolumeProvider is active. Volume set to: 0.044444446
+[2024-12-05 01:05:12.854] [Debug] Volume slider for deck 1 changed to 0.033333335.
+[2024-12-05 01:05:12.854] [Debug] UI setting volume for deck 1 to 0.033333335
+[2024-12-05 01:05:12.854] [Debug] Setting volume for deck 1 to 0.033333335
+[2024-12-05 01:05:12.854] [Debug] Setting volume to: 0.033333335
+[2024-12-05 01:05:12.854] [Debug] VolumeProvider is active. Volume set to: 0.033333335
+[2024-12-05 01:05:12.855] [Debug] Volume slider for deck 1 changed to 0.011111111.
+[2024-12-05 01:05:12.855] [Debug] UI setting volume for deck 1 to 0.011111111
+[2024-12-05 01:05:12.855] [Debug] Setting volume for deck 1 to 0.011111111
+[2024-12-05 01:05:12.855] [Debug] Setting volume to: 0.011111111
+[2024-12-05 01:05:12.856] [Debug] VolumeProvider is active. Volume set to: 0.011111111
+[2024-12-05 01:05:12.856] [Debug] Volume slider for deck 1 changed to 1.994932E-16.
+[2024-12-05 01:05:12.856] [Debug] UI setting volume for deck 1 to 1.994932E-16
+[2024-12-05 01:05:12.856] [Debug] Setting volume for deck 1 to 1.994932E-16
+[2024-12-05 01:05:12.857] [Debug] Setting volume to: 1.994932E-16
+[2024-12-05 01:05:12.857] [Debug] VolumeProvider is active. Volume set to: 1.994932E-16
+[2024-12-05 01:05:12.858] [Debug] Volume slider for deck 1 changed to 0.
+[2024-12-05 01:05:12.858] [Debug] UI setting volume for deck 1 to 0
+[2024-12-05 01:05:12.858] [Debug] Setting volume for deck 1 to 0
+[2024-12-05 01:05:12.858] [Debug] Setting volume to: 0
+[2024-12-05 01:05:12.858] [Debug] VolumeProvider is active. Volume set to: 0
+[2024-12-05 01:05:12.867] [Debug] Position: 0.49s, Bytes read: 94208, Total length: 37767168
+[2024-12-05 01:05:12.915] [Debug] Position: 0.51s, Bytes read: 98304, Total length: 37767168
+[2024-12-05 01:05:12.963] [Debug] Position: 0.53s, Bytes read: 102400, Total length: 37767168
+[2024-12-05 01:05:13.012] [Debug] Position: 0.55s, Bytes read: 106496, Total length: 37767168
+[2024-12-05 01:05:13.056] [Debug] Position: 0.58s, Bytes read: 110592, Total length: 37767168
+[2024-12-05 01:05:13.107] [Debug] Position: 0.60s, Bytes read: 114688, Total length: 37767168
+[2024-12-05 01:05:13.156] [Debug] Position: 0.62s, Bytes read: 118784, Total length: 37767168
+[2024-12-05 01:05:13.206] [Debug] Position: 0.64s, Bytes read: 122880, Total length: 37767168
+[2024-12-05 01:05:13.256] [Debug] Position: 0.66s, Bytes read: 126976, Total length: 37767168
+[2024-12-05 01:05:13.305] [Debug] Position: 0.68s, Bytes read: 131072, Total length: 37767168
+[2024-12-05 01:05:13.356] [Debug] Position: 0.70s, Bytes read: 135168, Total length: 37767168
+[2024-12-05 01:05:13.410] [Debug] Position: 0.73s, Bytes read: 139264, Total length: 37767168
+[2024-12-05 01:05:13.458] [Debug] Position: 0.75s, Bytes read: 143360, Total length: 37767168
+[2024-12-05 01:05:13.521] [Debug] Position: 0.77s, Bytes read: 147456, Total length: 37767168
+[2024-12-05 01:05:13.569] [Debug] Position: 0.79s, Bytes read: 151552, Total length: 37767168
+[2024-12-05 01:05:13.617] [Debug] Position: 0.81s, Bytes read: 155648, Total length: 37767168
+[2024-12-05 01:05:13.665] [Debug] Position: 0.83s, Bytes read: 159744, Total length: 37767168
+[2024-12-05 01:05:13.713] [Debug] Position: 0.85s, Bytes read: 163840, Total length: 37767168
+[2024-12-05 01:05:13.761] [Debug] Position: 0.87s, Bytes read: 167936, Total length: 37767168
+[2024-12-05 01:05:13.809] [Debug] Position: 0.90s, Bytes read: 172032, Total length: 37767168
+[2024-12-05 01:05:13.856] [Debug] Position: 0.92s, Bytes read: 176128, Total length: 37767168
+[2024-12-05 01:05:13.920] [Debug] Position: 0.94s, Bytes read: 180224, Total length: 37767168
+[2024-12-05 01:05:13.967] [Debug] Position: 0.96s, Bytes read: 184320, Total length: 37767168
+[2024-12-05 01:05:14.015] [Debug] Position: 0.98s, Bytes read: 188416, Total length: 37767168
+[2024-12-05 01:05:14.064] [Debug] Position: 1.00s, Bytes read: 192512, Total length: 37767168
+[2024-12-05 01:05:14.096] [Debug] Pausing playback
+[2024-12-05 01:05:15.550] [Debug] VolumeProvider disposed
+[2024-12-05 01:05:15.551] [Debug] VolumeProvider is null, recreating...
+[2024-12-05 01:05:15.551] [Debug] VolumeProvider recreated: False
+[2024-12-05 01:05:15.551] [Debug] VolumeProvider disposed
