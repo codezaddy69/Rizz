@@ -26,18 +26,6 @@ namespace DJMixMaster
         private DeckEventHandler? deckEventHandler;
         private DispatcherTimer? positionUpdateTimer;
 
-        // UI elements
-        private TextBlock? leftTrackTitle;
-        private TextBlock? leftTrackInfo;
-        private TextBlock? rightTrackTitle;
-        private TextBlock? rightTrackInfo;
-        private WaveformVisualizer? leftWaveform;
-        private WaveformVisualizer? rightWaveform;
-        private Button? btnLeftPlay;
-        private Button? btnRightPlay;
-        private Slider? deck1PositionSlider;
-        private Slider? deck2PositionSlider;
-
         public MainWindow()
         {
             try
@@ -53,22 +41,6 @@ namespace DJMixMaster
 
                 InitializeComponent();
                 InitializeSliders();
-
-                // Assign UI elements
-                leftTrackTitle = (TextBlock?)FindName("leftTrackTitle");
-                leftTrackInfo = (TextBlock?)FindName("leftTrackInfo");
-                rightTrackTitle = (TextBlock?)FindName("rightTrackTitle");
-                rightTrackInfo = (TextBlock?)FindName("rightTrackInfo");
-                leftWaveform = (WaveformVisualizer?)FindName("leftWaveform");
-                rightWaveform = (WaveformVisualizer?)FindName("rightWaveform");
-                btnLeftPlay = (Button?)FindName("btnLeftPlay");
-                btnRightPlay = (Button?)FindName("btnRightPlay");
-                deck1PositionSlider = (Slider?)FindName("deck1PositionSlider");
-                deck2PositionSlider = (Slider?)FindName("deck2PositionSlider");
-
-                // Log any missing elements
-                if (leftTrackTitle == null) LogError("leftTrackTitle not found");
-                if (rightTrackTitle == null) LogError("rightTrackTitle not found");
 
                 // Create deck event handler
                 var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
