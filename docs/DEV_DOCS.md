@@ -79,7 +79,7 @@ dotnet build
 dotnet run
 ```
 
-**Build Status**: ✅ Application builds successfully with no warnings on .NET 9.0 Windows.
+**Build Status**: ✅ Application builds successfully with no warnings on .NET 9.0 Windows (NAudio implementation).
 
 ### Optional: JUCE Development Setup
 For VST plugin development, you'll need:

@@ -441,3 +441,14 @@
 2025-11-14 19:56:48 INFO: MainWindow constructor started
 2025-11-14 19:56:48 INFO: Using audio engine: NAudio
 2025-11-14 19:56:52 INFO: Application closing
+2025-11-14 22:02:02 INFO: AudioEngineInitializer started
+2025-11-14 22:07:33 INFO: AudioEngineInitializer started
+2025-11-14 22:07:33 INFO: Using CSCore audio engine
+2025-11-14 22:07:33 INFO: MainWindow constructor started
+2025-11-14 22:07:34 INFO: Using CSCore audio engine
+2025-11-14 22:21:41 INFO: Application closing
+2025-11-14 22:26:41 INFO: AudioEngineInitializer started
+2025-11-14 22:26:41 INFO: Using CSCore audio engine
+2025-11-14 22:26:41 INFO: MainWindow constructor started
+2025-11-14 22:26:41 INFO: Using CSCore audio engine
+2025-11-14 22:27:10 INFO: Application closing

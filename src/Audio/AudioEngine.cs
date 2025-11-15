@@ -32,6 +32,11 @@ namespace DJMixMaster.Audio
         void PlayTestTone(int deckNumber, double frequency = 440.0, double durationSeconds = 2.0);
     }
 
+    /// <summary>
+    /// Main audio engine coordinating playback, mixing, and crossfading for the DJ application.
+    /// Follows Single Responsibility Principle by managing overall audio coordination.
+    /// Depends on abstractions (interfaces) following Dependency Inversion Principle.
+    /// </summary>
     public class AudioEngine : IAudioEngine
     {
         private readonly ILogger<AudioEngine> _logger;
@@ -39,29 +44,50 @@ namespace DJMixMaster.Audio
         private readonly Deck _deck2;
         private readonly MixingSampleProvider _mixer;
         private readonly WasapiOut _soundOut;
+        private readonly SampleToWaveProvider _waveProvider;
         private float _crossfader = 0.5f;
         private bool _disposed;
 
-        // Events
+        // Events follow Observer pattern for loose coupling
         public event EventHandler<(int DeckNumber, double Position)>? PlaybackPositionChanged;
         public event EventHandler<(int DeckNumber, double[] BeatPositions, double BPM)>? BeatGridUpdated;
 
+        /// <summary>
+        /// Initializes a new instance of the AudioEngine class.
+        /// </summary>
+        /// <param name="logger">Logger for this instance.</param>
+        /// <exception cref="ArgumentNullException">Thrown if logger is null.</exception>
         public AudioEngine(ILogger<AudioEngine> logger)
         {
-            _logger = logger;
-            var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _deck1 = new Deck(1, loggerFactory.CreateLogger<Deck>());
-            _deck2 = new Deck(2, loggerFactory.CreateLogger<Deck>());
-            _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
-            _mixer.AddMixerInput(_deck1.VolumeProvider);
-            _mixer.AddMixerInput(_deck2.VolumeProvider);
+            try
+            {
+                var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
 
-            // Initialize sound out
-            _soundOut = new WasapiOut();
-            _soundOut.Init(_mixer);
+                // Initialize decks (composition over inheritance)
+                _deck1 = new Deck(1, loggerFactory.CreateLogger<Deck>());
+                _deck2 = new Deck(2, loggerFactory.CreateLogger<Deck>());
 
-            _logger.LogInformation("NAudio AudioEngine initialized");
+                // Initialize mixer with standard format
+                var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+                _mixer = new MixingSampleProvider(waveFormat);
+
+                // Convert to wave provider for output (abstraction layer)
+                _waveProvider = new SampleToWaveProvider(_mixer);
+
+                // Initialize output device
+                _soundOut = new WasapiOut();
+                _soundOut.Init(_waveProvider);
+
+                _logger.LogInformation("NAudio AudioEngine initialized successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to initialize AudioEngine");
+                Dispose();
+                throw;
+            }
         }
 
 
@@ -75,7 +101,8 @@ namespace DJMixMaster.Audio
                 Deck deck = deckNumber == 1 ? _deck1 : _deck2;
                 deck.LoadFile(filePath);
 
-                // Mixer already has the volume providers
+                // Update mixer with new provider
+                _mixer.SetProvider(deckNumber - 1, deck.SampleProvider);
 
                 // TODO: Analyze file for beat grid
                 OnBeatGridUpdated(deckNumber, new double[] { 0, 1, 2, 3 }, 120.0); // Placeholder
@@ -142,7 +169,6 @@ namespace DJMixMaster.Audio
         {
             Deck deck = deckNumber == 1 ? _deck1 : _deck2;
             deck.Volume = volume;
-            deck.UpdateVolume();
         }
 
         public float GetVolume(int deckNumber)
