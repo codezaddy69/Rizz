@@ -1619,6 +1619,7 @@
       "Microsoft.Extensions.Logging.Debug >= 8.0.0",
       "NAudio >= 2.2.1",
       "NAudio.Asio >= 2.2.1",
+      "NAudio.Core >= 2.2.1",
       "NAudio.Wasapi >= 2.2.1"
     ]
   },
@@ -1693,6 +1694,10 @@
             "version": "[2.2.1, )"
           },
           "NAudio.Asio": {
+            "target": "Package",
+            "version": "[2.2.1, )"
+          },
+          "NAudio.Core": {
             "target": "Package",
             "version": "[2.2.1, )"
           },

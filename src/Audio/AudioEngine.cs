@@ -80,7 +80,7 @@ namespace DJMixMaster.Audio
                 // Convert to wave provider for output (abstraction layer)
                 _waveProvider = new SampleToWaveProvider(_mixer);
 
-                // Initialize output device with ASIO for low latency, fallback to WASAPI
+                // Initialize output device with ASIO for low latency
                 var asioDrivers = AsioOut.GetDriverNames();
                 _logger.LogInformation("Available ASIO drivers: {Drivers}", string.Join(", ", asioDrivers));
                 if (asioDrivers.Length > 0)
@@ -93,8 +93,7 @@ namespace DJMixMaster.Audio
                 }
                 else
                 {
-                    _logger.LogWarning("No ASIO drivers found, falling back to WASAPI exclusive mode");
-                    _soundOut = new WasapiOut(AudioClientShareMode.Exclusive, 10); // Low latency
+                    throw new InvalidOperationException("No ASIO drivers found. ASIO is required for this application.");
                 }
                 _soundOut.Init(_waveProvider);
 
