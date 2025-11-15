@@ -126,7 +126,8 @@ namespace DJMixMaster.UI.Handlers
                             // Load file on background thread to avoid blocking UI
                             await Task.Run(() => _audioEngine.LoadFile(deckNumber, openFileDialog.FileName));
                             var (waveformData, trackLength) = _audioEngine.GetWaveformData(deckNumber);
-                            _logger.LogInformation($"Loaded file, length: {trackLength} seconds");
+                            var sampleRate = _audioEngine.GetSampleRate(deckNumber);
+                            _logger.LogInformation($"Loaded file, length: {trackLength} seconds, sample rate: {sampleRate} Hz");
 
                             // Extract filename from path
                             string fileName = System.IO.Path.GetFileNameWithoutExtension(openFileDialog.FileName);
@@ -139,7 +140,7 @@ namespace DJMixMaster.UI.Handlers
                                     isLeftDeckLoaded = true;
                                     leftTrackName = fileName;
                                     if (leftTrackTitle != null) leftTrackTitle.Text = fileName;
-                                    if (leftTrackInfo != null) leftTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss}";
+                                    if (leftTrackInfo != null) leftTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss} @ {sampleRate}Hz";
                                     leftWaveform?.UpdateWaveform(waveformData, trackLength);
                                     if (deck1PositionSlider != null) deck1PositionSlider.Maximum = trackLength;
                                 }
@@ -148,7 +149,7 @@ namespace DJMixMaster.UI.Handlers
                                     isRightDeckLoaded = true;
                                     rightTrackName = fileName;
                                     if (rightTrackTitle != null) rightTrackTitle.Text = fileName;
-                                    if (rightTrackInfo != null) rightTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss}";
+                                    if (rightTrackInfo != null) rightTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss} @ {sampleRate}Hz";
                                     rightWaveform?.UpdateWaveform(waveformData, trackLength);
                                     if (deck2PositionSlider != null) deck2PositionSlider.Maximum = trackLength;
                                 }

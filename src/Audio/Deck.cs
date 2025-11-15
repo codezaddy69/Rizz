@@ -50,6 +50,11 @@ namespace DJMixMaster.Audio
         public double Length => _audioFileReader?.TotalTime.TotalSeconds ?? 0;
 
         /// <summary>
+        /// Gets the sample rate of the loaded audio in Hz.
+        /// </summary>
+        public int SampleRate => _audioFileReader?.WaveFormat.SampleRate ?? 0;
+
+        /// <summary>
         /// Gets the current playback position in seconds.
         /// </summary>
         public double Position => _audioFileReader?.CurrentTime.TotalSeconds ?? 0;
@@ -99,13 +104,21 @@ namespace DJMixMaster.Audio
                 if (_audioFileReader.WaveFormat.SampleRate != 44100)
                 {
                     _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
-                    var targetFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, _audioFileReader.WaveFormat.Channels);
+                    var targetFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2); // Always resample to stereo
                     var waveProvider = new SampleToWaveProvider(sampleProvider);
                     var resampler = new MediaFoundationResampler(waveProvider, targetFormat);
                     resampler.ResamplerQuality = 60; // High quality
                     sampleProvider = resampler.ToSampleProvider();
                 }
 
+                // Ensure stereo output
+                if (_audioFileReader.WaveFormat.Channels == 1)
+                {
+                    sampleProvider = new MonoToStereoSampleProvider(sampleProvider);
+                    _logger.LogInformation("Converted mono to stereo for deck {DeckNumber}", _deckNumber);
+                }
+
+                _logger.LogInformation("Final audio format for deck {DeckNumber}: 44100Hz, 2ch", _deckNumber);
                 _volumeProvider = new VolumeSampleProvider(sampleProvider);
                 UpdateEffectiveVolume(); // Apply current volume settings
 

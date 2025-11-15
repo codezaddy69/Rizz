@@ -21,6 +21,7 @@ namespace DJMixMaster.Audio
         void Seek(int deckNumber, double seconds);
         double GetPosition(int deckNumber);
         double GetLength(int deckNumber);
+        int GetSampleRate(int deckNumber);
         void SetVolume(int deckNumber, float volume);
         float GetVolume(int deckNumber);
         bool IsPlaying(int deckNumber);
@@ -72,6 +73,7 @@ namespace DJMixMaster.Audio
                 // Initialize mixer with float format, let SampleToWaveProvider handle conversion if needed
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
                 _mixer = new MixingSampleProvider(waveFormat);
+                _logger.LogInformation("Mixer initialized with format: {SampleRate}Hz, {Channels}ch", waveFormat.SampleRate, waveFormat.Channels);
 
                 // Convert to wave provider for output (abstraction layer)
                 _waveProvider = new SampleToWaveProvider(_mixer);
@@ -179,6 +181,12 @@ namespace DJMixMaster.Audio
         {
             Deck deck = deckNumber == 1 ? _deck1 : _deck2;
             return deck.Length;
+        }
+
+        public int GetSampleRate(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            return deck.SampleRate;
         }
 
 
