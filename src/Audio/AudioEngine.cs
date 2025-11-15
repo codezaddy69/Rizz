@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using NAudio.Asio;
+using NAudio.Wasapi;
 
 namespace DJMixMaster.Audio
 {
@@ -70,7 +72,7 @@ namespace DJMixMaster.Audio
                 _deck1 = new Deck(1, loggerFactory.CreateLogger<Deck>());
                 _deck2 = new Deck(2, loggerFactory.CreateLogger<Deck>());
 
-                // Initialize mixer with float format, let SampleToWaveProvider handle conversion if needed
+                // Initialize mixer with float format for stereo output
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
                 _mixer = new MixingSampleProvider(waveFormat);
                 _logger.LogInformation("Mixer initialized with format: {SampleRate}Hz, {Channels}ch", waveFormat.SampleRate, waveFormat.Channels);
@@ -78,9 +80,22 @@ namespace DJMixMaster.Audio
                 // Convert to wave provider for output (abstraction layer)
                 _waveProvider = new SampleToWaveProvider(_mixer);
 
-                // Initialize output device with WaveOut
-                _logger.LogInformation("Using WaveOut for audio output");
-                _soundOut = new WaveOut();
+                // Initialize output device with ASIO for low latency, fallback to WASAPI
+                var asioDrivers = AsioOut.GetDriverNames();
+                _logger.LogInformation("Available ASIO drivers: {Drivers}", string.Join(", ", asioDrivers));
+                if (asioDrivers.Length > 0)
+                {
+                    string selectedDriver = asioDrivers[0]; // Select first available
+                    _soundOut = new AsioOut(selectedDriver);
+                    ((AsioOut)_soundOut).ChannelOffset = 0;
+                    ((AsioOut)_soundOut).FillWithZeros = false;
+                    _logger.LogInformation("Using ASIO driver: {Driver} for low-latency output", selectedDriver);
+                }
+                else
+                {
+                    _logger.LogWarning("No ASIO drivers found, falling back to WASAPI exclusive mode");
+                    _soundOut = new WasapiOut(AudioClientShareMode.Exclusive, 10); // Low latency
+                }
                 _soundOut.Init(_waveProvider);
 
                 _logger.LogInformation("NAudio AudioEngine initialized successfully");
