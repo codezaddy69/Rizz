@@ -7,15 +7,17 @@ using Microsoft.Extensions.Logging;
 namespace DJMixMaster.Audio
 {
     /// <summary>
-    /// A sample provider that loops the underlying source indefinitely.
+    /// A sample provider that loops the underlying AudioFileReader indefinitely.
     /// </summary>
     public class LoopingSampleProvider : ISampleProvider
     {
         private readonly ISampleProvider _source;
+        private readonly AudioFileReader _reader;
 
-        public LoopingSampleProvider(ISampleProvider source)
+        public LoopingSampleProvider(ISampleProvider source, AudioFileReader reader)
         {
             _source = source;
+            _reader = reader;
             WaveFormat = source.WaveFormat;
         }
 
@@ -30,7 +32,7 @@ namespace DJMixMaster.Audio
                 if (read == 0)
                 {
                     // End of source, loop back
-                    _source.Position = 0;
+                    _reader.Position = 0;
                     continue;
                 }
                 totalRead += read;
@@ -152,7 +154,7 @@ namespace DJMixMaster.Audio
                 }
 
                 _logger.LogInformation("Final audio format for deck {DeckNumber}: 44100Hz, 2ch", _deckNumber);
-                var loopingProvider = new LoopingSampleProvider(sampleProvider);
+                var loopingProvider = new LoopingSampleProvider(sampleProvider, _audioFileReader);
                 _volumeProvider = new VolumeSampleProvider(loopingProvider);
                 UpdateEffectiveVolume(); // Apply current volume settings
 
