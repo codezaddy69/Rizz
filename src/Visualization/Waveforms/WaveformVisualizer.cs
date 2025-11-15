@@ -67,16 +67,16 @@ namespace DJMixMaster.Visualization
 
         public void UpdateWaveform(float[] data, double trackLength)
         {
-            if (data == null || data.Length == 0)
+            if (data == null || data.Length == 0 || trackLength <= 0 || double.IsNaN(trackLength))
             {
-                System.Diagnostics.Debug.WriteLine("No waveform data to display");
+                System.Diagnostics.Debug.WriteLine("No waveform data to display or invalid track length");
                 return;
             }
 
             waveformData = data;
             trackLengthSeconds = trackLength;
             System.Diagnostics.Debug.WriteLine($"Updating waveform with {data.Length} points, track length: {trackLength}s");
-            
+
             DrawWaveform();
         }
 
@@ -153,7 +153,7 @@ namespace DJMixMaster.Visualization
 
         private void DrawWaveform()
         {
-            if (waveformData == null || waveformData.Length == 0)
+            if (waveformData == null || waveformData.Length == 0 || trackLengthSeconds <= 0 || double.IsNaN(trackLengthSeconds))
             {
                 return;
             }

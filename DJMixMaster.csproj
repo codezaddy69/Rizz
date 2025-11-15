@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -8,8 +8,19 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="NAudio" Version="2.2.1" />
-  </ItemGroup>
+   <ItemGroup>
+     <PackageReference Include="NAudio" Version="2.2.1" />
+     <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
+     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+   </ItemGroup>
+
+  <Target Name="CopyNativeLibraries" AfterTargets="Build">
+    <ItemGroup>
+      <NativeLibraries Include="$(ProjectDir)lib\native\x64\*.*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(NativeLibraries)" DestinationFolder="$(OutDir)lib\native\x64" />
+  </Target>
 
 </Project>

@@ -1,0 +1,443 @@
+2025-11-11 00:25:10 INFO: MainWindow constructor started
+2025-11-11 00:25:10 INFO: Initializing sliders
+2025-11-11 00:25:10 INFO: Sliders initialized successfully
+2025-11-11 00:25:10 ERROR: Error in MainWindow constructor: System.TypeInitializationException: The type initializer for 'DJMixMaster.Native.JUCE.JuceNative' threw an exception.
+ ---> System.DllNotFoundException: Failed to find JUCE native library at: C:\Users\rogue\Code\DJMixMaster\bin\Debug\net9.0-windows\lib\native\x64\juce_dll.dll
+   at DJMixMaster.Native.JUCE.JuceNative..cctor() in C:\Users\rogue\code\djmixmaster\Native\JUCE\JuceNative.cs:line 25
+   --- End of inner exception stack trace ---
+   at DJMixMaster.Native.JUCE.JuceNative.JUCE_CreateAudioDeviceManager()
+   at DJMixMaster.Native.JUCE.JuceAudioEngine.Initialize() in C:\Users\rogue\code\djmixmaster\Native\JUCE\JuceAudioEngine.cs:line 33
+   at DJMixMaster.Native.JUCE.JuceAudioEngine..ctor(ILogger`1 logger) in C:\Users\rogue\code\djmixmaster\Native\JUCE\JuceAudioEngine.cs:line 23
+   at DJMixMaster.Audio.AudioEngine..ctor(ILogger`1 logger) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 41
+   at DJMixMaster.MainWindow..ctor() in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 44
+2025-11-11 00:31:29 INFO: Application closing
+2025-11-11 00:31:29 ERROR: Error on close: System.NullReferenceException: Object reference not set to an instance of an object.
+   at DJMixMaster.MainWindow.OnClosed(EventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 320
+2025-11-11 00:35:57 INFO: MainWindow constructor started
+2025-11-11 00:35:57 INFO: Initializing sliders
+2025-11-11 00:35:57 INFO: Sliders initialized successfully
+2025-11-11 00:35:57 INFO: MainWindow constructor completed
+2025-11-11 00:36:00 INFO: Load button clicked
+2025-11-11 00:36:09 INFO: Loading file for deck 1: C:\Music\Hopper's Anthem.mp3
+2025-11-11 00:36:09 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 269
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 305
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 63
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:38:25 INFO: Application closing
+2025-11-11 00:39:12 INFO: MainWindow constructor started
+2025-11-11 00:39:12 INFO: Initializing sliders
+2025-11-11 00:39:12 INFO: Sliders initialized successfully
+2025-11-11 00:39:12 INFO: MainWindow constructor completed
+2025-11-11 00:39:14 INFO: Load button clicked
+2025-11-11 00:39:18 INFO: Loading file for deck 1: C:\Music\Hopper's Anthem.mp3
+2025-11-11 00:39:18 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 269
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 319
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 63
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:39:53 INFO: Load button clicked
+2025-11-11 00:39:54 INFO: Loading file for deck 1: C:\Music\Echoes of Deceit.mp3
+2025-11-11 00:39:54 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 269
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 319
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 63
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:39:58 INFO: Load button clicked
+2025-11-11 00:40:00 INFO: Loading file for deck 2: C:\Music\Echoes of Deceit.mp3
+2025-11-11 00:40:00 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 274
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 319
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 63
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:40:03 INFO: Toggle play for deck 1
+2025-11-11 00:40:17 INFO: Toggle play for deck 1
+2025-11-11 00:40:19 INFO: Load button clicked
+2025-11-11 00:40:26 INFO: Loading file for deck 1: C:\Music\Tony Hop Beats - _Codes_ 90s OLD SCHOOL BOOM BAP BEAT HIP HOP.mp3
+2025-11-11 00:40:26 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 269
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 319
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 63
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:40:28 INFO: Toggle play for deck 1
+2025-11-11 00:40:42 INFO: Toggle play for deck 1
+2025-11-11 00:40:43 INFO: Load button clicked
+2025-11-11 00:40:47 INFO: Loading file for deck 1: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 00:40:47 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 269
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 319
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 63
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:40:49 INFO: Toggle play for deck 1
+2025-11-11 00:40:54 INFO: Toggle play for deck 1
+2025-11-11 00:40:56 INFO: Application closing
+2025-11-11 00:43:55 INFO: MainWindow constructor started
+2025-11-11 00:43:55 INFO: Initializing sliders
+2025-11-11 00:43:55 INFO: Sliders initialized successfully
+2025-11-11 00:43:55 INFO: MainWindow constructor completed
+2025-11-11 00:43:58 INFO: Load button clicked
+2025-11-11 00:44:04 INFO: Loading file for deck 1: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 00:44:04 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 269
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 345
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 82
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:44:08 INFO: Toggle play for deck 1
+2025-11-11 00:44:21 INFO: Toggle play for deck 1
+2025-11-11 00:44:26 INFO: Toggle play for deck 1
+2025-11-11 00:44:28 INFO: Toggle play for deck 1
+2025-11-11 00:44:29 INFO: Toggle play for deck 1
+2025-11-11 00:44:30 INFO: Toggle play for deck 1
+2025-11-11 00:44:32 INFO: Toggle play for deck 1
+2025-11-11 00:44:33 INFO: Toggle play for deck 1
+2025-11-11 00:44:37 INFO: Load button clicked
+2025-11-11 00:44:40 INFO: Loading file for deck 2: C:\Music\6Blocc - Cali Jungle 16 🌴 THEY NOT LIKE US DNB, by 6Blocc.mp3
+2025-11-11 00:44:40 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 274
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 345
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 82
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 132
+2025-11-11 00:44:42 INFO: Toggle play for deck 2
+2025-11-11 00:44:53 INFO: Toggle play for deck 2
+2025-11-11 00:44:58 INFO: Application closing
+2025-11-11 01:03:53 INFO: MainWindow constructor started
+2025-11-11 01:03:54 INFO: Initializing sliders
+2025-11-11 01:03:54 INFO: Sliders initialized successfully
+2025-11-11 01:03:54 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:03:54 INFO: Using audio engine: NAudio
+2025-11-11 01:03:54 INFO: MainWindow constructor completed
+2025-11-11 01:03:56 INFO: Load button clicked
+2025-11-11 01:04:07 INFO: Loading file for deck 1: C:\Music\production\BryGuy-Spacewalk2.wav
+2025-11-11 01:04:07 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 285
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 363
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 100
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:04:13 INFO: Toggle play for deck 1
+2025-11-11 01:04:37 INFO: Toggle play for deck 1
+2025-11-11 01:04:40 INFO: Load button clicked
+2025-11-11 01:04:46 INFO: Loading file for deck 2: C:\Music\production\Joe20V27s20Odyssey20ext20v1_1012703460282919.mp3
+2025-11-11 01:04:46 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 290
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 363
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 100
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:04:48 INFO: Toggle play for deck 2
+2025-11-11 01:04:58 INFO: Toggle play for deck 2
+2025-11-11 01:04:59 INFO: Load button clicked
+2025-11-11 01:05:16 INFO: Loading file for deck 2: C:\Music\The Great Escape.mp3
+2025-11-11 01:05:16 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 290
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 363
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 100
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:05:20 INFO: Toggle play for deck 2
+2025-11-11 01:05:32 INFO: Toggle play for deck 1
+2025-11-11 01:05:46 INFO: Application closing
+2025-11-11 01:09:25 INFO: MainWindow constructor started
+2025-11-11 01:09:25 INFO: Initializing sliders
+2025-11-11 01:09:25 INFO: Sliders initialized successfully
+2025-11-11 01:09:25 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:09:25 INFO: Using audio engine: NAudio
+2025-11-11 01:09:25 INFO: MainWindow constructor completed
+2025-11-11 01:09:27 INFO: Load button clicked
+2025-11-11 01:09:31 INFO: Loading file for deck 1: C:\Music\Somebody to Shove (2022 Remaster)_spotdown.app.mp3
+2025-11-11 01:09:31 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 285
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 387
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 107
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:09:33 INFO: Toggle play for deck 1
+2025-11-11 01:09:39 INFO: Toggle play for deck 1
+2025-11-11 01:09:41 INFO: Load button clicked
+2025-11-11 01:09:44 INFO: Loading file for deck 2: C:\Music\Hopper's Anthem.mp3
+2025-11-11 01:09:44 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 290
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 387
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 107
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:09:46 INFO: Toggle play for deck 2
+2025-11-11 01:09:53 INFO: Load button clicked
+2025-11-11 01:09:58 INFO: Loading file for deck 2: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 01:09:58 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 290
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 387
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 107
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:10:00 INFO: Toggle play for deck 2
+2025-11-11 01:10:01 INFO: Toggle play for deck 2
+2025-11-11 01:10:08 INFO: Load button clicked
+2025-11-11 01:10:10 INFO: Loading file for deck 2: C:\Music\Boom Bapps_spotdown.app.mp3
+2025-11-11 01:10:10 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 290
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 387
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 107
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 148
+2025-11-11 01:10:12 INFO: Toggle play for deck 2
+2025-11-11 01:10:12 INFO: Toggle play for deck 2
+2025-11-11 01:10:18 INFO: Application closing
+2025-11-11 01:14:12 INFO: MainWindow constructor started
+2025-11-11 01:14:12 INFO: Initializing sliders
+2025-11-11 01:14:12 INFO: Sliders initialized successfully
+2025-11-11 01:14:12 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:14:12 INFO: Using audio engine: NAudio
+2025-11-11 01:14:12 INFO: MainWindow constructor completed
+2025-11-11 01:14:14 INFO: Load button clicked
+2025-11-11 01:14:24 INFO: Loading file for deck 1: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 01:14:24 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 289
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 362
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 117
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 152
+2025-11-11 01:14:25 INFO: Toggle play for deck 1
+2025-11-11 01:14:28 INFO: Toggle play for deck 1
+2025-11-11 01:14:29 INFO: Load button clicked
+2025-11-11 01:14:32 INFO: Loading file for deck 2: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 01:14:32 ERROR: Error loading file: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 294
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 362
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 117
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 152
+2025-11-11 01:14:33 INFO: Toggle play for deck 2
+2025-11-11 01:14:42 INFO: Toggle play for deck 2
+2025-11-11 01:14:45 INFO: Toggle play for deck 2
+2025-11-11 01:14:56 INFO: Application closing
+2025-11-11 01:15:14 INFO: MainWindow constructor started
+2025-11-11 01:15:14 INFO: Initializing sliders
+2025-11-11 01:15:14 INFO: Sliders initialized successfully
+2025-11-11 01:15:15 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:15:15 INFO: Using audio engine: NAudio
+2025-11-11 01:15:15 INFO: MainWindow constructor completed
+2025-11-11 01:15:17 INFO: Load button clicked
+2025-11-11 01:15:20 INFO: Loading file for deck 2: C:\Music\Echoes of Deceit.mp3
+2025-11-11 01:15:20 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 361
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 362
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 117
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:15:21 INFO: Toggle play for deck 2
+2025-11-11 01:15:34 INFO: Toggle play for deck 2
+2025-11-11 01:15:35 INFO: Toggle play for deck 2
+2025-11-11 01:15:37 INFO: Load button clicked
+2025-11-11 01:15:46 INFO: Toggle play for deck 2
+2025-11-11 01:15:49 INFO: Load button clicked
+2025-11-11 01:15:55 INFO: Loading file for deck 1: C:\Music\The Great Escape.mp3
+2025-11-11 01:15:55 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 356
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 362
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 117
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:15:56 INFO: Toggle play for deck 1
+2025-11-11 01:16:03 INFO: Toggle play for deck 2
+2025-11-11 01:16:28 INFO: Application closing
+2025-11-11 01:22:19 INFO: MainWindow constructor started
+2025-11-11 01:22:19 INFO: Initializing sliders
+2025-11-11 01:22:19 INFO: Sliders initialized successfully
+2025-11-11 01:22:19 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:22:19 INFO: Using audio engine: NAudio
+2025-11-11 01:22:19 INFO: MainWindow constructor completed
+2025-11-11 01:22:22 INFO: Load button clicked
+2025-11-11 01:22:24 INFO: Loading file for deck 1: C:\Music\Echoes of Deceit.mp3
+2025-11-11 01:22:24 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 356
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 395
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:22:25 INFO: Toggle play for deck 1
+2025-11-11 01:22:37 INFO: Toggle play for deck 1
+2025-11-11 01:22:38 INFO: Load button clicked
+2025-11-11 01:22:54 INFO: Loading file for deck 1: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 01:22:54 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 356
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 395
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:22:56 INFO: Toggle play for deck 1
+2025-11-11 01:23:05 INFO: Toggle play for deck 1
+2025-11-11 01:23:06 INFO: Load button clicked
+2025-11-11 01:23:10 INFO: Loading file for deck 2: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 01:23:10 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 361
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 395
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:23:11 INFO: Toggle play for deck 2
+2025-11-11 01:23:12 INFO: Toggle play for deck 2
+2025-11-11 01:23:12 INFO: Toggle play for deck 2
+2025-11-11 01:23:16 INFO: Application closing
+2025-11-11 01:35:25 INFO: MainWindow constructor started
+2025-11-11 01:35:25 INFO: Initializing sliders
+2025-11-11 01:35:25 INFO: Sliders initialized successfully
+2025-11-11 01:35:25 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:35:25 INFO: Using audio engine: NAudio
+2025-11-11 01:35:25 INFO: MainWindow constructor completed
+2025-11-11 01:35:26 INFO: Load button clicked
+2025-11-11 01:35:30 INFO: Loading file for deck 1: C:\Music\Metro-IsYouLikeThat.mp3
+2025-11-11 01:35:30 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 356
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 392
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 147
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:35:33 INFO: Toggle play for deck 1
+2025-11-11 01:35:37 INFO: Toggle play for deck 1
+2025-11-11 01:35:39 INFO: Load button clicked
+2025-11-11 01:35:41 INFO: Loading file for deck 2: C:\Music\Echoes of Deceit.mp3
+2025-11-11 01:35:41 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 361
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 392
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 147
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:35:42 INFO: Toggle play for deck 2
+2025-11-11 01:35:48 INFO: Load button clicked
+2025-11-11 01:35:53 INFO: Toggle play for deck 2
+2025-11-11 01:35:54 INFO: Load button clicked
+2025-11-11 01:36:03 INFO: Loading file for deck 2: C:\Music\The Great Escape.mp3
+2025-11-11 01:36:03 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 361
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 392
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 147
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:36:05 INFO: Toggle play for deck 2
+2025-11-11 01:36:08 INFO: Toggle play for deck 2
+2025-11-11 01:36:11 INFO: Application closing
+2025-11-11 01:38:56 INFO: MainWindow constructor started
+2025-11-11 01:38:57 INFO: Initializing sliders
+2025-11-11 01:38:57 INFO: Sliders initialized successfully
+2025-11-11 01:38:57 INFO: Saved audio engine type to config: NAudio
+2025-11-11 01:38:57 INFO: Using audio engine: NAudio
+2025-11-11 01:38:57 INFO: MainWindow constructor completed
+2025-11-11 01:38:59 INFO: Load button clicked
+2025-11-11 01:39:02 INFO: Loading file for deck 1: C:\Music\Echoes of Deceit.mp3
+2025-11-11 01:39:02 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 356
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 389
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:39:06 INFO: Toggle play for deck 1
+2025-11-11 01:39:24 INFO: Load button clicked
+2025-11-11 01:39:27 INFO: Loading file for deck 2: C:\Music\Echoes of Deceit.mp3
+2025-11-11 01:39:27 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 361
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 389
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:39:30 INFO: Toggle play for deck 2
+2025-11-11 01:39:42 INFO: Toggle play for deck 1
+2025-11-11 01:39:43 INFO: Load button clicked
+2025-11-11 01:39:47 INFO: Loading file for deck 1: C:\Music\Hopper's Anthem.mp3
+2025-11-11 01:39:47 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 356
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 389
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:39:51 INFO: Toggle play for deck 1
+2025-11-11 01:40:21 INFO: Load button clicked
+2025-11-11 01:40:23 INFO: Loading file for deck 2: C:\Music\MakeDamnSure.mp3
+2025-11-11 01:40:23 ERROR: Error in load/eject operation: System.ArgumentException: 'NaN' is not a valid value for property 'X1'.
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at DJMixMaster.Visualization.WaveformVisualizer.UpdateBeatGrid(Double[] beatPositions) in C:\Users\rogue\code\djmixmaster\Visualization\WaveformVisualizer.cs:line 126
+   at DJMixMaster.MainWindow.OnBeatGridUpdated(Object sender, ValueTuple`3 e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 361
+   at DJMixMaster.Audio.AudioEngine.OnBeatGridUpdated(Int32 deckNumber, Double[] beatPositions, Double bpm) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 389
+   at DJMixMaster.Audio.AudioEngine.LoadFile(Int32 deckNumber, String filePath) in C:\Users\rogue\code\djmixmaster\Audio\AudioEngine.cs:line 144
+   at DJMixMaster.MainWindow.LoadButton_Click(Object sender, RoutedEventArgs e) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 204
+2025-11-11 01:40:25 INFO: Toggle play for deck 2
+2025-11-11 01:40:26 INFO: Toggle play for deck 2
+2025-11-11 01:41:04 INFO: Toggle play for deck 2
+2025-11-11 01:43:23 INFO: Application closing
+2025-11-14 19:49:26 INFO: AudioEngineInitializer started
+2025-11-14 19:49:26 INFO: Saved audio engine type to config: NAudio
+2025-11-14 19:49:26 INFO: Using audio engine: NAudio
+2025-11-14 19:49:26 INFO: MainWindow constructor started
+2025-11-14 19:49:26 INFO: Using audio engine: NAudio
+2025-11-14 19:50:25 INFO: Application closing
+2025-11-14 19:56:48 INFO: AudioEngineInitializer started
+2025-11-14 19:56:48 INFO: Saved audio engine type to config: NAudio
+2025-11-14 19:56:48 INFO: Using audio engine: NAudio
+2025-11-14 19:56:48 INFO: MainWindow constructor started
+2025-11-14 19:56:48 INFO: Using audio engine: NAudio
+2025-11-14 19:56:52 INFO: Application closing

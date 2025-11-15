@@ -259,14 +259,23 @@
 
                         <!-- Track Info -->
                         <StackPanel Grid.Row="0">
-                            <TextBlock Text="No Track Loaded" FontSize="24" Foreground="#00F7FF" FontWeight="Bold"/>
-                            <TextBlock Text="" FontSize="18" Foreground="#CCCCCC"/>
+                            <TextBlock x:Name="leftTrackTitle" Text="No Track Loaded" FontSize="24" Foreground="#00F7FF" FontWeight="Bold"/>
+                            <TextBlock x:Name="leftTrackInfo" Text="" FontSize="18" Foreground="#CCCCCC"/>
                         </StackPanel>
 
-                        <!-- Waveform -->
-                        <Border Grid.Row="1" Background="#FF252525" CornerRadius="5" Margin="0,10">
-                            <visualization:WaveformVisualizer x:Name="leftWaveform"/>
-                        </Border>
+                         <!-- Waveform -->
+                         <Border Grid.Row="1" Background="#FF252525" CornerRadius="5" Margin="0,10">
+                             <visualization:WaveformVisualizer x:Name="leftWaveform"/>
+                         </Border>
+
+                         <!-- Position Slider -->
+                         <Slider x:Name="deck1PositionSlider"
+                                 Grid.Row="2"
+                                 Margin="0,5"
+                                 Minimum="0"
+                                 Maximum="0"
+                                 Value="0"
+                                 BorderBrush="#9D00FF"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -279,24 +288,34 @@
                         <ColumnDefinition Width="4*"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Track Info -->
-                    <Grid Grid.Column="0" Margin="0,0,10,0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
+                     <!-- Track Info -->
+                     <Grid Grid.Column="0" Margin="0,0,10,0">
+                         <Grid.RowDefinitions>
+                             <RowDefinition Height="Auto"/>
+                             <RowDefinition Height="*"/>
+                             <RowDefinition Height="Auto"/>
+                         </Grid.RowDefinitions>
 
                         <!-- Track Info -->
                         <StackPanel Grid.Row="0">
-                            <TextBlock Text="No Track Loaded" FontSize="24" Foreground="#39FF14" FontWeight="Bold"/>
-                            <TextBlock Text="" FontSize="18" Foreground="#CCCCCC"/>
+                            <TextBlock x:Name="rightTrackTitle" Text="No Track Loaded" FontSize="24" Foreground="#39FF14" FontWeight="Bold"/>
+                            <TextBlock x:Name="rightTrackInfo" Text="" FontSize="18" Foreground="#CCCCCC"/>
                         </StackPanel>
 
-                        <!-- Waveform -->
-                        <Border Grid.Row="1" Background="#FF252525" CornerRadius="5" Margin="0,10">
-                            <visualization:WaveformVisualizer x:Name="rightWaveform"/>
-                        </Border>
-                    </Grid>
+                         <!-- Waveform -->
+                         <Border Grid.Row="1" Background="#FF252525" CornerRadius="5" Margin="0,10">
+                             <visualization:WaveformVisualizer x:Name="rightWaveform"/>
+                         </Border>
+
+                         <!-- Position Slider -->
+                         <Slider x:Name="deck2PositionSlider"
+                                 Grid.Row="2"
+                                 Margin="0,5"
+                                 Minimum="0"
+                                 Maximum="0"
+                                 Value="0"
+                                 BorderBrush="#39FF14"/>
+                     </Grid>
 
                     <!-- Album Art Canvas -->
                     <Border Grid.Column="1" Background="#FF252525" CornerRadius="200" Margin="20">
@@ -335,8 +354,9 @@
                     <Button x:Name="btnLeftRew" Content="REW" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
                     <Button x:Name="btnLeftPlay" Content="PLAY" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
                     <Button x:Name="btnLeftFF" Content="FF" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
-                    <Button x:Name="btnLeftLoad" Content="LOAD" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
-                </StackPanel>
+                     <Button x:Name="btnLeftLoad" Content="LOAD" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
+                     <Button x:Name="btnLeftTest" Content="TEST" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
+                 </StackPanel>
 
                 <!-- Hot Cue Row -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -366,15 +386,15 @@
                     BorderBrush="#9D00FF"/>
 
             <!-- Crossfader -->
-            <Slider x:Name="sliderCrossfader" 
-                    Grid.Column="2" 
-                    Style="{StaticResource NeonCrossfader}"
-                    Margin="40,50" 
-                    Height="30"
-                    Minimum="0"
-                    Maximum="1"
-                    Value="0.5"
-                    BorderBrush="#00F7FF"/>
+             <Slider x:Name="sliderCrossfader"
+                     Grid.Column="2"
+                     Style="{StaticResource NeonCrossfader}"
+                     Margin="40,50"
+                     Height="30"
+                     Minimum="-1"
+                     Maximum="1"
+                     Value="0"
+                     BorderBrush="#00F7FF"/>
 
             <!-- Right Volume -->
             <Slider x:Name="sliderRightVolume" 
@@ -401,8 +421,9 @@
                     <Button x:Name="btnRightRew" Content="REW" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                     <Button x:Name="btnRightPlay" Content="PLAY" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                     <Button x:Name="btnRightFF" Content="FF" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
-                    <Button x:Name="btnRightLoad" Content="LOAD" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
-                </StackPanel>
+                     <Button x:Name="btnRightLoad" Content="LOAD" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
+                     <Button x:Name="btnRightTest" Content="TEST" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
+                 </StackPanel>
 
                 <!-- Hot Cue Row -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

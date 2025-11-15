@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\rogue\Code\DJMixMaster\obj\Debug\net9.0-windows\
+C:\Users\rogue\code\djmixmaster\obj\Debug\net9.0-windows\
 DJMixMaster
 none
 false
 TRACE;DEBUG;NET;NET9_0;NETCOREAPP
-C:\Users\rogue\Code\DJMixMaster\App.xaml
-11407045341
 
-12847535029
-217-1672333824
-MainWindow.xaml;
+2-948615976
+
+25-1297954319
+235947678546
+src\App.xaml;src\MainWindow.xaml;
 
 False
 

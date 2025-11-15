@@ -25,50 +25,32 @@ namespace DJMixMaster.Audio
         {
             using (var audioFile = new AudioFileReader(filePath))
             {
-                var samples = new List<float>();
+                var energyChunks = new List<double>();
                 var buffer = new float[CHUNK_SIZE];
                 int bytesRead;
+                int chunkIndex = 0;
 
-                // Read audio data into samples list
+                // Process audio data in streaming fashion
                 while ((bytesRead = audioFile.Read(buffer, 0, CHUNK_SIZE)) > 0)
                 {
+                    double energy = 0;
                     for (int i = 0; i < bytesRead; i++)
                     {
-                        samples.Add(Math.Abs(buffer[i]));
+                        energy += Math.Pow(Math.Abs(buffer[i]), 2);
                     }
+                    energyChunks.Add(energy);
+                    chunkIndex++;
                 }
 
-                // Process chunks for energy levels
-                var energyChunks = ProcessEnergyChunks(samples);
-                
                 // Detect beats
                 DetectBeats(energyChunks);
-                
+
                 // Calculate BPM
                 CalculateBPM();
             }
         }
 
-        private List<double> ProcessEnergyChunks(List<float> samples)
-        {
-            var energyChunks = new List<double>();
-            int chunkCount = samples.Count / CHUNK_SIZE;
 
-            for (int i = 0; i < chunkCount; i++)
-            {
-                double energy = 0;
-                int startIndex = i * CHUNK_SIZE;
-
-                for (int j = 0; j < CHUNK_SIZE && (startIndex + j) < samples.Count; j++)
-                {
-                    energy += Math.Pow(samples[startIndex + j], 2);
-                }
-
-                energyChunks.Add(energy);
-            }
-
-            return energyChunks;
-        }
 
         private void DetectBeats(List<double> energyChunks)
         {
