@@ -13,7 +13,7 @@
 - [x] Add CSCore and VST.NET documentation to ref/ folder
 
 ## Priority Tasks
-- [ ] Add CSCore and VST.NET NuGet packages
+- [ ] Add CSCore and VST.NET NuGet packages (CSCore removed due to compatibility)
 - [ ] Implement crossfading with MixingProvider
 - [ ] Implement volume faders for decks
 - [ ] Implement play/pause/stop controls

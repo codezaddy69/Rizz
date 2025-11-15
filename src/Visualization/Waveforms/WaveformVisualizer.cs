@@ -123,6 +123,13 @@ namespace DJMixMaster.Visualization
             // Create new beat lines
             foreach (var position in beatPositions)
             {
+                // Skip invalid positions to prevent WPF crashes
+                if (double.IsNaN(position) || double.IsInfinity(position) || position < 0 || position > trackLengthSeconds)
+                {
+                    System.Diagnostics.Debug.WriteLine($"Skipping invalid beat position: {position}");
+                    continue;
+                }
+
                 var line = new Line
                 {
                     Stroke = Brushes.Yellow,
@@ -130,7 +137,8 @@ namespace DJMixMaster.Visualization
                     X1 = position * ActualWidth / trackLengthSeconds,
                     X2 = position * ActualWidth / trackLengthSeconds,
                     Y1 = 0,
-                    Y2 = ActualHeight
+                    Y2 = ActualHeight,
+                    Tag = position // Store the actual beat time
                 };
                 beatLines.Add(line);
                 Children.Add(line);
@@ -199,7 +207,7 @@ namespace DJMixMaster.Visualization
                     // Update beat lines
                     foreach (var beatLine in beatLines)
                     {
-                        double beatTime = beatLines.IndexOf(beatLine); // Time in seconds
+                        double beatTime = (double)beatLine.Tag; // Time in seconds
                         double beatX = ((beatTime - viewportStartTime) / (VIEWPORT_SECONDS / zoomFactor)) * width;
                         beatLine.X1 = beatX;
                         beatLine.X2 = beatX;

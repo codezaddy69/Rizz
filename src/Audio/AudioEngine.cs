@@ -43,7 +43,7 @@ namespace DJMixMaster.Audio
         private readonly Deck _deck1;
         private readonly Deck _deck2;
         private readonly MixingSampleProvider _mixer;
-        private readonly WasapiOut _soundOut;
+        private readonly IWavePlayer _soundOut;
         private readonly SampleToWaveProvider _waveProvider;
         private float _crossfader = 0.5f;
         private bool _disposed;
@@ -69,15 +69,16 @@ namespace DJMixMaster.Audio
                 _deck1 = new Deck(1, loggerFactory.CreateLogger<Deck>());
                 _deck2 = new Deck(2, loggerFactory.CreateLogger<Deck>());
 
-                // Initialize mixer with standard format
+                // Initialize mixer with float format, let SampleToWaveProvider handle conversion if needed
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
                 _mixer = new MixingSampleProvider(waveFormat);
 
                 // Convert to wave provider for output (abstraction layer)
                 _waveProvider = new SampleToWaveProvider(_mixer);
 
-                // Initialize output device
-                _soundOut = new WasapiOut();
+                // Initialize output device with WaveOut
+                _logger.LogInformation("Using WaveOut for audio output");
+                _soundOut = new WaveOut();
                 _soundOut.Init(_waveProvider);
 
                 _logger.LogInformation("NAudio AudioEngine initialized successfully");
@@ -104,8 +105,25 @@ namespace DJMixMaster.Audio
                 // Update mixer with new provider
                 _mixer.SetProvider(deckNumber - 1, deck.SampleProvider);
 
-                // TODO: Analyze file for beat grid
-                OnBeatGridUpdated(deckNumber, new double[] { 0, 1, 2, 3 }, 120.0); // Placeholder
+                // Analyze file for beat grid
+                double[] beatPositions;
+                double bpm = 120.0;
+                if (double.IsNaN(deck.Length) || deck.Length <= 0)
+                {
+                    _logger.LogWarning($"Invalid track length for deck {deckNumber}: {deck.Length}. Using empty beat grid.");
+                    beatPositions = new double[0];
+                }
+                else
+                {
+                    // Simple beat detection: assume 120 BPM, beats every 0.5 seconds
+                    int numBeats = (int)(deck.Length / 0.5);
+                    beatPositions = new double[numBeats];
+                    for (int i = 0; i < numBeats; i++)
+                    {
+                        beatPositions[i] = i * 0.5;
+                    }
+                }
+                OnBeatGridUpdated(deckNumber, beatPositions, bpm);
             }
             catch (Exception ex)
             {
@@ -118,7 +136,7 @@ namespace DJMixMaster.Audio
         {
             Deck deck = deckNumber == 1 ? _deck1 : _deck2;
             deck.Play();
-            if (!_soundOut.PlaybackState.HasFlag(PlaybackState.Playing))
+            if (_soundOut.PlaybackState != PlaybackState.Playing)
             {
                 _soundOut.Play();
             }
