@@ -100,7 +100,8 @@ namespace DJMixMaster.Audio
                 {
                     _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
                     var targetFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, _audioFileReader.WaveFormat.Channels);
-                    var resampler = new MediaFoundationResampler(sampleProvider, targetFormat);
+                    var waveProvider = new SampleToWaveProvider(sampleProvider);
+                    var resampler = new MediaFoundationResampler(waveProvider, targetFormat);
                     resampler.ResamplerQuality = 60; // High quality
                     sampleProvider = resampler.ToSampleProvider();
                 }
