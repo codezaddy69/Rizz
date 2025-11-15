@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DJMixMaster")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+810a6360a0bfb2434137877a81a34f270e56aa29")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+effd46f8fb5971e568fb20974d01356b77f4cf6c")]
 [assembly: System.Reflection.AssemblyProductAttribute("DJMixMaster")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DJMixMaster")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -16,7 +16,7 @@ namespace DJMixMaster.UI.Initializers
             _logger = logger;
         }
 
-        public (IAudioEngine AudioEngine, AudioEngineType EngineType, ILogger Logger, StreamWriter LogWriter, IConfiguration Configuration) Initialize()
+        public (IAudioEngine AudioEngine, ILogger Logger, StreamWriter LogWriter, IConfiguration Configuration) Initialize()
         {
             try
             {
@@ -37,17 +37,12 @@ namespace DJMixMaster.UI.Initializers
                 var logWriter = new StreamWriter("error.log", true);
                 LogInfo(logger, logWriter, "AudioEngineInitializer started");
 
-                // Initialize audio engine with fallback detection
-                var factory = new AudioEngineFactory();
-                var currentAudioEngineType = factory.DetectWorkingEngine(loggerFactory);
-                var audioEngine = factory.CreateAudioEngine(currentAudioEngineType, loggerFactory);
+                // Initialize CSCore audio engine
+                var audioEngine = new AudioEngine(loggerFactory.CreateLogger<AudioEngine>());
 
-                // Save the detected engine type to config
-                SaveAudioEngineTypeToConfig(currentAudioEngineType, logger, logWriter);
+                LogInfo(logger, logWriter, "Using CSCore audio engine");
 
-                LogInfo(logger, logWriter, $"Using audio engine: {currentAudioEngineType}");
-
-                return (audioEngine, currentAudioEngineType, logger, logWriter, configuration);
+                return (audioEngine, logger, logWriter, configuration);
             }
             catch (Exception ex)
             {
@@ -62,29 +57,6 @@ namespace DJMixMaster.UI.Initializers
             logWriter?.Flush();
         }
 
-        private void SaveAudioEngineTypeToConfig(AudioEngineType engineType, ILogger logger, StreamWriter logWriter)
-        {
-            try
-            {
-                var configPath = "appsettings.json";
-                var json = File.ReadAllText(configPath);
-                dynamic? config = System.Text.Json.JsonSerializer.Deserialize<System.Text.Json.JsonElement>(json);
 
-                // For simplicity, we'll just overwrite the file with the new setting
-                var updatedJson = $$"""
-                {
-                  "PluginFolder": "C:\\Program Files\\Image-Line\\FL Studio 20\\Plugins\\VST",
-                  "AudioEngineType": "{{engineType}}"
-                }
-                """;
-
-                File.WriteAllText(configPath, updatedJson);
-                LogInfo(logger, logWriter, $"Saved audio engine type to config: {engineType}");
-            }
-            catch (Exception ex)
-            {
-                LogInfo(logger, logWriter, $"Error saving audio engine type to config: {ex}");
-            }
-        }
     }
 }

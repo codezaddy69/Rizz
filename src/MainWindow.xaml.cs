@@ -20,7 +20,6 @@ namespace DJMixMaster
     public partial class MainWindow : Window
     {
         private IAudioEngine? audioEngine;
-        private AudioEngineType currentAudioEngineType;
         private ILogger? logger;
         private StreamWriter? logWriter;
         private IConfiguration? configuration;
@@ -34,7 +33,6 @@ namespace DJMixMaster
                 var initializer = new AudioEngineInitializer(LoggerFactory.Create(builder => builder.AddDebug().SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Debug)).CreateLogger<AudioEngineInitializer>());
                 var initResult = initializer.Initialize();
                 audioEngine = initResult.AudioEngine;
-                currentAudioEngineType = initResult.EngineType;
                 logger = initResult.Logger;
                 logWriter = initResult.LogWriter;
                 configuration = initResult.Configuration;
