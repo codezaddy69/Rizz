@@ -1,0 +1,17 @@
+Session started: 11/15/2025 1:32:44 PM
+WaveFormat: 44100Hz, 32bit, 2ch
+Set provider 0: active
+Set provider 1: active
+Read 1: samples=1024, pre-sum max=0.000, post-sum max=0.000, post-clamp max=0.000
+Read 101: samples=1024, pre-sum max=0.174, post-sum max=1.140, post-clamp max=1.000
+Read 201: samples=1024, pre-sum max=0.268, post-sum max=1.095, post-clamp max=1.000
+Read 301: samples=1024, pre-sum max=0.291, post-sum max=1.197, post-clamp max=1.000
+Read 401: samples=1024, pre-sum max=0.393, post-sum max=1.250, post-clamp max=1.000
+Read 501: samples=1024, pre-sum max=0.234, post-sum max=1.111, post-clamp max=1.000
+Read 601: samples=1024, pre-sum max=0.527, post-sum max=1.282, post-clamp max=1.000
+Read 701: samples=1024, pre-sum max=1.000, post-sum max=1.796, post-clamp max=1.000
+Read 801: samples=1024, pre-sum max=0.588, post-sum max=1.476, post-clamp max=1.000
+Read 901: samples=1024, pre-sum max=1.000, post-sum max=1.996, post-clamp max=1.000
+Read 1001: samples=1024, pre-sum max=0.808, post-sum max=1.150, post-clamp max=1.000
+Read 1101: samples=1024, pre-sum max=0.195, post-sum max=1.124, post-clamp max=1.000
+Read 1201: samples=1024, pre-sum max=0.682, post-sum max=1.552, post-clamp max=1.000

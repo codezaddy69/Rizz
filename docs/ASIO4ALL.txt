@@ -1,0 +1,249 @@
+ASIO4ALL v2
+Universal ASIO Driver For WDM Audio
+- Instruction Manual -
+Last reviewed: 08/15/08
+Table of Contents
+Introduction........................................................................................................................................................1
+Getting Started................................................................................................................................................... 2
+Setting up your audio software......................................................................................................................2
+Basic Configuration.......................................................................................................................................3
+Advanced Configuration.................................................................................................................................... 5
+Common Usage Cases Optimizations................................................................................................................8
+Using “ReWuschel”........................................................................................................................................... 9
+Troubleshooting............................................................................................................................................... 10
+Introduction
+Welcome to ASIO4ALL v2! This manual enables you to make the most of your ASIO4ALL installation,
+especially as it comes to the advanced features newly introduced in this Version of ASIO4ALL.
+In order to achieve the best possible results with ASIO4ALL, it is recommended that your computer is
+configured accordingly:
+● Set the power scheme to “Always On” (XP) or “High Performance” (Vista) in order to turn off
+Processor P-State switching! Advanced: Modify an existing power scheme so as to not switch CPU
+speed, because other power settings are not that critical.
+● Turn off system sounds! While e.g. the Windows logon sound certainly will not be a problem,
+sound effects in response to button clicks, notifications etc. will mean that for the time they play,
+ASIO4ALL may be unable to initialize the audio device.
+For updates, help and further information, please visit:
+http://www.asio4all.com/ - ASIO4ALL Web site
+http://mtippach.proboards40.com/ - Support forum
+Getting Started
+Setting up your audio software
+In order to make use of ASIO4ALL, you need to configure your audio software accordingly. How you would
+do this depends on your particular software application. Generally, you would always enter the audio
+configuration menu and select ASIO -> ASIO4ALL v2.
+There now should be a button to launch the ASIO control panel. How this button is labeled depends on your
+particular software. Once you press this button, the ASIO4ALL control panel should appear. Please consult
+the manual of your audio software for further assistance, if necessary!
+Sometimes, the audio software indeed would not provide an ASIO control panel option. This is the case for
+e.g. some ASIO output plugins in media player software. For configuring ASIO4ALL with these
+applications anyway, you can launch the control panel by clicking on the ASIO4ALL status icon in the
+System Tray area .
+The tray icon will become visible whenever an
+application initializes the ASIO4ALL driver. If there is
+no tray icon, your audio application is not currently
+using the ASIO4ALL driver. You can disable balloon
+notifications by switching to “Advanced” mode in the
+ASIO4ALL control panel.
+Note: Where it is possible to access the ASIO control panelNote: Where it is possible to access the ASIO control panel from within the audio applicationfrom within the audio application, you should, you should
+use that option instead of clicking the tray icon!use that option instead of clicking the tray icon!
+Changes made in the control sometimes may not have an effect until you restart the audio application. Once
+you made it into the ASIO4ALL control panel – one way or the other - you can now proceed with some
+basic configuration.
+Basic Configuration
+1. Device List
+This is the list of WDM audio devices found in your system. Highlight the device that you want to make
+changes to.
+Note: All parameter changes always only apply to the currently highlighted device!Note: All parameter changes always only apply to the currently highlighted device!
+Activate the device you want to use by clicking on the button next to the device name! In the picture
+above, the High Definition Audio Device would be enabled while all others are not.
+The current state of each device is shown as a small icon on its associated button. It can be either of
+these:
+Active The device has been successfully started by the audio engine.
+Inactive The device should be available for use in this session but has not been started yet
+Unavailable The device is in use elsewhere, such as by another audio application or by the
+dreaded “MS GS Software Wavetable Synth”, a MIDI output option you
+should never use!
+Beyond Logic You get this if the device for some unknown reason refuses to start and/or
+displays erratic behavior of any kind. Sometimes, closing and re-opening the
+control panel may cure the situation, as may unplugging and re-inserting of USB
+devices. Sometimes, this can also mean the same as “Unavailable”, whenever the
+device does not report its current availability or the lack thereof back to
+ASIO4ALL.
+Note: If the device list is empty, this means that you do not have a single WDM audio device in yourNote: If the device list is empty, this means that you do not have a single WDM audio device in your
+system. Please check with your audio hardware manufacturer for a WDM driver!system. Please check with your audio hardware manufacturer for a WDM driver!
+Illustration 1: Basic Control Panel View
+2. ASIO Buffer Size
+Use the slider to adjust the ASIO buffer size for the device currently highlighted. Smaller buffer size
+means lower latency. Once you hear crackles or audio becomes distorted, you need to increase the buffer
+size. ASIO buffer size directly relates to audio latency. Thus, you want to get a rather small value here.
+3. Load Default Settings
+Pressing this button will reset all configuration options to their initial defaults. Use when audio initially
+worked and you later got lost in the configuration process.
+4. Switch To Advanced Mode
+Switches the control panel into “advanced” mode, where you can fix things or completely mess them up
+at your disposal. “Advanced” mode is explained in the “Advanced Configuration” section of this
+document.
+Advanced Configuration
+Once the control panel has been switched to advanced mode, things begin to look a little more complicated.
+You will have noticed that the items in the device list are now expandable. By expanding the device list, you
+can now fully explore the WDM audio architecture of your system.
+The device list contains Devices, Device Interfaces and so called “Pins” (this is Microsoft(r) lingo). The
+figure above illustrates how they interrelate in the WDM KS hierarchy.
+Using the button next to each entry, you can now selectively enable/disable each particular item in the
+device list. This way, you can also create multi-device-setups.
+Multi-device-setups require that all the devices involved are running from the same clock source. You can
+achieve this by daisy-chaining devices via S/PDIF etc. Fortunately, most USB devices will automatically
+synchronize themselves for as long as the host controllers they are connected to have a common clock
+source, which is trivially true for the USB host controllers embedded in the south bridge on any mainboard.
+Note: If devices are not accurately synced, their audio streams are likely to drift apart over time!Note: If devices are not accurately synced, their audio streams are likely to drift apart over time!
+On the right side of the panel are the advanced controls (5..9).
+5. Latency Compensation
+Since ASIO4ALL does not have sufficient knowledge of the underlying hardware/driver architecture, it
+can only guess the actual latencies involved.
+With these sliders you can compensate for the latencies unknown to ASIO4ALL such that recordings in
+your sequencer Software are properly aligned with the rest.
+Note: In multi-device-setups the largest respective value of all devices will be used. Therefore, ifNote: In multi-device-setups the largest respective value of all devices will be used. Therefore, if
+different devices have different inherent latencies, audio placement will not be accurate for some devices!different devices have different inherent latencies, audio placement will not be accurate for some devices!
+Illustration 2: Advanced Control Panel View
+6. Hardware Buffer on/off
+Note: For WaveRT drivers (Vista), this box is labeled “Note: For WaveRT drivers (Vista), this box is labeled “Allow Pull Mode (WaveRT)Allow Pull Mode (WaveRT)” instead!” instead!
+Enables the hardware buffer for the highlighted device. This only works for so called “WavePCI”
+miniports, as other types of WDM drivers do not usually allow direct access to the hardware buffer.
+Adjustment for best hardware buffer performance involves the “ASIO Buffer Size” slider and the “Buffer
+Offset” slider (see below). Hardware buffering works best for rather small ASIO buffer sizes. Try
+something between 128 and 256 samples as a starter!
+The biggest advantage of using the hardware buffer is that this method uses a lot less CPU. In addition, it
+may be possible to decrease latencies even further.
+In multi-device-setups, it is possible to mix Hardware-buffered devices with devices that are not. This,
+however, is not particularly recommended!
+If hardware buffering is not supported by a particular audio device, there will be an additional latency of a
+couple hundred milliseconds, which is clearly audible.
+“Allow Pull Mode (WaveRT)”
+There are two basic access methods for a WaveRT device, “pull-mode” (also called “event-mode”) and
+“push-mode” (also called “polling mode”). “push-mode” is thought to be supported by all WaveRT
+drivers and (Vista) OS platforms, whereas “pull-mode” wasn't even officially documented by Microsoft
+until almost one year after Vista went RTM. As a consequence, “pull-mode” is still broken in a number
+of instances.
+If this box is left unchecked, ASIO4ALL will never use “pull-mode”, otherwise it will use it whenever
+possible. If it works, “pull-mode” provides tighter timing and is generally thought to be technically better
+than “push-mode”.
+Note: The old ASIO4ALL 2.8 behavior for this option was as ifNote: The old ASIO4ALL 2.8 behavior for this option was as if checkedchecked! If you check this box and there! If you check this box and there
+are no problems, keep it checked for better performance!are no problems, keep it checked for better performance!
+7. Kernel Buffers/Buffer Offset
+If hardware buffering is disabled, this control lets you add up to two more buffers to be queued for audio
+output. Each additional buffer increases the output latency of the device by the time it takes to play one
+buffer. Therefore, the initial setting of “2” should only be changed on less powerful machines, where
+reasonably small ASIO buffer sizes cannot be achieved with the default setting.
+If hardware buffering is enabled, this control determines the amount of clearance (in ms) between where
+ASIO4ALL will insert data into/read data from the hardware buffer, and the position where ASIO4ALL
+currently thinks the hardware read/write position is. Sound complicated already? You haven't even seen
+the code that calculates this...
+As a general rule: Higher settings increase latencies and stability, lower settings have the adverse effect.
+You should, however, be able to achieve a setting that is very close to zero (“4ms” would still be
+considered “very close to zero”, while “10ms”, the default, would indicate that there is room for
+improvement.)
+With Envy24-based PCI-sound cards, there may be an option in your sound card control panel that reads
+“DMA Buffer Transfer Latency” (Seen with Terratec products) or similar. You should set this to the
+lowest possible value, e.g. “1ms” for best results.
+8. Always Resample 44.1<->48 kHz
+ASIO4ALL can do real time resampling of 44.1 kHz audio to/from 48 kHz. Resampling will
+automatically take place whenever ASIO4ALL is opened for 44.1 kHz and the WDM driver does not
+support this sample rate.
+There may, however, be instances in which case an AC97 will support 44.1 kHz by resampling internally.
+More often than not, however, AC97 resampling quality is extremely poor and/or prone to stability
+issues. To work around this, you can enable this option. With at least one incarnation of the SoundMax
+WDM driver (smwdm.sys), this option absolutely must be enabled in order to make it work at 44.1 kHz
+at all.
+9. Force WDM driver to 16 Bit
+This option only has an effect if the supported bit depth of the WDM driver is larger than 16, but less
+than 24. Some AC97 devices report e.g. 20 Bits resolution but cannot actually be opened for more than
+16 Bits resolution. Should this be the case on your system, this option provides a workaround. Originally,
+this was introduced as a workaround for an issue with the SigmaTel AC97 WDM driver.
+Common Usage Cases Optimizations
+• Playing Software Synths Live
+In this scenario, you do not need audio inputs. Therefore, you best disable them all, which normally will
+provide you with a better stability at very small ASIO buffer sizes, or allow smaller buffer sizes in the
+first place. Further, you should also disable all audio outputs you do not really need. To disable channels,
+use the advanced control panel, expand the items in the WDM device list and disable everything you do
+not want to use in this setup!
+• Computer As Effects Processor
+Obviously, in this scenario you do need inputs. But, as always, you should disable all channels you do not
+want to use. Disable 44.1KHz resampling if it is not really necessary!
+• General Purpose Sequencer Setup
+Normally it matters most that you do not get any dropouts even when the CPU load goes through the
+roof. Thus, it is recommended that you relax the latency requirements a little and work with an ASIO
+buffer size that feels comfortable with all your favorite VST plugins active. This especially applies when
+you are recording audio, in which case dropouts are a little worse than just moderately annoying. If your
+sequencer provides latency compensation, you probably want to check that recorded audio is aligned
+properly, and, if not, make the necessary adjustments in the “Latency Compensation” section in the
+advanced settings dialog.
+• Latency Does Not Matter A Lot
+In certain configurations, ASIO4ALL allows for bit transparent audio where the Windows driver stack
+does not. Hence, audiophiles prefer ASIO output over DirectSound or MME, which most likely does
+mangle audio data. In these scenarios, latency is of little concern and audio input is not asked for.
+Naturally, you would make sure that all inputs are disabled, set the ASIO buffer size to the maximum and
+be happy!
+Using “ReWuschel”
+If you selected the ReWuschel install option, the audio inputs ASIO4ALL provides to your host application
+are now also accessible as ReWire inputs. This makes sense for applications that only allow for ASIO
+output, but support ReWire. One such application is Reason.
+Now, in order to get real-time audio input in Reason, you need to make sure that ASIO4ALL v2 is the
+current ASIO driver. Then: Create->ReBirth Input Machine - that's it! The ASIO4ALL inputs are now
+mapped to the outputs of the ReBirth Input Machine.
+Note that, once you haveNote that, once you have ReWuschelReWuschel installed, you cannot useinstalled, you cannot use ReBirthReBirth inin ReasonReason. In order to re-enable. In order to re-enable
+ReBirthReBirth input forinput for ReasonReason you need to re-install ASIO4ALL with theyou need to re-install ASIO4ALL with the ReWuschelReWuschel install option leftinstall option left
+unchecked!unchecked!
+Troubleshooting
+Since ASIO4ALL presents itself to the audio software as a single ASIO driver, but due to its various
+configuration options, can act like a chameleon, there are numerous things that can go wrong without
+ASIO4ALL being at fault. Most notably, if you change the device setup in the ASIO4ALL control panel, the
+number of available input and output channels is likely to change, as well as the names of the channels that
+are seen by the host application. Therefore, it is always advisable to restart your audio host application after
+any change in the audio device setup whenever you find that the particular application does not appear to be
+able to handle these kinds of changes on the fly.
+More potential problems and possible solutions:
+• ASIO4ALL v2 not visible in host audio configuration menu
+There are two possible reasons for this: Either your audio application does not support ASIO or you
+installed ASIO4ALL v2 as an underprivileged user. In the latter case, please log on as Administrator and
+install ASIO4ALL v2 again. Once successfully installed, ASIO4ALL v2 should not require Administrator
+privileges anymore in order to run.
+• Audio device flagged as “Unavailable” or “Beyond Logic” even though it is not in use elsewhere
+You want to make sure the “MS GS Software Wavetable Synth” or anything by a similar name is not
+enabled anywhere in you MIDI setup. The ASIO4ALL Web Site has further information on that.
+If any such “Software Wavetable Synth” (sometimes in disguise as “...DLS Synth...”) can be ruled out as
+the cause, try to restart the audio host application. Sometimes, when switching from another driver to
+ASIO4ALL v2, the previous driver will not release the audio device in time.
+If the device is an USB/PCMCIA/FireWire device, close the ASIO4ALL control panel, unplug the
+device, plug it in again and re-open the ASIO4ALL control panel.
+• Cannot play sound from another application when ASIO4ALL is active
+This by design. As close to the hardware as possible means that all the software mixing provided by
+Windows will be bypassed. Without any software mixing - and the associated latency and bit mangling -
+you are stuck with the hardware mixing capabilities of your audio device. Most of the time, there simply
+are no hardware mixing capabilities at all.
+• (Vista) The meters are moving, everything looks o.k. - But there is no sound
+Drivers for High Definition Audio devices have a habit of listing SPDIF outputs before the analog ones.
+As a consequence, the first two or more ASIO channels will be routed to SPDIF, if you use the default
+configuration. You can change this by either disabling the SPDIF output in the ASIO4ALL control panel
+or correctly assigning ASIO channels in your audio application.
+• Changes made in the control panel do not propagate between different audio applications
+...Neither do they propagate between different users! This is not a bug, it's a feature! ASIO4ALL v2
+stores settings per host application/per user! This makes it possible to have several instances of
+ASIO4ALL run at the same time for as long as they do not try to use the same piece of audio hardware
+exclusively. This further allows having ASIO4ALL run in educational/computer lab type environments
+without “user666” being able to f**** things up for any user on the same machine, with the exception of
+“user666” him/her/itself.
+• The latencies displayed in e.g. Cubase SX 3 do not match the values that would result from the
+ASIO buffer size.
+ASIO4ALL supports the latency compensation features of ASIO hosts that perform latency
+compensation. This support is still a bit under development and will be improved as time passes. The
+values reported here are not just the latencies ASIO4ALL adds to the audio stream, but rather the
+represent the whole of driver/OS/hardware inherent latencies. If the guess was correct, that is...
+Earlier Versions of ASIO4ALL did not make this attempt at guessing, so you may obtain a smaller
+latency display with v1.x and other WDM->ASIO wrappers. The true (i.e. Perceived) latencies are at
+least as good as with earlier versions and on top of that, they do not change anymore when CPU
+utilization goes up!
+Copyright 2004-2008, Michael Tippach.
+All trademarks are the property of their respective owners and used for product identification purposes
+only.
+This document contains statements that may/may not be true. Particular combinations of colors or black
+and white contrast may/may not cause epilepsy, nausea, or the urge to do weird things to domestic animals.
+Either way, I shall not be held responsible for any of that.

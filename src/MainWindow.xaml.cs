@@ -80,6 +80,9 @@ namespace DJMixMaster
                 btnRightCue2.Click += (s, e) => deckEventHandler.HandleCuePoint(2, 1);
                 btnRightCue3.Click += (s, e) => deckEventHandler.HandleCuePoint(2, 2);
 
+                // Wire up settings button
+                btnSettings.Click += (s, e) => OpenSettingsWindow();
+
                 // Wire up position slider events
                 if (deck1PositionSlider != null)
                     deck1PositionSlider.ValueChanged += (s, e) => deckEventHandler.OnPositionSliderValueChanged(deck1PositionSlider, e.NewValue);
@@ -96,6 +99,92 @@ namespace DJMixMaster
                 LogError($"Error initializing MainWindow: {ex}");
                 MessageBox.Show($"Error initializing application: {ex.Message}", "Initialization Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void OpenSettingsWindow()
+        {
+            AudioSettingsWindow? settingsWindow = null;
+
+            try
+            {
+                LogInfo("Opening settings window...");
+
+                // Check prerequisites
+                if (audioEngine == null)
+                {
+                    throw new InvalidOperationException("AudioEngine is not initialized");
+                }
+
+                if (logger == null)
+                {
+                    throw new InvalidOperationException("Logger is not initialized");
+                }
+
+                LogInfo("Creating logger factory...");
+                var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
+                if (loggerFactory == null)
+                {
+                    throw new InvalidOperationException("Failed to create logger factory");
+                }
+
+                LogInfo("Creating settings logger...");
+                var settingsLogger = loggerFactory.CreateLogger<AudioSettingsWindow>();
+                if (settingsLogger == null)
+                {
+                    throw new InvalidOperationException("Failed to create settings logger");
+                }
+
+                LogInfo("Creating settings window...");
+                settingsWindow = new AudioSettingsWindow(settingsLogger, audioEngine);
+                if (settingsWindow == null)
+                {
+                    throw new InvalidOperationException("Settings window constructor returned null");
+                }
+                LogInfo("Settings window created successfully");
+
+                LogInfo("Configuring window properties...");
+                settingsWindow.Owner = this;
+                settingsWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+
+                LogInfo("Showing settings dialog...");
+                var result = settingsWindow.ShowDialog();
+
+                LogInfo($"Settings window closed with result: {result}");
+            }
+            catch (Exception ex)
+            {
+                LogError($"Error opening settings window: {ex.Message}");
+                LogError($"Stack trace: {ex.StackTrace}");
+                if (ex.InnerException != null)
+                {
+                    LogError($"Inner exception: {ex.InnerException.Message}");
+                    LogError($"Inner stack trace: {ex.InnerException.StackTrace}");
+                }
+
+                string errorDetails = $"Failed to open settings window: {ex.Message}\n\n";
+                errorDetails += $"Exception Type: {ex.GetType().Name}\n";
+                if (ex.InnerException != null)
+                {
+                    errorDetails += $"Inner Exception: {ex.InnerException.Message}\n";
+                }
+                errorDetails += "Check application logs for more details.";
+
+                MessageBox.Show(errorDetails, "Settings Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void LogInfo(string message)
+        {
+            logger?.LogInformation(message);
+            logWriter?.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} INFO: {message}");
+            logWriter?.Flush();
+        }
+
+        private void LogError(string message)
+        {
+            logger?.LogError(message);
+            logWriter?.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} ERROR: {message}");
+            logWriter?.Flush();
         }
 
         private void InitializeSliders()
@@ -125,38 +214,7 @@ namespace DJMixMaster
             catch (Exception ex)
             {
                 LogError($"Error initializing sliders: {ex}");
-                MessageBox.Show($"Error initializing sliders: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        protected override void OnClosed(EventArgs e)
-        {
-            try
-            {
-                LogInfo("Application closing");
-                positionUpdateTimer?.Stop();
-                base.OnClosed(e);
-                audioEngine?.Dispose();
-                logWriter?.Dispose();
-            }
-            catch (Exception ex)
-            {
-                LogError($"Error on close: {ex}");
-            }
-        }
-
-        private void LogInfo(string message)
-        {
-            logger?.LogInformation(message);
-            logWriter?.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} INFO: {message}");
-            logWriter?.Flush();
-        }
-
-        private void LogError(string message)
-        {
-            logger?.LogError(message);
-            logWriter?.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} ERROR: {message}");
-            logWriter?.Flush();
         }
     }
 }

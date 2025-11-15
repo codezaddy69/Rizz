@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
+using NAudio.Wave.Asio;
 
 namespace DJMixMaster.Audio
 {
@@ -31,6 +32,9 @@ namespace DJMixMaster.Audio
         void AddCuePoint(int deckNumber);
         void JumpToCuePoint(int deckNumber, int cueIndex);
         void PlayTestTone(int deckNumber, double frequency = 440.0, double durationSeconds = 2.0);
+        void UpdateAudioSettings(AudioSettings settings);
+        AudioSettings GetCurrentSettings();
+        List<AsioDeviceInfo> EnumerateDevices();
     }
 
     /// <summary>
@@ -47,6 +51,7 @@ namespace DJMixMaster.Audio
         private readonly IWavePlayer _soundOut;
         private readonly SampleToWaveProvider _waveProvider;
         private float _crossfader = 0.5f;
+        private AudioSettings _currentSettings;
         private bool _disposed;
 
         // Events follow Observer pattern for loose coupling
@@ -61,6 +66,7 @@ namespace DJMixMaster.Audio
         public AudioEngine(ILogger<AudioEngine> logger)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _currentSettings = new AudioSettings();
 
             try
             {
@@ -75,13 +81,28 @@ namespace DJMixMaster.Audio
                 _mixer = new MixingSampleProvider(waveFormat);
                 _logger.LogInformation("Mixer initialized with format: {SampleRate}Hz, {Channels}ch", waveFormat.SampleRate, waveFormat.Channels);
 
+                // Connect permanent deck providers to mixer for continuous pipeline
+                _mixer.SetProvider(0, _deck1.SampleProvider);
+                _mixer.SetProvider(1, _deck2.SampleProvider);
+                _logger.LogInformation("Permanent deck inputs connected to mixer");
+
                 // Convert to wave provider for output (abstraction layer)
                 _waveProvider = new SampleToWaveProvider(_mixer);
 
-                // Initialize output device with WaveOut
-                _logger.LogInformation("Using WaveOut for audio output");
-                _soundOut = new WaveOut();
-                _soundOut.Init(_waveProvider);
+                // Initialize output device with ASIO for low-latency pro audio
+                _logger.LogInformation("Using ASIO for ultra-low latency audio output");
+                try
+                {
+                    _soundOut = new AsioOut(0); // First ASIO device (buffer size set by driver for low latency)
+                    _soundOut.Init(_waveProvider);
+                    _logger.LogInformation("ASIO initialized successfully on first available device");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "ASIO initialization failed - falling back to WaveOut");
+                    _soundOut = new WaveOut();
+                    _soundOut.Init(_waveProvider);
+                }
 
                 _logger.LogInformation("NAudio AudioEngine initialized successfully");
             }
@@ -104,8 +125,7 @@ namespace DJMixMaster.Audio
                 Deck deck = deckNumber == 1 ? _deck1 : _deck2;
                 deck.LoadFile(filePath);
 
-                // Update mixer with new provider
-                _mixer.SetProvider(deckNumber - 1, deck.SampleProvider);
+                // Provider is permanently connected to mixer, no need to update
 
                 // Analyze file for beat grid
                 double[] beatPositions;
@@ -143,7 +163,7 @@ namespace DJMixMaster.Audio
                 if (_soundOut.PlaybackState != PlaybackState.Playing)
                 {
                     _soundOut.Play();
-                    _logger.LogInformation("Started playback on deck {DeckNumber}, WaveOut state: {State}", deckNumber, _soundOut.PlaybackState);
+                    _logger.LogInformation("Started playback on deck {DeckNumber}, ASIO state: {State}", deckNumber, _soundOut.PlaybackState);
                 }
             }
             catch (Exception ex)
@@ -289,6 +309,49 @@ namespace DJMixMaster.Audio
             {
                 _logger.LogError(ex, $"Error playing test tone on deck {deckNumber}");
             }
+        }
+
+        public void UpdateAudioSettings(AudioSettings settings)
+        {
+            _currentSettings = settings ?? throw new ArgumentNullException(nameof(settings));
+            _logger.LogInformation("Audio settings updated");
+
+            // Apply settings that can be changed at runtime
+            // Note: Some settings may require restart
+            if (_soundOut is AsioOut asioOut)
+            {
+                // ASIO settings would be applied here
+                _logger.LogInformation("ASIO settings updated - some changes may require restart");
+            }
+        }
+
+        public AudioSettings GetCurrentSettings()
+        {
+            return _currentSettings;
+        }
+
+        public List<AsioDeviceInfo> EnumerateDevices()
+        {
+            var devices = new List<AsioDeviceInfo>();
+            try
+            {
+                string[] driverNames = AsioOut.GetDriverNames();
+                foreach (string driverName in driverNames)
+                {
+                    devices.Add(new AsioDeviceInfo
+                    {
+                        Id = driverName,
+                        Name = driverName,
+                        DriverName = driverName,
+                        Status = "Available"
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to enumerate ASIO devices");
+            }
+            return devices;
         }
 
         public void Dispose()

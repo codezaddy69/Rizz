@@ -1,0 +1,10 @@
+Session started: 11/15/2025 4:01:08 PM
+WaveFormat: 44100Hz, 32bit, 2ch
+Set provider 0: active
+Set provider 1: active
+Read 1: samples=1024, pre-sum max=0.000, post-sum max=0.000, post-clamp max=0.000
+Read 101: samples=1024, pre-sum max=0.000, post-sum max=0.000, post-clamp max=0.000
+Read 201: samples=1024, pre-sum max=0.597, post-sum max=1.389, post-clamp max=1.000
+Read 301: samples=1024, pre-sum max=0.214, post-sum max=1.111, post-clamp max=1.000
+Read 401: samples=1024, pre-sum max=0.593, post-sum max=1.491, post-clamp max=1.000
+Read 501: samples=1024, pre-sum max=0.426, post-sum max=1.043, post-clamp max=1.000

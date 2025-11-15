@@ -16,8 +16,8 @@
 ### Core Technologies
 - **Language**: C# 12.0 (.NET 9.0)
 - **UI Framework**: Windows Presentation Foundation (WPF)
-- **Audio Engine**: NAudio (.NET managed library)
-  - Features: Playback, mixing, crossfading, volume control
+- **Audio Engine**: NAudio (.NET managed library) with ASIO4ALL
+  - Features: Low-latency playback, permanent pipeline, WDL resampling
   - MIT License
 - **Build System**: .NET SDK (dotnet CLI)
 
@@ -45,7 +45,7 @@
 ### Target Platform
 - **OS**: Windows 10/11 (64-bit)
 - **Architecture**: x64
-- **Audio**: Windows Audio Session API (WASAPI)
+- **Audio**: ASIO4ALL (primary), WASAPI fallback
 
 ## Development Environment Setup
 
@@ -79,7 +79,7 @@ dotnet build
 dotnet run
 ```
 
-**Build Status**: ✅ Application builds successfully with no warnings on .NET 9.0 Windows (NAudio implementation).
+**Build Status**: ✅ Application builds successfully with no warnings on .NET 9.0 Windows (ASIO permanent pipeline implementation).
 
 ### Optional: JUCE Development Setup
 For VST plugin development, you'll need:
@@ -137,14 +137,13 @@ dotnet run --configuration Release
 ```
 DJMixMaster/
 ├── Audio/                          # Audio processing components
-│   ├── DeckPlayer.cs              # NAudio-based deck implementation
-│   ├── DeckPlayerAudioProcessing.cs # Audio file loading & processing
-│   ├── DeckPlayerNavigation.cs    # Playback navigation & speed control
-│   ├── DeckPlayerCuePoints.cs     # Cue point management
-│   ├── AudioEngine.cs             # JUCE-based audio engine interface
+│   ├── AudioEngine.cs             # ASIO audio engine with permanent pipeline
+│   ├── Deck.cs                    # Individual deck with format conversion
+│   ├── SilentSampleProvider.cs    # Continuous silence for pipeline
+│   ├── PlayingSampleProvider.cs   # Pause-aware audio gating
+│   ├── MixingSampleProvider.cs    # Multi-deck audio mixing
 │   ├── BeatDetector.cs            # BPM detection algorithm
-│   └── Providers/                 # Audio effect providers
-│       └── DeckVolumeProvider.cs
+│   └── LoopingSampleProvider.cs   # Audio looping (integrated in Deck.cs)
 ├── Controls/                      # Custom WPF controls
 │   ├── Fader.cs                   # Volume fader logic
 │   └── FaderControl.cs            # Fader UI control
@@ -171,11 +170,12 @@ DJMixMaster/
 ### ✅ Implemented Features
 
 #### Core Audio Playback
-- [x] **File Loading**: MP3, WAV, AIFF support
-- [x] **Transport Controls**: Play, pause, stop, seek
-- [x] **Navigation**: Fast-forward, rewind, speed control (0.5x - 2.0x)
-- [x] **Position Tracking**: Real-time position updates (50ms precision)
-- [x] **Volume Control**: Per-deck volume adjustment
+- [x] **File Loading**: MP3, WAV, AIFF support with format validation
+- [x] **Transport Controls**: Play, pause, stop, seek with permanent pipeline
+- [x] **Low-Latency Output**: ASIO4ALL integration (sub-10ms latency)
+- [x] **Position Tracking**: Real-time position updates (sub-10ms precision)
+- [x] **Volume Control**: Per-deck volume with crossfader integration
+- [x] **Format Conversion**: WDL resampling, mono→stereo, error handling
 
 #### User Interface
 - [x] **Two-Deck Layout**: Professional DJ interface
@@ -193,6 +193,10 @@ DJMixMaster/
 - [x] **Waveform Generation**: 1000-point amplitude data
 
 #### Architecture
+- [x] **Permanent Audio Pipeline**: Continuous streaming prevents disconnects
+- [x] **Sample Provider Chain**: Modular processing (Silent→Playing→Looping→Volume)
+- [x] **ASIO-First Design**: Low-latency output with WaveOut fallback
+- [x] **Comprehensive Logging**: Format validation and error diagnostics
 - [x] **Dependency Injection**: Microsoft.Extensions.Logging
 - [x] **Interface-Based Design**: IAudioEngine abstraction
 - [x] **Event-Driven Communication**: Loose coupling between components

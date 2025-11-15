@@ -493,3 +493,290 @@
 2025-11-15 02:30:15 INFO: MainWindow constructor started
 2025-11-15 02:30:15 INFO: Using CSCore audio engine
 2025-11-15 02:30:38 INFO: Application closing
+2025-11-15 03:13:36 INFO: AudioEngineInitializer started
+2025-11-15 03:13:36 INFO: Using CSCore audio engine
+2025-11-15 03:13:36 INFO: MainWindow constructor started
+2025-11-15 03:13:36 INFO: Using CSCore audio engine
+2025-11-15 03:13:46 INFO: Application closing
+2025-11-15 12:15:41 INFO: AudioEngineInitializer started
+2025-11-15 12:15:41 INFO: Using CSCore audio engine
+2025-11-15 12:15:41 INFO: MainWindow constructor started
+2025-11-15 12:15:41 INFO: Using CSCore audio engine
+2025-11-15 12:23:58 INFO: Application closing
+2025-11-15 12:24:59 INFO: AudioEngineInitializer started
+2025-11-15 12:25:00 INFO: Using CSCore audio engine
+2025-11-15 12:25:00 INFO: MainWindow constructor started
+2025-11-15 12:25:01 INFO: Using CSCore audio engine
+2025-11-15 12:25:35 INFO: Application closing
+2025-11-15 12:53:31 INFO: AudioEngineInitializer started
+2025-11-15 12:53:31 INFO: Using CSCore audio engine
+2025-11-15 12:53:31 INFO: MainWindow constructor started
+2025-11-15 12:53:31 INFO: Using CSCore audio engine
+2025-11-15 12:54:52 INFO: Application closing
+2025-11-15 13:04:32 INFO: AudioEngineInitializer started
+2025-11-15 13:04:33 INFO: Using CSCore audio engine
+2025-11-15 13:04:33 INFO: MainWindow constructor started
+2025-11-15 13:04:33 INFO: Using CSCore audio engine
+2025-11-15 13:27:13 INFO: Application closing
+2025-11-15 13:27:27 INFO: AudioEngineInitializer started
+2025-11-15 13:27:27 INFO: Using CSCore audio engine
+2025-11-15 13:27:27 INFO: MainWindow constructor started
+2025-11-15 13:27:27 INFO: Using CSCore audio engine
+2025-11-15 13:31:36 INFO: Application closing
+2025-11-15 13:31:42 INFO: AudioEngineInitializer started
+2025-11-15 13:31:42 INFO: Using CSCore audio engine
+2025-11-15 13:31:42 INFO: MainWindow constructor started
+2025-11-15 13:31:42 INFO: Using CSCore audio engine
+2025-11-15 13:32:00 INFO: Application closing
+2025-11-15 13:32:07 INFO: AudioEngineInitializer started
+2025-11-15 13:32:07 INFO: Using CSCore audio engine
+2025-11-15 13:32:07 INFO: MainWindow constructor started
+2025-11-15 13:32:07 INFO: Using CSCore audio engine
+2025-11-15 13:32:37 INFO: Application closing
+2025-11-15 13:32:44 INFO: AudioEngineInitializer started
+2025-11-15 13:32:44 INFO: Using CSCore audio engine
+2025-11-15 13:32:44 INFO: MainWindow constructor started
+2025-11-15 13:32:44 INFO: Using CSCore audio engine
+2025-11-15 13:34:12 INFO: Application closing
+2025-11-15 13:34:19 INFO: AudioEngineInitializer started
+2025-11-15 13:34:19 INFO: Using CSCore audio engine
+2025-11-15 13:34:19 INFO: MainWindow constructor started
+2025-11-15 13:34:19 INFO: Using CSCore audio engine
+2025-11-15 13:35:19 INFO: Application closing
+2025-11-15 13:35:29 INFO: AudioEngineInitializer started
+2025-11-15 13:35:29 INFO: Using CSCore audio engine
+2025-11-15 13:35:29 INFO: MainWindow constructor started
+2025-11-15 13:35:29 INFO: Using CSCore audio engine
+2025-11-15 13:52:48 INFO: Application closing
+2025-11-15 13:53:07 INFO: AudioEngineInitializer started
+2025-11-15 13:53:07 INFO: Using CSCore audio engine
+2025-11-15 13:53:07 INFO: MainWindow constructor started
+2025-11-15 13:53:07 INFO: Using CSCore audio engine
+2025-11-15 13:53:36 INFO: Application closing
+2025-11-15 13:53:41 INFO: AudioEngineInitializer started
+2025-11-15 13:53:41 INFO: Using CSCore audio engine
+2025-11-15 13:53:41 INFO: MainWindow constructor started
+2025-11-15 13:53:41 INFO: Using CSCore audio engine
+2025-11-15 13:54:02 INFO: Application closing
+2025-11-15 13:54:08 INFO: AudioEngineInitializer started
+2025-11-15 13:54:08 INFO: Using CSCore audio engine
+2025-11-15 13:54:08 INFO: MainWindow constructor started
+2025-11-15 13:54:08 INFO: Using CSCore audio engine
+2025-11-15 13:54:17 INFO: Application closing
+2025-11-15 14:06:44 INFO: AudioEngineInitializer started
+2025-11-15 14:06:44 INFO: Using CSCore audio engine
+2025-11-15 14:06:44 INFO: MainWindow constructor started
+2025-11-15 14:06:44 INFO: Using CSCore audio engine
+2025-11-15 14:07:08 INFO: Application closing
+2025-11-15 16:01:08 INFO: AudioEngineInitializer started
+2025-11-15 16:01:09 INFO: Using CSCore audio engine
+2025-11-15 16:01:09 INFO: MainWindow constructor started
+2025-11-15 16:01:09 INFO: Using CSCore audio engine
+2025-11-15 16:01:23 INFO: Application closing
+2025-11-15 16:16:43 INFO: AudioEngineInitializer started
+2025-11-15 16:16:43 INFO: Using CSCore audio engine
+2025-11-15 16:16:43 INFO: MainWindow constructor started
+2025-11-15 16:16:43 INFO: Using CSCore audio engine
+2025-11-15 16:17:18 INFO: Application closing
+2025-11-15 17:05:06 INFO: AudioEngineInitializer started
+2025-11-15 17:05:06 INFO: Using CSCore audio engine
+2025-11-15 17:05:06 INFO: MainWindow constructor started
+2025-11-15 17:05:06 INFO: Using CSCore audio engine
+2025-11-15 17:05:12 ERROR: Error opening settings window: System.NullReferenceException: Object reference not set to an instance of an object.
+   at DJMixMaster.Audio.AudioSettingsWindow.BufferSizeSlider_ValueChanged(Object sender, RoutedPropertyChangedEventArgs`1 e) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 293
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.Slider.OnValueChanged(Double oldValue, Double newValue)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at DJMixMaster.Audio.AudioSettingsWindow.InitializeComponent() in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml:line 1
+   at DJMixMaster.Audio.AudioSettingsWindow..ctor(ILogger`1 logger, IAudioEngine audioEngine) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 26
+   at DJMixMaster.MainWindow.OpenSettingsWindow() in C:\Users\rogue\code\djmixmaster\src\MainWindow.xaml.cs:line 110
+2025-11-15 17:05:15 ERROR: Error opening settings window: System.NullReferenceException: Object reference not set to an instance of an object.
+   at DJMixMaster.Audio.AudioSettingsWindow.BufferSizeSlider_ValueChanged(Object sender, RoutedPropertyChangedEventArgs`1 e) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 293
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.Slider.OnValueChanged(Double oldValue, Double newValue)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at DJMixMaster.Audio.AudioSettingsWindow.InitializeComponent() in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml:line 1
+   at DJMixMaster.Audio.AudioSettingsWindow..ctor(ILogger`1 logger, IAudioEngine audioEngine) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 26
+   at DJMixMaster.MainWindow.OpenSettingsWindow() in C:\Users\rogue\code\djmixmaster\src\MainWindow.xaml.cs:line 110
+2025-11-15 17:05:25 ERROR: Error opening settings window: System.NullReferenceException: Object reference not set to an instance of an object.
+   at DJMixMaster.Audio.AudioSettingsWindow.BufferSizeSlider_ValueChanged(Object sender, RoutedPropertyChangedEventArgs`1 e) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 293
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.Slider.OnValueChanged(Double oldValue, Double newValue)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at DJMixMaster.Audio.AudioSettingsWindow.InitializeComponent() in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml:line 1
+   at DJMixMaster.Audio.AudioSettingsWindow..ctor(ILogger`1 logger, IAudioEngine audioEngine) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 26
+   at DJMixMaster.MainWindow.OpenSettingsWindow() in C:\Users\rogue\code\djmixmaster\src\MainWindow.xaml.cs:line 110
+2025-11-15 17:13:08 INFO: AudioEngineInitializer started
+2025-11-15 17:13:09 INFO: Using CSCore audio engine
+2025-11-15 17:13:09 INFO: MainWindow constructor started
+2025-11-15 17:13:09 INFO: Using CSCore audio engine
+2025-11-15 17:13:10 INFO: Opening settings window...
+2025-11-15 17:13:10 INFO: Creating logger factory...
+2025-11-15 17:13:10 INFO: Creating settings logger...
+2025-11-15 17:13:10 INFO: Creating settings window...
+2025-11-15 17:13:10 ERROR: Error opening settings window: Settings window initialization failed
+2025-11-15 17:13:10 ERROR: Stack trace:    at DJMixMaster.Audio.AudioSettingsWindow..ctor(ILogger`1 logger, IAudioEngine audioEngine) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 50
+   at DJMixMaster.MainWindow.OpenSettingsWindow() in C:\Users\rogue\code\djmixmaster\src\MainWindow.xaml.cs:line 138
+2025-11-15 17:13:10 ERROR: Inner exception: Object reference not set to an instance of an object.
+2025-11-15 17:13:10 ERROR: Inner stack trace:    at DJMixMaster.Audio.AudioSettingsWindow.BufferSizeSlider_ValueChanged(Object sender, RoutedPropertyChangedEventArgs`1 e) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 386
+   at System.Windows.RoutedEventArgs.InvokeHandler(Delegate handler, Object target)
+   at System.Windows.EventRoute.InvokeHandlersImpl(Object source, RoutedEventArgs args, Boolean reRaised)
+   at System.Windows.UIElement.RaiseEventImpl(DependencyObject sender, RoutedEventArgs args)
+   at System.Windows.Controls.Slider.OnValueChanged(Double oldValue, Double newValue)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMaximumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.CoerceValue(DependencyProperty dp)
+   at System.Windows.Controls.Primitives.RangeBase.OnMinimumChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+   at System.Windows.FrameworkElement.OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+   at System.Windows.DependencyObject.NotifyPropertyChange(DependencyPropertyChangedEventArgs args)
+   at System.Windows.DependencyObject.UpdateEffectiveValue(EntryIndex entryIndex, DependencyProperty dp, PropertyMetadata metadata, EffectiveValueEntry oldEntry, EffectiveValueEntry& newEntry, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType)
+   at System.Windows.DependencyObject.SetValueCommon(DependencyProperty dp, Object value, PropertyMetadata metadata, Boolean coerceWithDeferredReference, Boolean coerceWithCurrentValue, OperationType operationType, Boolean isInternal)
+   at System.Windows.DependencyObject.SetValue(DependencyProperty dp, Object value)
+   at MS.Internal.Xaml.Runtime.ClrObjectRuntime.SetValue(Object inst, XamlMember property, Object value)
+   at MS.Internal.Xaml.Runtime.PartialTrustTolerantRuntime.SetValue(Object obj, XamlMember property, Object value)
+   at System.Xaml.XamlObjectWriter.Logic_ApplyPropertyValue(ObjectWriterContext ctx, XamlMember prop, Object value, Boolean onParent)
+   at System.Xaml.XamlObjectWriter.Logic_DoAssignmentToParentProperty(ObjectWriterContext ctx)
+   at System.Xaml.XamlObjectWriter.WriteEndMember()
+   at System.Windows.Markup.WpfXamlLoader.TransformNodes(XamlReader xamlReader, XamlObjectWriter xamlWriter, Boolean onlyLoadOneNode, Boolean skipJournaledProperties, Boolean shouldPassLineNumberInfo, IXamlLineInfo xamlLineInfo, IXamlLineInfoConsumer xamlLineInfoConsumer, XamlContextStack`1 stack, IStyleConnector styleConnector)
+   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
+   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
+   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
+   at System.Windows.Application.LoadComponent(Object component, Uri resourceLocator)
+   at DJMixMaster.Audio.AudioSettingsWindow.InitializeComponent() in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml:line 1
+   at DJMixMaster.Audio.AudioSettingsWindow..ctor(ILogger`1 logger, IAudioEngine audioEngine) in C:\Users\rogue\code\djmixmaster\src\Audio\AudioSettingsWindow.xaml.cs:line 34
+2025-11-15 17:22:14 INFO: AudioEngineInitializer started
+2025-11-15 17:22:14 INFO: Using CSCore audio engine
+2025-11-15 17:22:14 INFO: MainWindow constructor started
+2025-11-15 17:22:14 INFO: Using CSCore audio engine
+2025-11-15 17:22:15 INFO: Opening settings window...
+2025-11-15 17:22:15 INFO: Creating logger factory...
+2025-11-15 17:22:15 INFO: Creating settings logger...
+2025-11-15 17:22:15 INFO: Creating settings window...
+2025-11-15 17:22:16 INFO: Settings window created successfully
+2025-11-15 17:22:16 INFO: Configuring window properties...
+2025-11-15 17:22:16 INFO: Showing settings dialog...
+2025-11-15 17:22:52 INFO: Settings window closed with result: False
+2025-11-15 17:24:58 INFO: AudioEngineInitializer started
+2025-11-15 17:24:58 INFO: Using CSCore audio engine
+2025-11-15 17:24:58 INFO: MainWindow constructor started
+2025-11-15 17:24:59 INFO: Using CSCore audio engine
+2025-11-15 17:25:03 INFO: Opening settings window...
+2025-11-15 17:25:03 INFO: Creating logger factory...
+2025-11-15 17:25:03 INFO: Creating settings logger...
+2025-11-15 17:25:03 INFO: Creating settings window...
+2025-11-15 17:25:03 INFO: Settings window created successfully
+2025-11-15 17:25:03 INFO: Configuring window properties...
+2025-11-15 17:25:03 INFO: Showing settings dialog...
+2025-11-15 17:25:09 INFO: Settings window closed with result: False
+2025-11-15 17:28:34 INFO: AudioEngineInitializer started
+2025-11-15 17:28:34 INFO: Using CSCore audio engine
+2025-11-15 17:28:34 INFO: MainWindow constructor started
+2025-11-15 17:28:35 INFO: Using CSCore audio engine
+2025-11-15 17:28:39 INFO: Opening settings window...
+2025-11-15 17:28:39 INFO: Creating logger factory...
+2025-11-15 17:28:39 INFO: Creating settings logger...
+2025-11-15 17:28:39 INFO: Creating settings window...
+2025-11-15 17:28:39 INFO: Settings window created successfully
+2025-11-15 17:28:39 INFO: Configuring window properties...
+2025-11-15 17:28:39 INFO: Showing settings dialog...
+2025-11-15 17:31:45 INFO: Settings window closed with result: False
+2025-11-15 17:32:00 INFO: Opening settings window...
+2025-11-15 17:32:00 INFO: Creating logger factory...
+2025-11-15 17:32:00 INFO: Creating settings logger...
+2025-11-15 17:32:00 INFO: Creating settings window...
+2025-11-15 17:32:00 INFO: Settings window created successfully
+2025-11-15 17:32:00 INFO: Configuring window properties...
+2025-11-15 17:32:00 INFO: Showing settings dialog...
+2025-11-15 17:32:39 INFO: Settings window closed with result: False
+2025-11-15 17:32:45 INFO: Opening settings window...
+2025-11-15 17:32:45 INFO: Creating logger factory...
+2025-11-15 17:32:45 INFO: Creating settings logger...
+2025-11-15 17:32:45 INFO: Creating settings window...
+2025-11-15 17:32:45 INFO: Settings window created successfully
+2025-11-15 17:32:45 INFO: Configuring window properties...
+2025-11-15 17:32:45 INFO: Showing settings dialog...
+2025-11-15 17:32:59 INFO: Settings window closed with result: False

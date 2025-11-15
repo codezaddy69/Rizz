@@ -11,29 +11,52 @@ namespace DJMixMaster.Audio
     /// </summary>
     public class LoopingSampleProvider : ISampleProvider
     {
-        private readonly ISampleProvider _source;
-        private readonly AudioFileReader _reader;
+        private ISampleProvider _source;
+        private AudioFileReader? _reader;
 
-        public LoopingSampleProvider(ISampleProvider source, AudioFileReader reader)
+        public LoopingSampleProvider(ISampleProvider source, AudioFileReader? reader)
         {
-            _source = source;
-            _reader = reader;
+            _source = source ?? throw new ArgumentNullException(nameof(source));
+            _reader = reader; // Can be null for silent sources
             WaveFormat = source.WaveFormat;
         }
 
         public WaveFormat WaveFormat { get; }
 
+        /// <summary>
+        /// Switches the audio source without changing the provider reference.
+        /// </summary>
+        /// <param name="newSource">The new sample provider source.</param>
+        /// <param name="newReader">The associated audio file reader (null for silent sources).</param>
+        public void SetSource(ISampleProvider newSource, AudioFileReader? newReader)
+        {
+            _source = newSource ?? throw new ArgumentNullException(nameof(newSource));
+            _reader = newReader; // Can be null
+        }
+
         public int Read(float[] buffer, int offset, int count)
         {
+            if (_source == null) return 0; // Safety check
+
             int totalRead = 0;
             while (totalRead < count)
             {
                 int read = _source.Read(buffer, offset + totalRead, count - totalRead);
                 if (read == 0)
                 {
-                    // End of source, loop back
-                    _reader.Position = 0;
-                    continue;
+                    // End of source, loop back if we have a reader
+                    if (_reader != null)
+                    {
+                        _reader.Position = 0;
+                        continue;
+                    }
+                    else
+                    {
+                        // Silent source, just return zeros for remaining buffer
+                        Array.Clear(buffer, offset + totalRead, count - totalRead);
+                        totalRead = count;
+                        break;
+                    }
                 }
                 totalRead += read;
             }
@@ -49,8 +72,13 @@ namespace DJMixMaster.Audio
     {
         private readonly ILogger<Deck> _logger;
         private readonly int _deckNumber;
+        private readonly AudioFileAnalyzer _analyzer;
         private AudioFileReader? _audioFileReader;
         private VolumeSampleProvider? _volumeProvider;
+        private LoopingSampleProvider _loopingProvider;
+        private PlayingSampleProvider _playingProvider;
+        private SilentSampleProvider _silentProvider;
+        private AudioFileInfo? _currentFileInfo;
         private float _baseVolume = 1.0f;
         private float _crossfaderGain = 1.0f;
         private bool _isPlaying;
@@ -58,8 +86,14 @@ namespace DJMixMaster.Audio
 
         /// <summary>
         /// Gets the sample provider for this deck, used in mixing.
+        /// Always returns a valid provider (never null) for permanent pipeline.
         /// </summary>
-        public ISampleProvider? SampleProvider => _volumeProvider;
+        public ISampleProvider SampleProvider => _playingProvider;
+
+        /// <summary>
+        /// Gets information about the currently loaded audio file.
+        /// </summary>
+        public AudioFileInfo? CurrentFileInfo => _currentFileInfo;
 
         /// <summary>
         /// Gets or sets the base volume level (0.0 to 2.0, clamped).
@@ -108,6 +142,15 @@ namespace DJMixMaster.Audio
         {
             _deckNumber = deckNumber;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _analyzer = new AudioFileAnalyzer(logger);
+
+            // Initialize permanent silent provider chain for continuous pipeline
+            var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+            _silentProvider = new SilentSampleProvider(waveFormat);
+            _loopingProvider = new LoopingSampleProvider(_silentProvider, null);
+            _playingProvider = new PlayingSampleProvider(_loopingProvider, () => _isPlaying);
+            _volumeProvider = new VolumeSampleProvider(_playingProvider);
+            UpdateEffectiveVolume();
         }
 
         /// <summary>
@@ -128,6 +171,17 @@ namespace DJMixMaster.Audio
             {
                 _logger.LogInformation("Loading file for deck {DeckNumber}: {FilePath}", _deckNumber, filePath);
 
+                // Analyze file comprehensively
+                _currentFileInfo = _analyzer.AnalyzeFile(filePath);
+
+                // Log analysis results
+                _logger.LogInformation("File analysis complete: {Info}", _currentFileInfo);
+                if (_currentFileInfo.CompatibilityWarnings.Length > 0)
+                {
+                    _logger.LogWarning("Compatibility warnings for deck {DeckNumber}: {Warnings}",
+                        _deckNumber, string.Join(", ", _currentFileInfo.CompatibilityWarnings));
+                }
+
                 // Dispose existing resources
                 DisposeResources();
 
@@ -135,38 +189,39 @@ namespace DJMixMaster.Audio
                 _audioFileReader = new AudioFileReader(filePath);
                 ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
 
-                // Resample to 44100 Hz if necessary
-                if (_audioFileReader.WaveFormat.SampleRate != 44100)
-                {
-                    _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
-                    var targetFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2); // Always resample to stereo
-                    var waveProvider = new SampleToWaveProvider(sampleProvider);
-                    var resampler = new MediaFoundationResampler(waveProvider, targetFormat);
-                    resampler.ResamplerQuality = 60; // High quality
-                    sampleProvider = resampler.ToSampleProvider();
-                }
-
-                // Ensure stereo output
+                // Ensure stereo output BEFORE resampling
                 if (_audioFileReader.WaveFormat.Channels == 1)
                 {
                     sampleProvider = new MonoToStereoSampleProvider(sampleProvider);
                     _logger.LogInformation("Converted mono to stereo for deck {DeckNumber}", _deckNumber);
                 }
 
-                _logger.LogInformation("Final audio format for deck {DeckNumber}: 44100Hz, 2ch", _deckNumber);
-                var loopingProvider = new LoopingSampleProvider(sampleProvider, _audioFileReader);
-                _volumeProvider = new VolumeSampleProvider(loopingProvider);
-                UpdateEffectiveVolume(); // Apply current volume settings
+                // Resample to 44100 Hz if necessary
+                if (_audioFileReader.WaveFormat.SampleRate != 44100)
+                {
+                    _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using WDL resampler", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
+                    try
+                    {
+                        sampleProvider = new WdlResamplingSampleProvider(sampleProvider, 44100);
+                        _logger.LogInformation("WDL resampling initialized successfully for deck {DeckNumber}", _deckNumber);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Failed to initialize WDL resampler for deck {DeckNumber}", _deckNumber);
+                        throw;
+                    }
+                }
+
+                _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} → 44100Hz stereo",
+                    _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown");
+                // Switch the source in the permanent provider chain
+                _loopingProvider.SetSource(sampleProvider, _audioFileReader);
+                // Volume provider is already set up permanently
 
                 LoadedFile = filePath;
                 _isPlaying = false;
 
-                // Log file properties for debugging
-                _logger.LogInformation("File loaded successfully for deck {DeckNumber}: {SampleRate}Hz, {BitsPerSample}bit, {Channels}ch, {TotalTime.TotalSeconds:F1}s",
-                    _deckNumber, _audioFileReader.WaveFormat.SampleRate, _audioFileReader.WaveFormat.BitsPerSample,
-                    _audioFileReader.WaveFormat.Channels, _audioFileReader.TotalTime.TotalSeconds);
-
-                _logger.LogInformation("File loaded successfully for deck {DeckNumber}", _deckNumber);
+                _logger.LogInformation("File loaded successfully for deck {DeckNumber}: {Info}", _deckNumber, _currentFileInfo);
             }
             catch (Exception ex)
             {
@@ -185,6 +240,7 @@ namespace DJMixMaster.Audio
 
             DisposeResources();
             LoadedFile = null;
+            _currentFileInfo = null;
             _isPlaying = false;
         }
 

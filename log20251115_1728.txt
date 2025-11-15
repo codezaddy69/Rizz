@@ -1,0 +1,27 @@
+Session started: 11/15/2025 5:28:34 PM
+WaveFormat: 44100Hz, 32bit, 2ch
+Set provider 0: active
+Set provider 1: active
+Read 1: samples=1024, pre-sum max=0.000, post-sum max=0.000, post-clamp max=0.000
+Read 101: samples=1024, pre-sum max=0.787, post-sum max=1.787, post-clamp max=1.000
+Read 201: samples=1024, pre-sum max=0.214, post-sum max=1.118, post-clamp max=1.000
+Read 301: samples=1024, pre-sum max=0.960, post-sum max=1.769, post-clamp max=1.000
+Read 401: samples=1024, pre-sum max=0.629, post-sum max=0.892, post-clamp max=0.892
+Read 501: samples=1024, pre-sum max=0.008, post-sum max=1.003, post-clamp max=1.000
+Read 601: samples=1024, pre-sum max=0.789, post-sum max=1.784, post-clamp max=1.000
+Read 701: samples=1024, pre-sum max=0.220, post-sum max=1.106, post-clamp max=1.000
+Read 801: samples=1024, pre-sum max=0.949, post-sum max=1.701, post-clamp max=1.000
+Read 901: samples=1024, pre-sum max=0.368, post-sum max=1.143, post-clamp max=1.000
+Read 1001: samples=1024, pre-sum max=0.139, post-sum max=1.049, post-clamp max=1.000
+Read 1101: samples=1024, pre-sum max=0.778, post-sum max=1.778, post-clamp max=1.000
+Read 1201: samples=1024, pre-sum max=0.232, post-sum max=1.165, post-clamp max=1.000
+Read 1301: samples=1024, pre-sum max=0.014, post-sum max=1.001, post-clamp max=1.000
+Read 1401: samples=1024, pre-sum max=0.657, post-sum max=1.220, post-clamp max=1.000
+Read 1501: samples=1024, pre-sum max=0.055, post-sum max=1.015, post-clamp max=1.000
+Read 1601: samples=1024, pre-sum max=0.785, post-sum max=1.785, post-clamp max=1.000
+Read 1701: samples=1024, pre-sum max=0.276, post-sum max=1.059, post-clamp max=1.000
+Read 1801: samples=1024, pre-sum max=0.025, post-sum max=1.002, post-clamp max=1.000
+Read 1901: samples=1024, pre-sum max=0.269, post-sum max=1.057, post-clamp max=1.000
+Read 2001: samples=1024, pre-sum max=0.792, post-sum max=0.792, post-clamp max=0.792
+Read 2101: samples=1024, pre-sum max=0.756, post-sum max=1.736, post-clamp max=1.000
+Read 2201: samples=1024, pre-sum max=0.320, post-sum max=1.069, post-clamp max=1.000

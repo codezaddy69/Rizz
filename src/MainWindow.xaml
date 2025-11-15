@@ -386,15 +386,19 @@
                     BorderBrush="#9D00FF"/>
 
             <!-- Crossfader -->
-             <Slider x:Name="sliderCrossfader"
-                     Grid.Column="2"
-                     Style="{StaticResource NeonCrossfader}"
-                     Margin="40,50"
-                     Height="30"
-                     Minimum="-1"
-                     Maximum="1"
-                     Value="0"
-                     BorderBrush="#00F7FF"/>
+             <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                 <Slider x:Name="sliderCrossfader"
+                         Style="{StaticResource NeonCrossfader}"
+                         Margin="40,20"
+                         Height="30"
+                         Minimum="-1"
+                         Maximum="1"
+                         Value="0"
+                         BorderBrush="#00F7FF"/>
+                 <Button x:Name="btnSettings" Content="⚙" Style="{StaticResource NeonButton}"
+                         BorderBrush="#FFFF00" Margin="40,5" Width="50" Height="40"
+                         ToolTip="Audio Settings"/>
+             </StackPanel>
 
             <!-- Right Volume -->
             <Slider x:Name="sliderRightVolume" 

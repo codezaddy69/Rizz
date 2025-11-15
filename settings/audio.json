@@ -1,0 +1,73 @@
+{
+  "SelectedAsioDevice": "ASIO4ALL v2",
+  "AvailableDevices": [
+    {
+      "Id": "ASIO4ALL v2",
+      "Name": "ASIO4ALL v2",
+      "DriverName": "ASIO4ALL v2",
+      "MaxChannels": 0,
+      "IsActive": false,
+      "Status": "Available"
+    },
+    {
+      "Id": "FL Studio ASIO",
+      "Name": "FL Studio ASIO",
+      "DriverName": "FL Studio ASIO",
+      "MaxChannels": 0,
+      "IsActive": false,
+      "Status": "Available"
+    },
+    {
+      "Id": "RC-505",
+      "Name": "RC-505",
+      "DriverName": "RC-505",
+      "MaxChannels": 0,
+      "IsActive": false,
+      "Status": "Available"
+    },
+    {
+      "Id": "Realtek ASIO",
+      "Name": "Realtek ASIO",
+      "DriverName": "Realtek ASIO",
+      "MaxChannels": 0,
+      "IsActive": false,
+      "Status": "Available"
+    }
+  ],
+  "BufferSize": 512,
+  "BufferOffset": 10,
+  "KernelBuffers": 2,
+  "UseHardwareBuffer": false,
+  "AllowPullMode": true,
+  "AlwaysResample": true,
+  "Force16Bit": false,
+  "SampleRate": 44100,
+  "PreferredFormat": "Float32",
+  "CrossfaderCurve": "Linear",
+  "CrossfaderRange": 1,
+  "CrossfaderSensitivity": 1,
+  "CrossfaderMode": "Additive",
+  "CenterDetent": false,
+  "MasterOutputMode": "StereoMix",
+  "CueOutputSource": "Deck1",
+  "BoothOutputSource": "Disabled",
+  "MasterOutputLevel": 0,
+  "HeadphoneMix": 0.5,
+  "ProcessPriority": "High",
+  "CpuAffinity": false,
+  "MaxThreads": 4,
+  "LogLevel": "Info",
+  "EnablePerfMonitoring": false,
+  "ShowBufferStatus": false,
+  "LogFilePath": "logs/audio.log",
+  "AutoLoadCuePoints": true,
+  "RememberLastPosition": false,
+  "GaplessPlayback": true,
+  "PreBufferTime": 2,
+  "MaxFileSize": 500,
+  "Theme": "DarkNeon",
+  "WaveformZoom": 1,
+  "AutoScrollWaveform": true,
+  "KeyboardLayout": "Standard",
+  "ConfirmOnDelete": false
+}
