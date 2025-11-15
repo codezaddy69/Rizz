@@ -22,7 +22,7 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net9.0-windows"
+          "net9.0-windows7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -30,7 +30,7 @@
         },
         "frameworks": {
           "net9.0-windows7.0": {
-            "targetAlias": "net9.0-windows",
+            "targetAlias": "net9.0-windows7.0",
             "projectReferences": {}
           }
         },
@@ -48,7 +48,7 @@
       },
       "frameworks": {
         "net9.0-windows7.0": {
-          "targetAlias": "net9.0-windows",
+          "targetAlias": "net9.0-windows7.0",
           "dependencies": {
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
@@ -67,14 +67,6 @@
               "version": "[8.0.0, )"
             },
             "NAudio": {
-              "target": "Package",
-              "version": "[2.2.1, )"
-            },
-            "NAudio.Asio": {
-              "target": "Package",
-              "version": "[2.2.1, )"
-            },
-            "NAudio.Core": {
               "target": "Package",
               "version": "[2.2.1, )"
             }

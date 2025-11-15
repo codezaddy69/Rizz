@@ -8,7 +8,7 @@ namespace DJMixMaster;
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public partial class App : System.Windows.Application
 {
     [STAThread]
     public static void Main()

@@ -7,6 +7,7 @@ using System.Windows.Media;
 using Microsoft.Extensions.Logging;
 using DJMixMaster.Audio;
 using DJMixMaster.Visualization;
+using Button = System.Windows.Controls.Button;
 
 namespace DJMixMaster.UI.Handlers
 {
