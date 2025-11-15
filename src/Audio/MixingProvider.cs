@@ -23,6 +23,12 @@ namespace DJMixMaster.Audio
 
         public WaveFormat WaveFormat { get; }
 
+        public bool CanSeek => false;
+
+        public long Position { get => 0; set {} }
+
+        public long Length => 0;
+
         public MixingProvider(WaveFormat waveFormat, ILogger<MixingProvider> logger)
         {
             WaveFormat = waveFormat ?? throw new ArgumentNullException(nameof(waveFormat));

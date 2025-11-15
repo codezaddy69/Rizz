@@ -10,6 +10,7 @@
 - [x] Implement CSCore-based AudioEngine with Deck, MixingProvider, VstHost
 - [x] Update AudioEngineInitializer for CSCore engine
 - [x] Update MainWindow to use new audio engine
+- [x] Add CSCore and VST.NET documentation to ref/ folder
 
 ## Priority Tasks
 - [ ] Add CSCore and VST.NET NuGet packages

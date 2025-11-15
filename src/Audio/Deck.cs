@@ -2,16 +2,44 @@ using System;
 using CSCore;
 using CSCore.Codecs;
 using CSCore.Streams;
+
 using Microsoft.Extensions.Logging;
 
 namespace DJMixMaster.Audio
 {
+    internal class VolumeSampleProvider : ISampleSource
+    {
+        private ISampleSource _source;
+        public float Volume { get; set; } = 1.0f;
+        public WaveFormat WaveFormat => _source.WaveFormat;
+        public bool CanSeek => false;
+        public long Position { get => 0; set {} }
+        public long Length => 0;
+
+        public VolumeSampleProvider(ISampleSource source)
+        {
+            _source = source;
+        }
+
+        public int Read(float[] buffer, int offset, int count)
+        {
+            int read = _source.Read(buffer, offset, count);
+            for (int i = 0; i < read; i++)
+            {
+                buffer[offset + i] *= Volume;
+            }
+            return read;
+        }
+
+        public void Dispose() => _source.Dispose();
+    }
+
     public class Deck : IDisposable
     {
         private readonly ILogger<Deck> _logger;
         private readonly int _deckNumber;
         private IWaveSource? _waveSource;
-        private VolumeSource? _volumeSource;
+        private VolumeSampleProvider? _volumeProvider;
         private bool _isPlaying;
         private bool _disposed;
 
@@ -35,12 +63,13 @@ namespace DJMixMaster.Audio
 
                 // Dispose existing source
                 _waveSource?.Dispose();
-                _volumeSource?.Dispose();
+                _volumeProvider?.Dispose();
 
                 // Create new source
                 _waveSource = CodecFactory.Instance.GetCodec(filePath);
-                _volumeSource = new VolumeSource(_waveSource);
-                _volumeSource.Volume = Volume;
+                ISampleSource sampleSource = _waveSource.ToSampleSource();
+                _volumeProvider = new VolumeSampleProvider(sampleSource);
+                _volumeProvider.Volume = Volume;
 
                 LoadedFile = filePath;
                 _logger.LogInformation($"File loaded successfully for deck {_deckNumber}");
@@ -56,9 +85,9 @@ namespace DJMixMaster.Audio
         {
             _logger.LogInformation($"Ejecting file from deck {_deckNumber}");
             _waveSource?.Dispose();
-            _volumeSource?.Dispose();
+            _volumeProvider?.Dispose();
             _waveSource = null;
-            _volumeSource = null;
+            _volumeProvider = null;
             LoadedFile = null;
             _isPlaying = false;
         }
@@ -96,14 +125,14 @@ namespace DJMixMaster.Audio
 
         public ISampleSource? GetSampleSource()
         {
-            return _volumeSource?.ToSampleSource();
+            return _volumeProvider;
         }
 
         public void UpdateVolume()
         {
-            if (_volumeSource != null)
+            if (_volumeProvider != null)
             {
-                _volumeSource.Volume = Volume;
+                _volumeProvider.Volume = Volume;
             }
         }
 
@@ -114,7 +143,7 @@ namespace DJMixMaster.Audio
                 if (disposing)
                 {
                     _waveSource?.Dispose();
-                    _volumeSource?.Dispose();
+                    _volumeProvider?.Dispose();
                 }
                 _disposed = true;
             }

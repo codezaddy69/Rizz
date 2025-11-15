@@ -14,23 +14,25 @@
 ## Tech Stack
 
 ### Core Technologies
-- **Language**: C# 12.0 (.NET 9.0)
+- **Language**: C# 12.0 (.NET 8.0)
 - **UI Framework**: Windows Presentation Foundation (WPF)
-- **Audio Engine**: Dual Architecture
-  - Primary: JUCE (C++ native library for VST support)
-  - Fallback: NAudio (.NET managed library)
+- **Audio Engine**: CSCore (.NET managed library)
+  - Features: Playback, mixing, crossfading, volume control
+  - VST Support: VST.NET framework
 - **Build System**: .NET SDK (dotnet CLI)
 
 ### Dependencies
 ```xml
 <!-- Core .NET -->
-<TargetFramework>net9.0-windows</TargetFramework>
+<TargetFramework>net8.0-windows</TargetFramework>
 <UseWPF>true</UseWPF>
 <Nullable>enable</Nullable>
 <ImplicitUsings>enable</ImplicitUsings>
 
 <!-- Audio Libraries -->
-<PackageReference Include="NAudio" Version="2.2.1" />
+<PackageReference Include="CSCore" Version="1.2.1.2" />
+<PackageReference Include="Jacobi.Vst.Core" Version="2.0.0" />
+<PackageReference Include="Jacobi.Vst.Interop" Version="2.0.0" />
 <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
 <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />

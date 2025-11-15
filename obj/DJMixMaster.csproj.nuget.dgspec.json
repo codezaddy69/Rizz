@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {}
+    "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {
+    "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+        "projectUniqueName": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
         "projectName": "DJMixMaster",
-        "projectPath": "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+        "projectPath": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
         "packagesPath": "C:\\Users\\rogue\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rogue\\code\\djmixmaster\\obj\\",
+        "outputPath": "C:\\Users\\rogue\\Code\\DJMixMaster\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -22,15 +22,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net9.0-windows"
+          "net8.0-windows"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net9.0-windows7.0": {
-            "targetAlias": "net9.0-windows",
+          "net8.0-windows7.0": {
+            "targetAlias": "net8.0-windows",
             "projectReferences": {}
           }
         },
@@ -47,9 +47,13 @@
         "SdkAnalysisLevel": "9.0.100"
       },
       "frameworks": {
-        "net9.0-windows7.0": {
-          "targetAlias": "net9.0-windows",
+        "net8.0-windows7.0": {
+          "targetAlias": "net8.0-windows",
           "dependencies": {
+            "CSCore": {
+              "target": "Package",
+              "version": "[1.2.1.2, )"
+            },
             "Microsoft.Extensions.Configuration.Json": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -65,10 +69,6 @@
             "Microsoft.Extensions.Logging.Debug": {
               "target": "Package",
               "version": "[8.0.0, )"
-            },
-            "NAudio": {
-              "target": "Package",
-              "version": "[2.2.1, )"
             }
           },
           "imports": [

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using CSCore;
 using CSCore.SoundOut;
 using CSCore.Codecs.WAV;
+using CSCore.Streams;
+using CSCore.Streams.Conversion;
 
 namespace DJMixMaster.Audio
 {
@@ -41,7 +43,7 @@ namespace DJMixMaster.Audio
         private readonly MixingProvider _mixer;
         private readonly VstHost _vstHost;
         private readonly ISoundOut _soundOut;
-        private readonly WaveFormat _waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
+        private readonly WaveFormat _waveFormat = new WaveFormat(44100, 32, 2, AudioEncoding.IeeeFloat);
         private bool _disposed;
 
         // Events
@@ -60,7 +62,7 @@ namespace DJMixMaster.Audio
 
             // Initialize sound out
             _soundOut = new WasapiOut();
-            _soundOut.Initialize(_mixer);
+            _soundOut.Initialize(new SampleToWaveSource(_mixer));
 
             _logger.LogInformation("CSCore AudioEngine initialized");
         }
@@ -89,17 +91,54 @@ namespace DJMixMaster.Audio
             }
         }
 
-        public void Play(int deckNumber) => _playbackController.Play(deckNumber);
+        public void Play(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            deck.Play();
+            if (!_soundOut.PlaybackState.HasFlag(PlaybackState.Playing))
+            {
+                _soundOut.Play();
+            }
+        }
 
-        public void Pause(int deckNumber) => _playbackController.Pause(deckNumber);
+        public void Pause(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            deck.Pause();
+            // If both decks are paused, stop sound out
+            if (!_deck1.IsPlaying && !_deck2.IsPlaying)
+            {
+                _soundOut.Pause();
+            }
+        }
 
-        public void Stop(int deckNumber) => _playbackController.Stop(deckNumber);
+        public void Stop(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            deck.Stop();
+            if (!_deck1.IsPlaying && !_deck2.IsPlaying)
+            {
+                _soundOut.Stop();
+            }
+        }
 
-        public void Seek(int deckNumber, double seconds) => _playbackController.Seek(deckNumber, seconds);
+        public void Seek(int deckNumber, double seconds)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            deck.Seek(seconds);
+        }
 
-        public double GetPosition(int deckNumber) => _playbackController.GetPosition(deckNumber);
+        public double GetPosition(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            return deck.Position;
+        }
 
-        public double GetLength(int deckNumber) => _playbackController.GetLength(deckNumber);
+        public double GetLength(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            return deck.Length;
+        }
 
 
 
