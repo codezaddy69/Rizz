@@ -136,11 +136,19 @@ namespace DJMixMaster.Audio
 
         public void Play(int deckNumber)
         {
-            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
-            deck.Play();
-            if (_soundOut.PlaybackState != PlaybackState.Playing)
+            try
             {
-                _soundOut.Play();
+                Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+                deck.Play();
+                if (_soundOut.PlaybackState != PlaybackState.Playing)
+                {
+                    _soundOut.Play();
+                    _logger.LogInformation("Started playback on deck {DeckNumber}, WaveOut state: {State}", deckNumber, _soundOut.PlaybackState);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error starting playback on deck {DeckNumber}", deckNumber);
             }
         }
 
