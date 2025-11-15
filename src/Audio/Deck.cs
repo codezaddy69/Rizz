@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
 using Microsoft.Extensions.Logging;
@@ -92,11 +93,28 @@ namespace DJMixMaster.Audio
 
                 // Load new file
                 _audioFileReader = new AudioFileReader(filePath);
-                _volumeProvider = new VolumeSampleProvider(_audioFileReader.ToSampleProvider());
+                ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
+
+                // Resample to 44100 Hz if necessary
+                if (_audioFileReader.WaveFormat.SampleRate != 44100)
+                {
+                    _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
+                    var targetFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, _audioFileReader.WaveFormat.Channels);
+                    var resampler = new MediaFoundationResampler(sampleProvider, targetFormat);
+                    resampler.ResamplerQuality = 60; // High quality
+                    sampleProvider = resampler.ToSampleProvider();
+                }
+
+                _volumeProvider = new VolumeSampleProvider(sampleProvider);
                 UpdateEffectiveVolume(); // Apply current volume settings
 
                 LoadedFile = filePath;
                 _isPlaying = false;
+
+                // Log file properties for debugging
+                _logger.LogInformation("File loaded successfully for deck {DeckNumber}: {SampleRate}Hz, {BitsPerSample}bit, {Channels}ch, {TotalTime.TotalSeconds:F1}s",
+                    _deckNumber, _audioFileReader.WaveFormat.SampleRate, _audioFileReader.WaveFormat.BitsPerSample,
+                    _audioFileReader.WaveFormat.Channels, _audioFileReader.TotalTime.TotalSeconds);
 
                 _logger.LogInformation("File loaded successfully for deck {DeckNumber}", _deckNumber);
             }
@@ -132,6 +150,22 @@ namespace DJMixMaster.Audio
         }
 
         /// <summary>
+        /// Starts playback of the loaded audio.
+        /// </summary>
+        public void Play()
+        {
+            if (_audioFileReader != null)
+            {
+                _isPlaying = true;
+                _logger.LogInformation("Playing deck {DeckNumber}", _deckNumber);
+            }
+            else
+            {
+                _logger.LogWarning("Cannot play deck {DeckNumber}: no file loaded", _deckNumber);
+            }
+        }
+
+        /// <summary>
         /// Updates the crossfader gain for this deck.
         /// </summary>
         /// <param name="crossfader">Crossfader position (0.0 to 1.0).</param>
@@ -139,11 +173,6 @@ namespace DJMixMaster.Audio
         {
             _crossfaderGain = _deckNumber == 1 ? 1 - crossfader : crossfader;
             UpdateEffectiveVolume();
-        }
-            else
-            {
-                _logger.LogWarning("Cannot play deck {DeckNumber}: no file loaded", _deckNumber);
-            }
         }
 
         /// <summary>

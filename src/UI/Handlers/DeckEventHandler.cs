@@ -295,6 +295,8 @@ namespace DJMixMaster.UI.Handlers
                 var position = _audioEngine.GetPosition(deckNumber);
                 var length = _audioEngine.GetLength(deckNumber);
 
+                _logger.LogDebug("Updating position for deck {DeckNumber}: Position={Position:F2}s, Length={Length:F2}s", deckNumber, position, length);
+
                 if (deckNumber == 1 && deck1PositionSlider != null)
                 {
                     deck1PositionSlider.Value = position;

@@ -14,10 +14,10 @@
 
 ## Priority Tasks
 - [ ] Add CSCore and VST.NET NuGet packages (CSCore removed due to compatibility)
-- [ ] Implement crossfading with MixingProvider
-- [ ] Implement volume faders for decks
-- [ ] Implement play/pause/stop controls
-- [ ] Implement load/eject for tracks
+- [x] Implement crossfading with MixingProvider
+- [x] Implement volume faders for decks
+- [x] Implement play/pause/stop controls
+- [x] Implement load/eject for tracks
 - [ ] Test full DJ functionality (crossfader, decks, mixing)
 
 ## General Tasks

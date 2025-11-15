@@ -1,39 +1,31 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using NAudio.Wave;
 
 namespace DJMixMaster.Audio
 {
-    /// <summary>
-    /// A sample provider that mixes multiple audio streams with built-in clipping prevention.
-    /// Follows Single Responsibility Principle by handling only audio mixing.
-    /// Implements ISampleProvider for compatibility with NAudio pipeline.
-    /// </summary>
     public class MixingSampleProvider : ISampleProvider
     {
         private readonly List<ISampleProvider?> _providers = new();
         private readonly WaveFormat _waveFormat;
+        private readonly StreamWriter _logWriter;
+        private int _readCount = 0;
 
-        /// <summary>
-        /// Gets the wave format of the mixed output.
-        /// </summary>
         public WaveFormat WaveFormat => _waveFormat;
 
-        /// <summary>
-        /// Initializes a new instance of the MixingSampleProvider class.
-        /// </summary>
-        /// <param name="waveFormat">The wave format for the output.</param>
-        /// <exception cref="ArgumentNullException">Thrown if waveFormat is null.</exception>
         public MixingSampleProvider(WaveFormat waveFormat)
         {
             _waveFormat = waveFormat ?? throw new ArgumentNullException(nameof(waveFormat));
+
+            // Create timestamped log file
+            string logFileName = $"log{DateTime.Now:yyyyMMdd_HHmm}.txt";
+            _logWriter = new StreamWriter(logFileName, false);
+            _logWriter.WriteLine($"Session started: {DateTime.Now}");
+            _logWriter.WriteLine($"WaveFormat: {_waveFormat.SampleRate}Hz, {_waveFormat.BitsPerSample}bit, {_waveFormat.Channels}ch");
+            _logWriter.Flush();
         }
 
-        /// <summary>
-        /// Adds a sample provider to the mix.
-        /// </summary>
-        /// <param name="provider">The sample provider to add.</param>
-        /// <param name="index">The index at which to add the provider.</param>
         public void SetProvider(int index, ISampleProvider? provider)
         {
             while (_providers.Count <= index)
@@ -41,47 +33,57 @@ namespace DJMixMaster.Audio
                 _providers.Add(null);
             }
             _providers[index] = provider;
+            _logWriter.WriteLine($"Set provider {index}: {(provider != null ? "active" : "null")}");
+            _logWriter.Flush();
         }
 
-        /// <summary>
-        /// Reads samples from all providers, mixes them, and applies clipping prevention.
-        /// </summary>
-        /// <param name="buffer">The buffer to fill with mixed samples.</param>
-        /// <param name="offset">The offset in the buffer to start writing.</param>
-        /// <param name="count">The number of samples to read.</param>
-        /// <returns>The number of samples actually read.</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            // Clear the buffer to prepare for mixing
+            // Clear buffer
             Array.Clear(buffer, offset, count);
+            int maxRead = 0;
+            float maxPreSum = 0f;
+            float maxPostSum = 0f;
 
-            int maxSamplesRead = 0;
-
-            // Read from each provider and mix
             foreach (var provider in _providers)
             {
                 if (provider != null)
                 {
                     float[] tempBuffer = new float[count];
-                    int samplesRead = provider.Read(tempBuffer, 0, count);
+                    int read = provider.Read(tempBuffer, 0, count);
 
-                    // Mix into the main buffer
-                    for (int i = 0; i < samplesRead; i++)
+                    // Track max pre-sum
+                    for (int i = 0; i < read; i++)
                     {
+                        maxPreSum = Math.Max(maxPreSum, Math.Abs(tempBuffer[i]));
                         buffer[offset + i] += tempBuffer[i];
+                        maxPostSum = Math.Max(maxPostSum, Math.Abs(buffer[offset + i]));
                     }
-
-                    maxSamplesRead = Math.Max(maxSamplesRead, samplesRead);
+                    maxRead = Math.Max(maxRead, read);
                 }
             }
 
-            // Apply clipping prevention to avoid distortion
-            for (int i = 0; i < maxSamplesRead; i++)
+            // Clamp to prevent clipping
+            float maxPostClamp = 0f;
+            for (int i = 0; i < maxRead; i++)
             {
-                buffer[offset + i] = Math.Clamp(buffer[offset + i], -1.0f, 1.0f);
+                buffer[offset + i] = Math.Clamp(buffer[offset + i], -1f, 1f);
+                maxPostClamp = Math.Max(maxPostClamp, Math.Abs(buffer[offset + i]));
             }
 
-            return maxSamplesRead;
+            // Log every 100 reads to avoid spam
+            if (_readCount++ % 100 == 0)
+            {
+                _logWriter.WriteLine($"Read {_readCount}: samples={maxRead}, pre-sum max={maxPreSum:F3}, post-sum max={maxPostSum:F3}, post-clamp max={maxPostClamp:F3}");
+                _logWriter.Flush();
+            }
+
+            return maxRead;
+        }
+
+        ~MixingSampleProvider()
+        {
+            _logWriter?.Dispose();
         }
     }
 }

@@ -1,0 +1,2 @@
+Session started: 11/14/2025 11:15:50 PM
+WaveFormat: 44100Hz, 16bit, 2ch
