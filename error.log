@@ -488,3 +488,8 @@
 2025-11-15 01:53:34 INFO: MainWindow constructor started
 2025-11-15 01:53:34 INFO: Using CSCore audio engine
 2025-11-15 01:53:51 INFO: Application closing
+2025-11-15 02:30:15 INFO: AudioEngineInitializer started
+2025-11-15 02:30:15 INFO: Using CSCore audio engine
+2025-11-15 02:30:15 INFO: MainWindow constructor started
+2025-11-15 02:30:15 INFO: Using CSCore audio engine
+2025-11-15 02:30:38 INFO: Application closing

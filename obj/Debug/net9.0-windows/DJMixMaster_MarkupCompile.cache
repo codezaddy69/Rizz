@@ -16,5 +16,5 @@ TRACE;DEBUG;NET;NET9_0;NETCOREAPP
 235947678546
 src\App.xaml;src\MainWindow.xaml;
 
-True
+False
 
