@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using NAudio.Wave;
 using NAudio.Wave.SampleProviders;
-using NAudio.Asio;
-using NAudio.Wasapi;
 
 namespace DJMixMaster.Audio
 {
@@ -80,21 +78,9 @@ namespace DJMixMaster.Audio
                 // Convert to wave provider for output (abstraction layer)
                 _waveProvider = new SampleToWaveProvider(_mixer);
 
-                // Initialize output device with ASIO for low latency
-                var asioDrivers = AsioOut.GetDriverNames();
-                _logger.LogInformation("Available ASIO drivers: {Drivers}", string.Join(", ", asioDrivers));
-                if (asioDrivers.Length > 0)
-                {
-                    string selectedDriver = asioDrivers[0]; // Select first available
-                    _soundOut = new AsioOut(selectedDriver);
-                    ((AsioOut)_soundOut).ChannelOffset = 0;
-                    ((AsioOut)_soundOut).FillWithZeros = false;
-                    _logger.LogInformation("Using ASIO driver: {Driver} for low-latency output", selectedDriver);
-                }
-                else
-                {
-                    throw new InvalidOperationException("No ASIO drivers found. ASIO is required for this application.");
-                }
+                // Initialize output device with WaveOut
+                _logger.LogInformation("Using WaveOut for audio output");
+                _soundOut = new WaveOut();
                 _soundOut.Init(_waveProvider);
 
                 _logger.LogInformation("NAudio AudioEngine initialized successfully");

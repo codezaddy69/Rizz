@@ -69,18 +69,6 @@
             "NAudio": {
               "target": "Package",
               "version": "[2.2.1, )"
-            },
-            "NAudio.Asio": {
-              "target": "Package",
-              "version": "[2.2.1, )"
-            },
-            "NAudio.Core": {
-              "target": "Package",
-              "version": "[2.2.1, )"
-            },
-            "NAudio.Wasapi": {
-              "target": "Package",
-              "version": "[2.2.1, )"
             }
           },
           "imports": [

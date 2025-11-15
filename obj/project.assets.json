@@ -1617,10 +1617,7 @@
       "Microsoft.Extensions.Logging >= 8.0.0",
       "Microsoft.Extensions.Logging.Console >= 8.0.0",
       "Microsoft.Extensions.Logging.Debug >= 8.0.0",
-      "NAudio >= 2.2.1",
-      "NAudio.Asio >= 2.2.1",
-      "NAudio.Core >= 2.2.1",
-      "NAudio.Wasapi >= 2.2.1"
+      "NAudio >= 2.2.1"
     ]
   },
   "packageFolders": {
@@ -1690,18 +1687,6 @@
             "version": "[8.0.0, )"
           },
           "NAudio": {
-            "target": "Package",
-            "version": "[2.2.1, )"
-          },
-          "NAudio.Asio": {
-            "target": "Package",
-            "version": "[2.2.1, )"
-          },
-          "NAudio.Core": {
-            "target": "Package",
-            "version": "[2.2.1, )"
-          },
-          "NAudio.Wasapi": {
             "target": "Package",
             "version": "[2.2.1, )"
           }
