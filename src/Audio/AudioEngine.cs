@@ -3,11 +3,8 @@ using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using CSCore;
-using CSCore.SoundOut;
-using CSCore.Codecs.WAV;
-using CSCore.Streams;
-using CSCore.Streams.Conversion;
+using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 
 namespace DJMixMaster.Audio
 {
@@ -40,10 +37,9 @@ namespace DJMixMaster.Audio
         private readonly ILogger<AudioEngine> _logger;
         private readonly Deck _deck1;
         private readonly Deck _deck2;
-        private readonly MixingProvider _mixer;
-        private readonly VstHost _vstHost;
-        private readonly ISoundOut _soundOut;
-        private readonly WaveFormat _waveFormat = new WaveFormat(44100, 32, 2, AudioEncoding.IeeeFloat);
+        private readonly MixingSampleProvider _mixer;
+        private readonly WasapiOut _soundOut;
+        private float _crossfader = 0.5f;
         private bool _disposed;
 
         // Events
@@ -57,14 +53,15 @@ namespace DJMixMaster.Audio
 
             _deck1 = new Deck(1, loggerFactory.CreateLogger<Deck>());
             _deck2 = new Deck(2, loggerFactory.CreateLogger<Deck>());
-            _mixer = new MixingProvider(_waveFormat, loggerFactory.CreateLogger<MixingProvider>());
-            _vstHost = new VstHost(loggerFactory.CreateLogger<VstHost>());
+            _mixer = new MixingSampleProvider(WaveFormat.CreateIeeeFloatWaveFormat(44100, 2));
+            _mixer.AddMixerInput(_deck1.VolumeProvider);
+            _mixer.AddMixerInput(_deck2.VolumeProvider);
 
             // Initialize sound out
             _soundOut = new WasapiOut();
-            _soundOut.Initialize(new SampleToWaveSource(_mixer));
+            _soundOut.Init(_mixer);
 
-            _logger.LogInformation("CSCore AudioEngine initialized");
+            _logger.LogInformation("NAudio AudioEngine initialized");
         }
 
 
@@ -78,8 +75,7 @@ namespace DJMixMaster.Audio
                 Deck deck = deckNumber == 1 ? _deck1 : _deck2;
                 deck.LoadFile(filePath);
 
-                // Update mixer with new source
-                _mixer.SetDeckSource(deckNumber, deck.GetSampleSource());
+                // Mixer already has the volume providers
 
                 // TODO: Analyze file for beat grid
                 OnBeatGridUpdated(deckNumber, new double[] { 0, 1, 2, 3 }, 120.0); // Placeholder
@@ -161,9 +157,19 @@ namespace DJMixMaster.Audio
             return deck.IsPlaying;
         }
 
-        public void SetCrossfader(float position) => _mixer.Crossfader = position;
+        public void SetCrossfader(float position)
+        {
+            _crossfader = position;
+            UpdateCrossfader();
+        }
 
-        public float GetCrossfader() => _mixer.Crossfader;
+        public float GetCrossfader() => _crossfader;
+
+        private void UpdateCrossfader()
+        {
+            _deck1.UpdateCrossfaderGain(_crossfader);
+            _deck2.UpdateCrossfaderGain(_crossfader);
+        }
 
         public (float[] WaveformData, double Length) GetWaveformData(int deckNumber)
         {
@@ -205,8 +211,6 @@ namespace DJMixMaster.Audio
                     _soundOut?.Dispose();
                     _deck1?.Dispose();
                     _deck2?.Dispose();
-                    _mixer?.Dispose();
-                    _vstHost?.Dispose();
                 }
                 _disposed = true;
             }
