@@ -49,6 +49,9 @@ namespace DJMixMaster
 
                 LogInfo("Using CSCore audio engine");
 
+                // Open settings window automatically for testing
+                Dispatcher.InvokeAsync(() => OpenSettingsWindow());
+
                 // Wire up audio engine events
                 audioEngine.PlaybackPositionChanged += deckEventHandler.OnPlaybackPositionChanged;
                 audioEngine.BeatGridUpdated += deckEventHandler.OnBeatGridUpdated;
@@ -108,6 +111,7 @@ namespace DJMixMaster
             try
             {
                 LogInfo("Opening settings window...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Opening settings window...\n");
 
                 // Check prerequisites
                 if (audioEngine == null)
@@ -121,6 +125,7 @@ namespace DJMixMaster
                 }
 
                 LogInfo("Creating logger factory...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Creating logger factory...\n");
                 var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
                 if (loggerFactory == null)
                 {
@@ -128,6 +133,7 @@ namespace DJMixMaster
                 }
 
                 LogInfo("Creating settings logger...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Creating settings logger...\n");
                 var settingsLogger = loggerFactory.CreateLogger<AudioSettingsWindow>();
                 if (settingsLogger == null)
                 {
@@ -135,25 +141,31 @@ namespace DJMixMaster
                 }
 
                 LogInfo("Creating settings window...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Creating settings window...\n");
                 settingsWindow = new AudioSettingsWindow(settingsLogger, audioEngine);
                 if (settingsWindow == null)
                 {
                     throw new InvalidOperationException("Settings window constructor returned null");
                 }
                 LogInfo("Settings window created successfully");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Settings window created successfully\n");
 
                 LogInfo("Configuring window properties...");
-                settingsWindow.Owner = this;
-                settingsWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Configuring window properties...\n");
+                // settingsWindow.Owner = this; // Removed for WSL compatibility
+                // settingsWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
                 LogInfo("Showing settings dialog...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Showing settings dialog...\n");
                 var result = settingsWindow.ShowDialog();
 
                 LogInfo($"Settings window closed with result: {result}");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Settings window closed with result: {result}\n");
             }
             catch (Exception ex)
             {
                 LogError($"Error opening settings window: {ex.Message}");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Error opening settings window: {ex.Message}\n{ex.StackTrace}\n");
                 LogError($"Stack trace: {ex.StackTrace}");
                 if (ex.InnerException != null)
                 {

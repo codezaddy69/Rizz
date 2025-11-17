@@ -30,37 +30,48 @@ namespace DJMixMaster.Audio
             try
             {
                 _logger.LogInformation("Initializing AudioSettingsWindow...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing AudioSettingsWindow...\n");
 
                 _logger.LogInformation("Loading XAML components...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Loading XAML components...\n");
                 InitializeComponent();
                 _logger.LogInformation("XAML components loaded successfully");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: XAML components loaded successfully\n");
 
                 _logger.LogInformation("Loading settings...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Loading settings...\n");
                 LoadSettings();
 
                 _logger.LogInformation("Populating device list...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Populating device list...\n");
                 PopulateDeviceList();
 
                 _logger.LogInformation("Initializing controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing controls...\n");
                 InitializeControls();
 
                 _logger.LogInformation("AudioSettingsWindow initialization complete");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: AudioSettingsWindow initialization complete\n");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to initialize AudioSettingsWindow at stage: {Message}", ex.Message);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Failed to initialize AudioSettingsWindow at stage: {ex.Message}\n{ex.StackTrace}\n");
                 _logger.LogError(ex, "Full exception details: {StackTrace}", ex.StackTrace);
 
                 // Try to create a minimal fallback window
                 try
                 {
                     _logger.LogInformation("Attempting to create fallback window...");
+                    File.AppendAllText("debug.log", $"{DateTime.Now}: Attempting to create fallback window...\n");
                     CreateFallbackWindow();
                     _logger.LogInformation("Fallback window created successfully");
+                    File.AppendAllText("debug.log", $"{DateTime.Now}: Fallback window created successfully\n");
                 }
                 catch (Exception fallbackEx)
                 {
                     _logger.LogError(fallbackEx, "Fallback window creation also failed");
+                    File.AppendAllText("debug.log", $"{DateTime.Now}: Fallback window creation also failed: {fallbackEx.Message}\n{fallbackEx.StackTrace}\n");
                     throw new InvalidOperationException("Settings window initialization failed", ex);
                 }
             }
@@ -228,7 +239,7 @@ namespace DJMixMaster.Audio
                     throw new InvalidOperationException("ASIO driver enumeration failed", driverEx);
                 }
 
-                _currentSettings.AvailableDevices.Clear();
+                _currentSettings.AvailableAsioDevices.Clear();
                 foreach (string driverName in driverNames)
                 {
                     _logger.LogDebug("Adding ASIO device: {Name}", driverName);
@@ -239,25 +250,96 @@ namespace DJMixMaster.Audio
                         DriverName = driverName,
                         Status = "Available"
                     };
-                    _currentSettings.AvailableDevices.Add(deviceInfo);
+                    _currentSettings.AvailableAsioDevices.Add(deviceInfo);
                 }
 
-                _logger.LogInformation("Setting device list as ItemsSource...");
-                DeviceComboBox.ItemsSource = _currentSettings.AvailableDevices;
+                // Enumerate WaveOut devices
+                _logger.LogInformation("Enumerating WaveOut devices...");
+                Console.WriteLine($"WaveOut device count: {WaveOut.DeviceCount}");
+                _currentSettings.AvailableWaveOutDevices.Clear();
+                for (int i = 0; i < WaveOut.DeviceCount; i++)
+                {
+                    var caps = WaveOut.GetCapabilities(i);
+                    bool isDefault = (i == 0); // Assume device 0 is default, or use Windows API
+                    var waveOutInfo = new WaveOutDeviceInfo
+                    {
+                        DeviceNumber = i,
+                        Name = caps.ProductName,
+                        Channels = caps.Channels,
+                        IsDefault = isDefault,
+                        Status = "Available"
+                    };
+                    _currentSettings.AvailableWaveOutDevices.Add(waveOutInfo);
+                    _logger.LogDebug("Adding WaveOut device: {Name}", caps.ProductName);
+                    Console.WriteLine($"WaveOut device {i}: {caps.ProductName}, channels: {caps.Channels}");
+                }
+
+                // Add fallback WaveOut device if none found
+                if (_currentSettings.AvailableWaveOutDevices.Count == 0)
+                {
+                    _logger.LogWarning("No WaveOut devices found, adding fallback");
+                    _currentSettings.AvailableWaveOutDevices.Add(new WaveOutDeviceInfo
+                    {
+                        DeviceNumber = -1,
+                        Name = "Default Audio (WaveOut)",
+                        Channels = 2,
+                        IsDefault = true,
+                        Status = "Fallback"
+                    });
+                }
+
+                // Set ASIO device list
+                DeviceComboBox.ItemsSource = _currentSettings.AvailableAsioDevices;
                 DeviceComboBox.DisplayMemberPath = "Name";
 
-                // Select current device
-                var currentDevice = _currentSettings.AvailableDevices
+                // Select current ASIO device
+                var currentAsioDevice = _currentSettings.AvailableAsioDevices
                     .FirstOrDefault(d => d.Id == _currentSettings.SelectedAsioDevice);
-                if (currentDevice != null)
+                if (currentAsioDevice != null)
                 {
-                    _logger.LogInformation("Selecting current device: {Name}", currentDevice.Name);
-                    DeviceComboBox.SelectedItem = currentDevice;
+                    _logger.LogInformation("Selecting current ASIO device: {Name}", currentAsioDevice.Name);
+                    DeviceComboBox.SelectedItem = currentAsioDevice;
                 }
-                else if (_currentSettings.AvailableDevices.Any())
+                else if (_currentSettings.AvailableAsioDevices.Any())
                 {
-                    _logger.LogInformation("No current device found, selecting first available");
+                    _logger.LogInformation("No current ASIO device found, selecting first available");
                     DeviceComboBox.SelectedIndex = 0;
+                }
+
+                // Create combined output device list
+                var allDevices = new List<CombinedDeviceInfo>();
+                allDevices.AddRange(_currentSettings.AvailableAsioDevices.Select(d => new CombinedDeviceInfo { Type = "ASIO", Device = d, DisplayName = $"ASIO: {d.Name}" }));
+                allDevices.AddRange(_currentSettings.AvailableWaveOutDevices.Select(d => new CombinedDeviceInfo { Type = "WaveOut", Device = d, DisplayName = $"WaveOut: {d.Name}{(d.IsDefault ? " [Default]" : "")}" }));
+
+                Console.WriteLine($"Total devices in combo: {allDevices.Count}");
+                foreach (var dev in allDevices)
+                {
+                    Console.WriteLine($"Device: {dev.DisplayName}");
+                }
+
+                OutputDeviceComboBox.ItemsSource = allDevices;
+                OutputDeviceComboBox.DisplayMemberPath = "DisplayName";
+
+                // Select current output device
+                CombinedDeviceInfo? selectedOutput = null;
+                if (_currentSettings.SelectedOutputDevice.StartsWith("ASIO:"))
+                {
+                    var asioId = _currentSettings.SelectedOutputDevice.Substring(5);
+                    selectedOutput = allDevices.FirstOrDefault(d => d.Type == "ASIO" && ((AsioDeviceInfo)d.Device).Id == asioId);
+                }
+                else if (_currentSettings.SelectedOutputDevice.StartsWith("WaveOut:"))
+                {
+                    var waveOutNum = int.Parse(_currentSettings.SelectedOutputDevice.Substring(8));
+                    selectedOutput = allDevices.FirstOrDefault(d => d.Type == "WaveOut" && ((WaveOutDeviceInfo)d.Device).DeviceNumber == waveOutNum);
+                }
+                else
+                {
+                    // Default to first WaveOut device
+                    selectedOutput = allDevices.FirstOrDefault(d => d.Type == "WaveOut" && ((WaveOutDeviceInfo)d.Device).IsDefault);
+                }
+                if (selectedOutput != null)
+                {
+                    OutputDeviceComboBox.SelectedItem = selectedOutput;
                 }
                 else
                 {
@@ -273,13 +355,13 @@ namespace DJMixMaster.Audio
                 UpdateStatus("Failed to load ASIO devices");
 
                 // Add a fallback empty device for UI
-                _currentSettings.AvailableDevices.Add(new AsioDeviceInfo
+                _currentSettings.AvailableAsioDevices.Add(new AsioDeviceInfo
                 {
                     Id = "none",
                     Name = "No devices available",
                     Status = "Unavailable"
                 });
-                DeviceComboBox.ItemsSource = _currentSettings.AvailableDevices;
+                DeviceComboBox.ItemsSource = _currentSettings.AvailableAsioDevices;
             }
         }
 
@@ -288,13 +370,42 @@ namespace DJMixMaster.Audio
             try
             {
                 _logger.LogInformation("Initializing control values...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing control values...\n");
 
                 // Device Selection
+                _logger.LogInformation("Initializing Device Selection controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Device Selection controls...\n");
+                _logger.LogInformation("DeviceComboBox exists: {Exists}", DeviceComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: DeviceComboBox exists: {DeviceComboBox != null}\n");
+                _logger.LogInformation("BufferSizeSlider exists: {Exists}", BufferSizeSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: BufferSizeSlider exists: {BufferSizeSlider != null}\n");
+                _logger.LogInformation("BufferSizeTextBox exists: {Exists}", BufferSizeTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: BufferSizeTextBox exists: {BufferSizeTextBox != null}\n");
+                _logger.LogInformation("SampleRateComboBox exists: {Exists}", SampleRateComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: SampleRateComboBox exists: {SampleRateComboBox != null}\n");
                 if (BufferSizeSlider != null) BufferSizeSlider.Value = _currentSettings.BufferSize;
                 if (BufferSizeTextBox != null) BufferSizeTextBox.Text = _currentSettings.BufferSize.ToString();
                 if (SampleRateComboBox != null) SampleRateComboBox.Text = _currentSettings.SampleRate.ToString();
+                _logger.LogInformation("Device Selection controls initialized");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Device Selection controls initialized\n");
 
                 // Crossfader
+                _logger.LogInformation("Initializing Crossfader controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Crossfader controls...\n");
+                _logger.LogInformation("CrossfaderCurveComboBox exists: {Exists}", CrossfaderCurveComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderCurveComboBox exists: {CrossfaderCurveComboBox != null}\n");
+                _logger.LogInformation("CrossfaderRangeSlider exists: {Exists}", CrossfaderRangeSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderRangeSlider exists: {CrossfaderRangeSlider != null}\n");
+                _logger.LogInformation("CrossfaderRangeTextBox exists: {Exists}", CrossfaderRangeTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderRangeTextBox exists: {CrossfaderRangeTextBox != null}\n");
+                _logger.LogInformation("CrossfaderSensitivitySlider exists: {Exists}", CrossfaderSensitivitySlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderSensitivitySlider exists: {CrossfaderSensitivitySlider != null}\n");
+                _logger.LogInformation("CrossfaderSensitivityTextBox exists: {Exists}", CrossfaderSensitivityTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderSensitivityTextBox exists: {CrossfaderSensitivityTextBox != null}\n");
+                _logger.LogInformation("CrossfaderModeComboBox exists: {Exists}", CrossfaderModeComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderModeComboBox exists: {CrossfaderModeComboBox != null}\n");
+                _logger.LogInformation("CenterDetentCheckBox exists: {Exists}", CenterDetentCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CenterDetentCheckBox exists: {CenterDetentCheckBox != null}\n");
                 if (CrossfaderCurveComboBox != null) CrossfaderCurveComboBox.Text = _currentSettings.CrossfaderCurve;
                 if (CrossfaderRangeSlider != null) CrossfaderRangeSlider.Value = _currentSettings.CrossfaderRange;
                 if (CrossfaderRangeTextBox != null) CrossfaderRangeTextBox.Text = (_currentSettings.CrossfaderRange * 100).ToString("F0");
@@ -302,8 +413,26 @@ namespace DJMixMaster.Audio
                 if (CrossfaderSensitivityTextBox != null) CrossfaderSensitivityTextBox.Text = (_currentSettings.CrossfaderSensitivity * 100).ToString("F0");
                 if (CrossfaderModeComboBox != null) CrossfaderModeComboBox.Text = _currentSettings.CrossfaderMode;
                 if (CenterDetentCheckBox != null) CenterDetentCheckBox.IsChecked = _currentSettings.CenterDetent;
+                _logger.LogInformation("Crossfader controls initialized");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Crossfader controls initialized\n");
 
                 // Output Routing
+                _logger.LogInformation("Initializing Output Routing controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Output Routing controls...\n");
+                _logger.LogInformation("MasterOutputComboBox exists: {Exists}", MasterOutputComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: MasterOutputComboBox exists: {MasterOutputComboBox != null}\n");
+                _logger.LogInformation("CueOutputComboBox exists: {Exists}", CueOutputComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: CueOutputComboBox exists: {CueOutputComboBox != null}\n");
+                _logger.LogInformation("BoothOutputComboBox exists: {Exists}", BoothOutputComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: BoothOutputComboBox exists: {BoothOutputComboBox != null}\n");
+                _logger.LogInformation("MasterLevelSlider exists: {Exists}", MasterLevelSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: MasterLevelSlider exists: {MasterLevelSlider != null}\n");
+                _logger.LogInformation("MasterLevelTextBox exists: {Exists}", MasterLevelTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: MasterLevelTextBox exists: {MasterLevelTextBox != null}\n");
+                _logger.LogInformation("HeadphoneMixSlider exists: {Exists}", HeadphoneMixSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: HeadphoneMixSlider exists: {HeadphoneMixSlider != null}\n");
+                _logger.LogInformation("HeadphoneMixTextBox exists: {Exists}", HeadphoneMixTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: HeadphoneMixTextBox exists: {HeadphoneMixTextBox != null}\n");
                 if (MasterOutputComboBox != null) MasterOutputComboBox.Text = _currentSettings.MasterOutputMode;
                 if (CueOutputComboBox != null) CueOutputComboBox.Text = _currentSettings.CueOutputSource;
                 if (BoothOutputComboBox != null) BoothOutputComboBox.Text = _currentSettings.BoothOutputSource;
@@ -311,14 +440,44 @@ namespace DJMixMaster.Audio
                 if (MasterLevelTextBox != null) MasterLevelTextBox.Text = _currentSettings.MasterOutputLevel.ToString("F1");
                 if (HeadphoneMixSlider != null) HeadphoneMixSlider.Value = _currentSettings.HeadphoneMix;
                 if (HeadphoneMixTextBox != null) HeadphoneMixTextBox.Text = (_currentSettings.HeadphoneMix * 100).ToString("F0");
+                _logger.LogInformation("Output Routing controls initialized");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Output Routing controls initialized\n");
 
                 // Audio Processing
+                _logger.LogInformation("Initializing Audio Processing controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Audio Processing controls...\n");
+                _logger.LogInformation("AlwaysResampleCheckBox exists: {Exists}", AlwaysResampleCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: AlwaysResampleCheckBox exists: {AlwaysResampleCheckBox != null}\n");
+                _logger.LogInformation("HardwareBufferCheckBox exists: {Exists}", HardwareBufferCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: HardwareBufferCheckBox exists: {HardwareBufferCheckBox != null}\n");
+                _logger.LogInformation("AllowPullModeCheckBox exists: {Exists}", AllowPullModeCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: AllowPullModeCheckBox exists: {AllowPullModeCheckBox != null}\n");
+                _logger.LogInformation("Force16BitCheckBox exists: {Exists}", Force16BitCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Force16BitCheckBox exists: {Force16BitCheckBox != null}\n");
                 if (AlwaysResampleCheckBox != null) AlwaysResampleCheckBox.IsChecked = _currentSettings.AlwaysResample;
                 if (HardwareBufferCheckBox != null) HardwareBufferCheckBox.IsChecked = _currentSettings.UseHardwareBuffer;
                 if (AllowPullModeCheckBox != null) AllowPullModeCheckBox.IsChecked = _currentSettings.AllowPullMode;
                 if (Force16BitCheckBox != null) Force16BitCheckBox.IsChecked = _currentSettings.Force16Bit;
+                _logger.LogInformation("Audio Processing controls initialized");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Audio Processing controls initialized\n");
 
                 // File & Playback
+                _logger.LogInformation("Initializing File & Playback controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing File & Playback controls...\n");
+                _logger.LogInformation("AutoLoadCuesCheckBox exists: {Exists}", AutoLoadCuesCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: AutoLoadCuesCheckBox exists: {AutoLoadCuesCheckBox != null}\n");
+                _logger.LogInformation("RememberPositionCheckBox exists: {Exists}", RememberPositionCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: RememberPositionCheckBox exists: {RememberPositionCheckBox != null}\n");
+                _logger.LogInformation("GaplessPlaybackCheckBox exists: {Exists}", GaplessPlaybackCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: GaplessPlaybackCheckBox exists: {GaplessPlaybackCheckBox != null}\n");
+                _logger.LogInformation("PreBufferSlider exists: {Exists}", PreBufferSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: PreBufferSlider exists: {PreBufferSlider != null}\n");
+                _logger.LogInformation("PreBufferTextBox exists: {Exists}", PreBufferTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: PreBufferTextBox exists: {PreBufferTextBox != null}\n");
+                _logger.LogInformation("MaxFileSizeSlider exists: {Exists}", MaxFileSizeSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: MaxFileSizeSlider exists: {MaxFileSizeSlider != null}\n");
+                _logger.LogInformation("MaxFileSizeTextBox exists: {Exists}", MaxFileSizeTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: MaxFileSizeTextBox exists: {MaxFileSizeTextBox != null}\n");
                 if (AutoLoadCuesCheckBox != null) AutoLoadCuesCheckBox.IsChecked = _currentSettings.AutoLoadCuePoints;
                 if (RememberPositionCheckBox != null) RememberPositionCheckBox.IsChecked = _currentSettings.RememberLastPosition;
                 if (GaplessPlaybackCheckBox != null) GaplessPlaybackCheckBox.IsChecked = _currentSettings.GaplessPlayback;
@@ -326,20 +485,40 @@ namespace DJMixMaster.Audio
                 if (PreBufferTextBox != null) PreBufferTextBox.Text = _currentSettings.PreBufferTime.ToString("F1");
                 if (MaxFileSizeSlider != null) MaxFileSizeSlider.Value = _currentSettings.MaxFileSize;
                 if (MaxFileSizeTextBox != null) MaxFileSizeTextBox.Text = _currentSettings.MaxFileSize.ToString();
+                _logger.LogInformation("File & Playback controls initialized");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: File & Playback controls initialized\n");
 
                 // Interface
+                _logger.LogInformation("Initializing Interface controls...");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Interface controls...\n");
+                _logger.LogInformation("ThemeComboBox exists: {Exists}", ThemeComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: ThemeComboBox exists: {ThemeComboBox != null}\n");
+                _logger.LogInformation("WaveformZoomSlider exists: {Exists}", WaveformZoomSlider != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: WaveformZoomSlider exists: {WaveformZoomSlider != null}\n");
+                _logger.LogInformation("WaveformZoomTextBox exists: {Exists}", WaveformZoomTextBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: WaveformZoomTextBox exists: {WaveformZoomTextBox != null}\n");
+                _logger.LogInformation("AutoScrollWaveformCheckBox exists: {Exists}", AutoScrollWaveformCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: AutoScrollWaveformCheckBox exists: {AutoScrollWaveformCheckBox != null}\n");
+                _logger.LogInformation("KeyboardLayoutComboBox exists: {Exists}", KeyboardLayoutComboBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: KeyboardLayoutComboBox exists: {KeyboardLayoutComboBox != null}\n");
+                _logger.LogInformation("ConfirmDeleteCheckBox exists: {Exists}", ConfirmDeleteCheckBox != null);
+                File.AppendAllText("debug.log", $"{DateTime.Now}: ConfirmDeleteCheckBox exists: {ConfirmDeleteCheckBox != null}\n");
                 if (ThemeComboBox != null) ThemeComboBox.Text = _currentSettings.Theme;
                 if (WaveformZoomSlider != null) WaveformZoomSlider.Value = _currentSettings.WaveformZoom;
                 if (WaveformZoomTextBox != null) WaveformZoomTextBox.Text = (_currentSettings.WaveformZoom * 100).ToString("F0");
                 if (AutoScrollWaveformCheckBox != null) AutoScrollWaveformCheckBox.IsChecked = _currentSettings.AutoScrollWaveform;
                 if (KeyboardLayoutComboBox != null) KeyboardLayoutComboBox.Text = _currentSettings.KeyboardLayout;
                 if (ConfirmDeleteCheckBox != null) ConfirmDeleteCheckBox.IsChecked = _currentSettings.ConfirmOnDelete;
+                _logger.LogInformation("Interface controls initialized");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Interface controls initialized\n");
 
                 _logger.LogInformation("Control initialization complete");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Control initialization complete\n");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to initialize controls");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Failed to initialize controls: {ex.Message}\n{ex.StackTrace}\n");
                 UpdateStatus("Control initialization failed");
             }
         }
@@ -462,6 +641,43 @@ namespace DJMixMaster.Audio
         private void DeviceComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateStatus("Device selection changed - restart may be required");
+        }
+
+        private void ApplyDeviceButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var selectedItem = OutputDeviceComboBox.SelectedItem as CombinedDeviceInfo;
+                if (selectedItem == null)
+                {
+                    UpdateStatus("No device selected");
+                    return;
+                }
+                string deviceId;
+                if (selectedItem.Type == "ASIO")
+                {
+                    var asioDevice = (AsioDeviceInfo)selectedItem.Device;
+                    deviceId = $"ASIO:{asioDevice.Id}";
+                    Console.WriteLine($"Switching to ASIO device: {asioDevice.Name}");
+                }
+                else
+                {
+                    var waveOutDevice = (WaveOutDeviceInfo)selectedItem.Device;
+                    deviceId = $"WaveOut:{waveOutDevice.DeviceNumber}";
+                    Console.WriteLine($"Switching to WaveOut device: {waveOutDevice.Name}");
+                }
+
+                _currentSettings.SelectedOutputDevice = deviceId;
+                _audioEngine.UpdateOutputDevice(deviceId);
+                UpdateStatus("Output device updated successfully");
+                Console.WriteLine($"Output device updated to: {deviceId}");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to apply device change");
+                UpdateStatus($"Failed to apply device: {ex.Message}");
+                Console.WriteLine($"Error applying device: {ex.Message}");
+            }
         }
 
         private void BufferSizeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

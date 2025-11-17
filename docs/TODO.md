@@ -11,6 +11,7 @@
 - [x] Update AudioEngineInitializer for CSCore engine
 - [x] Update MainWindow to use new audio engine
 - [x] Add CSCore and VST.NET documentation to ref/ folder
+- [x] Fix AudioSettingsWindow XAML StaticResource error and add component-specific logging
 
 ## Priority Tasks
 - [ ] Add CSCore and VST.NET NuGet packages (CSCore removed due to compatibility)
