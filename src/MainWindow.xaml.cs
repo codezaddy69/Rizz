@@ -100,7 +100,7 @@ namespace DJMixMaster
             catch (Exception ex)
             {
                 LogError($"Error initializing MainWindow: {ex}");
-                MessageBox.Show($"Error initializing application: {ex.Message}", "Initialization Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine($"Error initializing application: {ex.Message}");
             }
         }
 
@@ -111,7 +111,7 @@ namespace DJMixMaster
             try
             {
                 LogInfo("Opening settings window...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Opening settings window...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Opening settings window...\n");
 
                 // Check prerequisites
                 if (audioEngine == null)
@@ -125,7 +125,7 @@ namespace DJMixMaster
                 }
 
                 LogInfo("Creating logger factory...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Creating logger factory...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Creating logger factory...\n");
                 var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
                 if (loggerFactory == null)
                 {
@@ -133,7 +133,7 @@ namespace DJMixMaster
                 }
 
                 LogInfo("Creating settings logger...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Creating settings logger...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Creating settings logger...\n");
                 var settingsLogger = loggerFactory.CreateLogger<AudioSettingsWindow>();
                 if (settingsLogger == null)
                 {
@@ -141,31 +141,31 @@ namespace DJMixMaster
                 }
 
                 LogInfo("Creating settings window...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Creating settings window...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Creating settings window...\n");
                 settingsWindow = new AudioSettingsWindow(settingsLogger, audioEngine);
                 if (settingsWindow == null)
                 {
                     throw new InvalidOperationException("Settings window constructor returned null");
                 }
                 LogInfo("Settings window created successfully");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Settings window created successfully\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Settings window created successfully\n");
 
                 LogInfo("Configuring window properties...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Configuring window properties...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Configuring window properties...\n");
                 // settingsWindow.Owner = this; // Removed for WSL compatibility
                 // settingsWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
                 LogInfo("Showing settings dialog...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Showing settings dialog...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Showing settings dialog...\n");
                 var result = settingsWindow.ShowDialog();
 
                 LogInfo($"Settings window closed with result: {result}");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Settings window closed with result: {result}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Settings window closed with result: {result}\n");
             }
             catch (Exception ex)
             {
                 LogError($"Error opening settings window: {ex.Message}");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Error opening settings window: {ex.Message}\n{ex.StackTrace}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Error opening settings window: {ex.Message}\n{ex.StackTrace}\n");
                 LogError($"Stack trace: {ex.StackTrace}");
                 if (ex.InnerException != null)
                 {
@@ -181,7 +181,7 @@ namespace DJMixMaster
                 }
                 errorDetails += "Check application logs for more details.";
 
-                MessageBox.Show(errorDetails, "Settings Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Console.WriteLine(errorDetails);
             }
         }
 

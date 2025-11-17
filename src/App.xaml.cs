@@ -35,14 +35,14 @@ public partial class App : System.Windows.Application
 #pragma warning restore CS8600
             appLogWriter?.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} FATAL: Unhandled exception: {message}");
             appLogWriter?.Flush();
-            MessageBox.Show($"Fatal error: {message}", "Fatal Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Console.WriteLine($"Fatal error: {message}");
         };
 
         DispatcherUnhandledException += (s, args) =>
         {
             appLogWriter?.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} ERROR: Dispatcher exception: {args.Exception}");
             appLogWriter?.Flush();
-            MessageBox.Show($"Application error: {args.Exception.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            Console.WriteLine($"Application error: {args.Exception.Message}");
             args.Handled = true;
         };
     }

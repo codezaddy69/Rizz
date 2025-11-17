@@ -30,48 +30,48 @@ namespace DJMixMaster.Audio
             try
             {
                 _logger.LogInformation("Initializing AudioSettingsWindow...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing AudioSettingsWindow...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing AudioSettingsWindow...\n");
 
                 _logger.LogInformation("Loading XAML components...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Loading XAML components...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Loading XAML components...\n");
                 InitializeComponent();
                 _logger.LogInformation("XAML components loaded successfully");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: XAML components loaded successfully\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: XAML components loaded successfully\n");
 
                 _logger.LogInformation("Loading settings...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Loading settings...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Loading settings...\n");
                 LoadSettings();
 
                 _logger.LogInformation("Populating device list...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Populating device list...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Populating device list...\n");
                 PopulateDeviceList();
 
                 _logger.LogInformation("Initializing controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing controls...\n");
                 InitializeControls();
 
                 _logger.LogInformation("AudioSettingsWindow initialization complete");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: AudioSettingsWindow initialization complete\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AudioSettingsWindow initialization complete\n");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to initialize AudioSettingsWindow at stage: {Message}", ex.Message);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Failed to initialize AudioSettingsWindow at stage: {ex.Message}\n{ex.StackTrace}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Failed to initialize AudioSettingsWindow at stage: {ex.Message}\n{ex.StackTrace}\n");
                 _logger.LogError(ex, "Full exception details: {StackTrace}", ex.StackTrace);
 
                 // Try to create a minimal fallback window
                 try
                 {
                     _logger.LogInformation("Attempting to create fallback window...");
-                    File.AppendAllText("debug.log", $"{DateTime.Now}: Attempting to create fallback window...\n");
+                    File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Attempting to create fallback window...\n");
                     CreateFallbackWindow();
                     _logger.LogInformation("Fallback window created successfully");
-                    File.AppendAllText("debug.log", $"{DateTime.Now}: Fallback window created successfully\n");
+                    File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Fallback window created successfully\n");
                 }
                 catch (Exception fallbackEx)
                 {
                     _logger.LogError(fallbackEx, "Fallback window creation also failed");
-                    File.AppendAllText("debug.log", $"{DateTime.Now}: Fallback window creation also failed: {fallbackEx.Message}\n{fallbackEx.StackTrace}\n");
+                    File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Fallback window creation also failed: {fallbackEx.Message}\n{fallbackEx.StackTrace}\n");
                     throw new InvalidOperationException("Settings window initialization failed", ex);
                 }
             }
@@ -370,42 +370,42 @@ namespace DJMixMaster.Audio
             try
             {
                 _logger.LogInformation("Initializing control values...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing control values...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing control values...\n");
 
                 // Device Selection
                 _logger.LogInformation("Initializing Device Selection controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Device Selection controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Device Selection controls...\n");
                 _logger.LogInformation("DeviceComboBox exists: {Exists}", DeviceComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: DeviceComboBox exists: {DeviceComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: DeviceComboBox exists: {DeviceComboBox != null}\n");
                 _logger.LogInformation("BufferSizeSlider exists: {Exists}", BufferSizeSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: BufferSizeSlider exists: {BufferSizeSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: BufferSizeSlider exists: {BufferSizeSlider != null}\n");
                 _logger.LogInformation("BufferSizeTextBox exists: {Exists}", BufferSizeTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: BufferSizeTextBox exists: {BufferSizeTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: BufferSizeTextBox exists: {BufferSizeTextBox != null}\n");
                 _logger.LogInformation("SampleRateComboBox exists: {Exists}", SampleRateComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: SampleRateComboBox exists: {SampleRateComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: SampleRateComboBox exists: {SampleRateComboBox != null}\n");
                 if (BufferSizeSlider != null) BufferSizeSlider.Value = _currentSettings.BufferSize;
                 if (BufferSizeTextBox != null) BufferSizeTextBox.Text = _currentSettings.BufferSize.ToString();
                 if (SampleRateComboBox != null) SampleRateComboBox.Text = _currentSettings.SampleRate.ToString();
                 _logger.LogInformation("Device Selection controls initialized");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Device Selection controls initialized\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Device Selection controls initialized\n");
 
                 // Crossfader
                 _logger.LogInformation("Initializing Crossfader controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Crossfader controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Crossfader controls...\n");
                 _logger.LogInformation("CrossfaderCurveComboBox exists: {Exists}", CrossfaderCurveComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderCurveComboBox exists: {CrossfaderCurveComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CrossfaderCurveComboBox exists: {CrossfaderCurveComboBox != null}\n");
                 _logger.LogInformation("CrossfaderRangeSlider exists: {Exists}", CrossfaderRangeSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderRangeSlider exists: {CrossfaderRangeSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CrossfaderRangeSlider exists: {CrossfaderRangeSlider != null}\n");
                 _logger.LogInformation("CrossfaderRangeTextBox exists: {Exists}", CrossfaderRangeTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderRangeTextBox exists: {CrossfaderRangeTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CrossfaderRangeTextBox exists: {CrossfaderRangeTextBox != null}\n");
                 _logger.LogInformation("CrossfaderSensitivitySlider exists: {Exists}", CrossfaderSensitivitySlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderSensitivitySlider exists: {CrossfaderSensitivitySlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CrossfaderSensitivitySlider exists: {CrossfaderSensitivitySlider != null}\n");
                 _logger.LogInformation("CrossfaderSensitivityTextBox exists: {Exists}", CrossfaderSensitivityTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderSensitivityTextBox exists: {CrossfaderSensitivityTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CrossfaderSensitivityTextBox exists: {CrossfaderSensitivityTextBox != null}\n");
                 _logger.LogInformation("CrossfaderModeComboBox exists: {Exists}", CrossfaderModeComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CrossfaderModeComboBox exists: {CrossfaderModeComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CrossfaderModeComboBox exists: {CrossfaderModeComboBox != null}\n");
                 _logger.LogInformation("CenterDetentCheckBox exists: {Exists}", CenterDetentCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CenterDetentCheckBox exists: {CenterDetentCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CenterDetentCheckBox exists: {CenterDetentCheckBox != null}\n");
                 if (CrossfaderCurveComboBox != null) CrossfaderCurveComboBox.Text = _currentSettings.CrossfaderCurve;
                 if (CrossfaderRangeSlider != null) CrossfaderRangeSlider.Value = _currentSettings.CrossfaderRange;
                 if (CrossfaderRangeTextBox != null) CrossfaderRangeTextBox.Text = (_currentSettings.CrossfaderRange * 100).ToString("F0");
@@ -414,25 +414,25 @@ namespace DJMixMaster.Audio
                 if (CrossfaderModeComboBox != null) CrossfaderModeComboBox.Text = _currentSettings.CrossfaderMode;
                 if (CenterDetentCheckBox != null) CenterDetentCheckBox.IsChecked = _currentSettings.CenterDetent;
                 _logger.LogInformation("Crossfader controls initialized");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Crossfader controls initialized\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Crossfader controls initialized\n");
 
                 // Output Routing
                 _logger.LogInformation("Initializing Output Routing controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Output Routing controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Output Routing controls...\n");
                 _logger.LogInformation("MasterOutputComboBox exists: {Exists}", MasterOutputComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: MasterOutputComboBox exists: {MasterOutputComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: MasterOutputComboBox exists: {MasterOutputComboBox != null}\n");
                 _logger.LogInformation("CueOutputComboBox exists: {Exists}", CueOutputComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: CueOutputComboBox exists: {CueOutputComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: CueOutputComboBox exists: {CueOutputComboBox != null}\n");
                 _logger.LogInformation("BoothOutputComboBox exists: {Exists}", BoothOutputComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: BoothOutputComboBox exists: {BoothOutputComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: BoothOutputComboBox exists: {BoothOutputComboBox != null}\n");
                 _logger.LogInformation("MasterLevelSlider exists: {Exists}", MasterLevelSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: MasterLevelSlider exists: {MasterLevelSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: MasterLevelSlider exists: {MasterLevelSlider != null}\n");
                 _logger.LogInformation("MasterLevelTextBox exists: {Exists}", MasterLevelTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: MasterLevelTextBox exists: {MasterLevelTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: MasterLevelTextBox exists: {MasterLevelTextBox != null}\n");
                 _logger.LogInformation("HeadphoneMixSlider exists: {Exists}", HeadphoneMixSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: HeadphoneMixSlider exists: {HeadphoneMixSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: HeadphoneMixSlider exists: {HeadphoneMixSlider != null}\n");
                 _logger.LogInformation("HeadphoneMixTextBox exists: {Exists}", HeadphoneMixTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: HeadphoneMixTextBox exists: {HeadphoneMixTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: HeadphoneMixTextBox exists: {HeadphoneMixTextBox != null}\n");
                 if (MasterOutputComboBox != null) MasterOutputComboBox.Text = _currentSettings.MasterOutputMode;
                 if (CueOutputComboBox != null) CueOutputComboBox.Text = _currentSettings.CueOutputSource;
                 if (BoothOutputComboBox != null) BoothOutputComboBox.Text = _currentSettings.BoothOutputSource;
@@ -441,43 +441,43 @@ namespace DJMixMaster.Audio
                 if (HeadphoneMixSlider != null) HeadphoneMixSlider.Value = _currentSettings.HeadphoneMix;
                 if (HeadphoneMixTextBox != null) HeadphoneMixTextBox.Text = (_currentSettings.HeadphoneMix * 100).ToString("F0");
                 _logger.LogInformation("Output Routing controls initialized");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Output Routing controls initialized\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Output Routing controls initialized\n");
 
                 // Audio Processing
                 _logger.LogInformation("Initializing Audio Processing controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Audio Processing controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Audio Processing controls...\n");
                 _logger.LogInformation("AlwaysResampleCheckBox exists: {Exists}", AlwaysResampleCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: AlwaysResampleCheckBox exists: {AlwaysResampleCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AlwaysResampleCheckBox exists: {AlwaysResampleCheckBox != null}\n");
                 _logger.LogInformation("HardwareBufferCheckBox exists: {Exists}", HardwareBufferCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: HardwareBufferCheckBox exists: {HardwareBufferCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: HardwareBufferCheckBox exists: {HardwareBufferCheckBox != null}\n");
                 _logger.LogInformation("AllowPullModeCheckBox exists: {Exists}", AllowPullModeCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: AllowPullModeCheckBox exists: {AllowPullModeCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AllowPullModeCheckBox exists: {AllowPullModeCheckBox != null}\n");
                 _logger.LogInformation("Force16BitCheckBox exists: {Exists}", Force16BitCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Force16BitCheckBox exists: {Force16BitCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Force16BitCheckBox exists: {Force16BitCheckBox != null}\n");
                 if (AlwaysResampleCheckBox != null) AlwaysResampleCheckBox.IsChecked = _currentSettings.AlwaysResample;
                 if (HardwareBufferCheckBox != null) HardwareBufferCheckBox.IsChecked = _currentSettings.UseHardwareBuffer;
                 if (AllowPullModeCheckBox != null) AllowPullModeCheckBox.IsChecked = _currentSettings.AllowPullMode;
                 if (Force16BitCheckBox != null) Force16BitCheckBox.IsChecked = _currentSettings.Force16Bit;
                 _logger.LogInformation("Audio Processing controls initialized");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Audio Processing controls initialized\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Audio Processing controls initialized\n");
 
                 // File & Playback
                 _logger.LogInformation("Initializing File & Playback controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing File & Playback controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing File & Playback controls...\n");
                 _logger.LogInformation("AutoLoadCuesCheckBox exists: {Exists}", AutoLoadCuesCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: AutoLoadCuesCheckBox exists: {AutoLoadCuesCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AutoLoadCuesCheckBox exists: {AutoLoadCuesCheckBox != null}\n");
                 _logger.LogInformation("RememberPositionCheckBox exists: {Exists}", RememberPositionCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: RememberPositionCheckBox exists: {RememberPositionCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: RememberPositionCheckBox exists: {RememberPositionCheckBox != null}\n");
                 _logger.LogInformation("GaplessPlaybackCheckBox exists: {Exists}", GaplessPlaybackCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: GaplessPlaybackCheckBox exists: {GaplessPlaybackCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: GaplessPlaybackCheckBox exists: {GaplessPlaybackCheckBox != null}\n");
                 _logger.LogInformation("PreBufferSlider exists: {Exists}", PreBufferSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: PreBufferSlider exists: {PreBufferSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: PreBufferSlider exists: {PreBufferSlider != null}\n");
                 _logger.LogInformation("PreBufferTextBox exists: {Exists}", PreBufferTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: PreBufferTextBox exists: {PreBufferTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: PreBufferTextBox exists: {PreBufferTextBox != null}\n");
                 _logger.LogInformation("MaxFileSizeSlider exists: {Exists}", MaxFileSizeSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: MaxFileSizeSlider exists: {MaxFileSizeSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: MaxFileSizeSlider exists: {MaxFileSizeSlider != null}\n");
                 _logger.LogInformation("MaxFileSizeTextBox exists: {Exists}", MaxFileSizeTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: MaxFileSizeTextBox exists: {MaxFileSizeTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: MaxFileSizeTextBox exists: {MaxFileSizeTextBox != null}\n");
                 if (AutoLoadCuesCheckBox != null) AutoLoadCuesCheckBox.IsChecked = _currentSettings.AutoLoadCuePoints;
                 if (RememberPositionCheckBox != null) RememberPositionCheckBox.IsChecked = _currentSettings.RememberLastPosition;
                 if (GaplessPlaybackCheckBox != null) GaplessPlaybackCheckBox.IsChecked = _currentSettings.GaplessPlayback;
@@ -486,23 +486,23 @@ namespace DJMixMaster.Audio
                 if (MaxFileSizeSlider != null) MaxFileSizeSlider.Value = _currentSettings.MaxFileSize;
                 if (MaxFileSizeTextBox != null) MaxFileSizeTextBox.Text = _currentSettings.MaxFileSize.ToString();
                 _logger.LogInformation("File & Playback controls initialized");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: File & Playback controls initialized\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: File & Playback controls initialized\n");
 
                 // Interface
                 _logger.LogInformation("Initializing Interface controls...");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Initializing Interface controls...\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Interface controls...\n");
                 _logger.LogInformation("ThemeComboBox exists: {Exists}", ThemeComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: ThemeComboBox exists: {ThemeComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: ThemeComboBox exists: {ThemeComboBox != null}\n");
                 _logger.LogInformation("WaveformZoomSlider exists: {Exists}", WaveformZoomSlider != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: WaveformZoomSlider exists: {WaveformZoomSlider != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: WaveformZoomSlider exists: {WaveformZoomSlider != null}\n");
                 _logger.LogInformation("WaveformZoomTextBox exists: {Exists}", WaveformZoomTextBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: WaveformZoomTextBox exists: {WaveformZoomTextBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: WaveformZoomTextBox exists: {WaveformZoomTextBox != null}\n");
                 _logger.LogInformation("AutoScrollWaveformCheckBox exists: {Exists}", AutoScrollWaveformCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: AutoScrollWaveformCheckBox exists: {AutoScrollWaveformCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AutoScrollWaveformCheckBox exists: {AutoScrollWaveformCheckBox != null}\n");
                 _logger.LogInformation("KeyboardLayoutComboBox exists: {Exists}", KeyboardLayoutComboBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: KeyboardLayoutComboBox exists: {KeyboardLayoutComboBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: KeyboardLayoutComboBox exists: {KeyboardLayoutComboBox != null}\n");
                 _logger.LogInformation("ConfirmDeleteCheckBox exists: {Exists}", ConfirmDeleteCheckBox != null);
-                File.AppendAllText("debug.log", $"{DateTime.Now}: ConfirmDeleteCheckBox exists: {ConfirmDeleteCheckBox != null}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: ConfirmDeleteCheckBox exists: {ConfirmDeleteCheckBox != null}\n");
                 if (ThemeComboBox != null) ThemeComboBox.Text = _currentSettings.Theme;
                 if (WaveformZoomSlider != null) WaveformZoomSlider.Value = _currentSettings.WaveformZoom;
                 if (WaveformZoomTextBox != null) WaveformZoomTextBox.Text = (_currentSettings.WaveformZoom * 100).ToString("F0");
@@ -510,15 +510,15 @@ namespace DJMixMaster.Audio
                 if (KeyboardLayoutComboBox != null) KeyboardLayoutComboBox.Text = _currentSettings.KeyboardLayout;
                 if (ConfirmDeleteCheckBox != null) ConfirmDeleteCheckBox.IsChecked = _currentSettings.ConfirmOnDelete;
                 _logger.LogInformation("Interface controls initialized");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Interface controls initialized\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Interface controls initialized\n");
 
                 _logger.LogInformation("Control initialization complete");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Control initialization complete\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Control initialization complete\n");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to initialize controls");
-                File.AppendAllText("debug.log", $"{DateTime.Now}: Failed to initialize controls: {ex.Message}\n{ex.StackTrace}\n");
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Failed to initialize controls: {ex.Message}\n{ex.StackTrace}\n");
                 UpdateStatus("Control initialization failed");
             }
         }

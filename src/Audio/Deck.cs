@@ -169,10 +169,13 @@ namespace DJMixMaster.Audio
 
             try
             {
+                Console.WriteLine($"Deck {_deckNumber} loading file: {filePath}");
                 _logger.LogInformation("Loading file for deck {DeckNumber}: {FilePath}", _deckNumber, filePath);
 
                 // Analyze file comprehensively
+                Console.WriteLine($"Analyzing file: {filePath}");
                 _currentFileInfo = _analyzer.AnalyzeFile(filePath);
+                Console.WriteLine($"Analysis complete: {_currentFileInfo.FormatDescription}");
 
                 // Log analysis results
                 _logger.LogInformation("File analysis complete: {Info}", _currentFileInfo);
@@ -182,11 +185,15 @@ namespace DJMixMaster.Audio
                         _deckNumber, string.Join(", ", _currentFileInfo.CompatibilityWarnings));
                 }
 
-                // Dispose existing resources
-                DisposeResources();
+                 // Dispose existing resources
+                 DisposeResources();
 
-                // Load new file
-                _audioFileReader = new AudioFileReader(filePath);
+                 // Load new file
+                 _audioFileReader = new AudioFileReader(filePath);
+
+                 // Log format details for debugging
+                 _logger.LogInformation("Deck {DeckNumber} original format: {SampleRate}Hz, {Channels}ch, {Bits}bit",
+                     _deckNumber, _audioFileReader.WaveFormat.SampleRate, _audioFileReader.WaveFormat.Channels, _audioFileReader.WaveFormat.BitsPerSample);
                 ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
 
                 // Ensure stereo output BEFORE resampling
@@ -214,6 +221,8 @@ namespace DJMixMaster.Audio
 
                 _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} → 44100Hz stereo",
                     _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown");
+                _logger.LogInformation("Deck {DeckNumber} final sample provider format: {SampleRate}Hz, {Channels}ch",
+                    _deckNumber, sampleProvider.WaveFormat.SampleRate, sampleProvider.WaveFormat.Channels);
                 // Switch the source in the permanent provider chain
                 _loopingProvider.SetSource(sampleProvider, _audioFileReader);
                 // Volume provider is already set up permanently
@@ -222,6 +231,7 @@ namespace DJMixMaster.Audio
                 _isPlaying = false;
 
                 _logger.LogInformation("File loaded successfully for deck {DeckNumber}: {Info}", _deckNumber, _currentFileInfo);
+                Console.WriteLine($"Deck {_deckNumber} file loaded successfully: {Path.GetFileName(filePath)}");
             }
             catch (Exception ex)
             {

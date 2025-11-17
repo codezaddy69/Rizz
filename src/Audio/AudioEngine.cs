@@ -34,7 +34,9 @@ namespace DJMixMaster.Audio
         void PlayTestTone(int deckNumber, double frequency = 440.0, double durationSeconds = 2.0);
         void UpdateAudioSettings(AudioSettings settings);
         AudioSettings GetCurrentSettings();
+        void ShowAsioControlPanel();
         List<AsioDeviceInfo> EnumerateDevices();
+        void UpdateOutputDevice(string deviceId);
     }
 
     /// <summary>
@@ -48,7 +50,7 @@ namespace DJMixMaster.Audio
         private readonly Deck _deck1;
         private readonly Deck _deck2;
         private readonly MixingSampleProvider _mixer;
-        private readonly IWavePlayer _soundOut;
+        private IWavePlayer? _soundOut;
         private readonly SampleToWaveProvider _waveProvider;
         private float _crossfader = 0.5f;
         private AudioSettings _currentSettings;
@@ -94,14 +96,35 @@ namespace DJMixMaster.Audio
                 try
                 {
                     _soundOut = new AsioOut(0); // First ASIO device (buffer size set by driver for low latency)
+                    if (_soundOut is AsioOut asioOut)
+                    {
+                        // Set channel offset from settings
+                        asioOut.ChannelOffset = _currentSettings.ChannelOffset;
+
+                        // Log driver capabilities
+                        _logger.LogInformation($"ASIO Driver: {asioOut.DriverName}");
+                        _logger.LogInformation($"ASIO Buffer Size: {asioOut.FramesPerBuffer} samples");
+                        _logger.LogInformation($"ASIO Playback Latency: {asioOut.PlaybackLatency} samples");
+                        _logger.LogInformation($"ASIO Channel Offset: {asioOut.ChannelOffset}");
+                        _logger.LogInformation($"ASIO Output Channels: {asioOut.NumberOfOutputChannels}");
+                        _logger.LogInformation($"ASIO Sample Rate Supported (44100): {asioOut.IsSampleRateSupported(44100)}");
+                        _logger.LogInformation($"ASIO Sample Rate Supported (48000): {asioOut.IsSampleRateSupported(48000)}");
+
+                        // Warn if 44100 not supported
+                        if (!asioOut.IsSampleRateSupported(44100))
+                        {
+                            _logger.LogWarning("ASIO driver does not support 44100Hz sample rate - playback may be distorted. Consider resampling to driver's supported rate.");
+                        }
+                    }
                     _soundOut.Init(_waveProvider);
                     _logger.LogInformation("ASIO initialized successfully on first available device");
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogWarning(ex, "ASIO initialization failed - falling back to WaveOut");
+                    _logger.LogWarning(ex, "ASIO initialization failed - falling back to WaveOut. Reason: {Message}", ex.Message);
                     _soundOut = new WaveOut();
                     _soundOut.Init(_waveProvider);
+                    _logger.LogInformation("WaveOut initialized as fallback");
                 }
 
                 _logger.LogInformation("NAudio AudioEngine initialized successfully");
@@ -158,12 +181,21 @@ namespace DJMixMaster.Audio
         {
             try
             {
+                Console.WriteLine($"Starting playback on deck {deckNumber}");
                 Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+                Console.WriteLine($"Deck {deckNumber} IsPlaying before: {deck.IsPlaying}");
                 deck.Play();
-                if (_soundOut.PlaybackState != PlaybackState.Playing)
+                Console.WriteLine($"Deck {deckNumber} IsPlaying after: {deck.IsPlaying}");
+                if (_soundOut != null && _soundOut.PlaybackState != PlaybackState.Playing)
                 {
+                    Console.WriteLine($"SoundOut state before play: {_soundOut.PlaybackState}");
                     _soundOut.Play();
                     _logger.LogInformation("Started playback on deck {DeckNumber}, ASIO state: {State}", deckNumber, _soundOut.PlaybackState);
+                    Console.WriteLine($"Playback started on deck {deckNumber}, output state: {_soundOut.PlaybackState}");
+                }
+                else if (_soundOut != null)
+                {
+                    Console.WriteLine($"SoundOut already playing, state: {_soundOut.PlaybackState}");
                 }
             }
             catch (Exception ex)
@@ -179,7 +211,7 @@ namespace DJMixMaster.Audio
             // If both decks are paused, stop sound out
             if (!_deck1.IsPlaying && !_deck2.IsPlaying)
             {
-                _soundOut.Pause();
+                _soundOut?.Pause();
             }
         }
 
@@ -189,7 +221,7 @@ namespace DJMixMaster.Audio
             deck.Stop();
             if (!_deck1.IsPlaying && !_deck2.IsPlaying)
             {
-                _soundOut.Stop();
+                _soundOut?.Stop();
             }
         }
 
@@ -320,7 +352,12 @@ namespace DJMixMaster.Audio
             // Note: Some settings may require restart
             if (_soundOut is AsioOut asioOut)
             {
-                // ASIO settings would be applied here
+                // Apply channel offset if changed
+                if (asioOut.ChannelOffset != settings.ChannelOffset)
+                {
+                    _logger.LogInformation($"Updating ASIO ChannelOffset from {asioOut.ChannelOffset} to {settings.ChannelOffset}");
+                    asioOut.ChannelOffset = settings.ChannelOffset;
+                }
                 _logger.LogInformation("ASIO settings updated - some changes may require restart");
             }
         }
@@ -328,6 +365,26 @@ namespace DJMixMaster.Audio
         public AudioSettings GetCurrentSettings()
         {
             return _currentSettings;
+        }
+
+        public void ShowAsioControlPanel()
+        {
+            if (_soundOut is AsioOut asioOut)
+            {
+                try
+                {
+                    asioOut.ShowControlPanel();
+                    _logger.LogInformation("ASIO control panel shown for driver: {Driver}", asioOut.DriverName);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Failed to show ASIO control panel");
+                }
+            }
+            else
+            {
+                _logger.LogWarning("Cannot show ASIO control panel - not using ASIO output");
+            }
         }
 
         public List<AsioDeviceInfo> EnumerateDevices()
@@ -338,13 +395,37 @@ namespace DJMixMaster.Audio
                 string[] driverNames = AsioOut.GetDriverNames();
                 foreach (string driverName in driverNames)
                 {
-                    devices.Add(new AsioDeviceInfo
+                    try
                     {
-                        Id = driverName,
-                        Name = driverName,
-                        DriverName = driverName,
-                        Status = "Available"
-                    });
+                        using (var asio = new AsioOut(driverName))
+                        {
+                            devices.Add(new AsioDeviceInfo
+                            {
+                                Id = driverName,
+                                Name = driverName,
+                                DriverName = driverName,
+                                MaxInputChannels = asio.DriverInputChannelCount,
+                                MaxOutputChannels = asio.DriverOutputChannelCount,
+                                SampleRate = 44100, // Default, could query more
+                                FramesPerBuffer = asio.FramesPerBuffer,
+                                PlaybackLatency = asio.PlaybackLatency,
+                                Supports44100 = asio.IsSampleRateSupported(44100),
+                                Supports48000 = asio.IsSampleRateSupported(48000),
+                                Status = "Available"
+                            });
+                        }
+                    }
+                    catch
+                    {
+                        // If can't create, mark as unavailable
+                        devices.Add(new AsioDeviceInfo
+                        {
+                            Id = driverName,
+                            Name = driverName,
+                            DriverName = driverName,
+                            Status = "Unavailable"
+                        });
+                    }
                 }
             }
             catch (Exception ex)
@@ -352,6 +433,57 @@ namespace DJMixMaster.Audio
                 _logger.LogError(ex, "Failed to enumerate ASIO devices");
             }
             return devices;
+        }
+
+        public void UpdateOutputDevice(string deviceId)
+        {
+            try
+            {
+                Console.WriteLine($"UpdateOutputDevice called with: {deviceId}");
+                _logger.LogInformation("Updating output device to: {DeviceId}", deviceId);
+
+                // Dispose current output
+                if (_soundOut != null)
+                {
+                    _soundOut.Stop();
+                    _soundOut.Dispose();
+                    _soundOut = null;
+                    Console.WriteLine("Disposed current sound output");
+                }
+
+                // Determine device type and initialize new output
+                if (deviceId.StartsWith("ASIO:"))
+                {
+                    var asioId = deviceId.Substring(5);
+                    _soundOut = new AsioOut(asioId);
+                    var asioOut = (AsioOut)_soundOut;
+                    asioOut.ChannelOffset = _currentSettings.ChannelOffset;
+                    Console.WriteLine($"Initialized ASIO output: {asioId}, ChannelOffset: {asioOut.ChannelOffset}");
+                    _logger.LogInformation("Switched to ASIO device: {Device}", asioId);
+                }
+                else if (deviceId.StartsWith("WaveOut:"))
+                {
+                    var waveOutNum = int.Parse(deviceId.Substring(8));
+                    _soundOut = new WaveOutEvent { DeviceNumber = waveOutNum };
+                    Console.WriteLine($"Initialized WaveOut output: device {waveOutNum}");
+                    _logger.LogInformation("Switched to WaveOut device: {DeviceNumber}", waveOutNum);
+                }
+                else
+                {
+                    throw new ArgumentException($"Invalid device ID format: {deviceId}");
+                }
+
+                // Reinitialize with mixer
+                _soundOut.Init(_waveProvider);
+                Console.WriteLine("Reinitialized sound output with wave provider");
+                _logger.LogInformation("Output device updated successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update output device to {DeviceId}", deviceId);
+                Console.WriteLine($"Error updating output device: {ex.Message}");
+                throw;
+            }
         }
 
         public void Dispose()
