@@ -52,7 +52,7 @@
                             </ToggleButton>
                             <Popup Name="Popup" IsOpen="{Binding IsDropDownOpen, RelativeSource={RelativeSource TemplatedParent}}" Placement="Bottom" AllowsTransparency="True">
                                 <Border Background="Black" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="1">
-                                    <ScrollViewer>
+                                    <ScrollViewer Background="Black">
                                         <ItemsPresenter />
                                     </ScrollViewer>
                                 </Border>
