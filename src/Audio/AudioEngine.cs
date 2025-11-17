@@ -186,6 +186,7 @@ namespace DJMixMaster.Audio
                 Deck deck = deckNumber == 1 ? _deck1 : _deck2;
                 Console.WriteLine($"Deck {deckNumber} IsPlaying before: {deck.IsPlaying}");
                 deck.Play();
+                System.Threading.Thread.Sleep(10); // Allow pipeline to prime
                 Console.WriteLine($"Deck {deckNumber} IsPlaying after: {deck.IsPlaying}");
                 if (_soundOut != null && _soundOut.PlaybackState != PlaybackState.Playing)
                 {
