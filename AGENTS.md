@@ -2,6 +2,8 @@
 
 Note: The Primary LOOP is I send you either Feedback or console errors or output. At this point you trouble shoot or dev then when you are finished the loop starts over. If feedback is given that the code is building with no errors and minimal warnings and a milestone is reached an update will be recommended where documentation is updated and a GIT is recommended. Do not commit without final approval. Then the loop continues after you recommend 3 options to proceed next.
 
+IMPORTANT: Do not commit changes unless explicitly told to by the user.
+
 ## Audio Pipeline Implementation Notes
 
 ### ASIO Requirements
@@ -29,10 +31,10 @@ Note: The Primary LOOP is I send you either Feedback or console errors or output
 - Follow existing error handling patterns
 
 ### UI Theming
-- Dark mode theme: Black background (#000000) with white text (#ffffff)
-- All controls (TextBox, ComboBox, CheckBox, etc.) use dark theme
-- Avoid black-on-black text by ensuring Foreground is white on black backgrounds
-- ComboBox dropdown popups styled with black background
+- Light theme: Light gray background (#D3D3D3) with black text (#000000)
+- All controls (TextBox, ComboBox, CheckBox, etc.) use light gray theme
+- ComboBox dropdown items styled with light gray background
+- Selected items highlighted with cyan background
 
 ### ASIO Troubleshooting
 - Check logs for driver capabilities: buffer size (256-512), latency, supported sample rates (44100/48000)
