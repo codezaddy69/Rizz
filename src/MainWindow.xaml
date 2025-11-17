@@ -351,7 +351,7 @@
                 </Grid.RowDefinitions>
 
                 <!-- Track Info -->
-                <TextBlock x:Name="Deck1InfoText" Grid.Row="0" Text="No track loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#cccccc" FontSize="10" Margin="0,5"/>
+                <TextBlock x:Name="Deck1InfoText" Grid.Row="0" Text="No track loaded" HorizontalAlignment="Center" VerticalAlignment="Top" Foreground="#cccccc" FontSize="10" Margin="0,2"/>
 
                 <!-- Transport Controls + Load Row -->
                 <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
