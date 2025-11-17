@@ -1,20 +1,14 @@
-2025-11-11 00:21:44 ERROR: Dispatcher exception: System.Windows.Markup.XamlParseException: 'The invocation of the constructor on type 'DJMixMaster.MainWindow' that matches the specified binding constraints threw an exception.' Line number '7' and line position '9'.
- ---> System.ArgumentNullException: Value cannot be null. (Parameter 'logger')
-   at System.ThrowHelper.Throw(String paramName)
-   at System.ThrowHelper.ThrowIfNull(Object argument, String paramName)
-   at Microsoft.Extensions.Logging.LoggerExtensions.Log(ILogger logger, LogLevel logLevel, EventId eventId, Exception exception, String message, Object[] args)
-   at Microsoft.Extensions.Logging.LoggerExtensions.Log(ILogger logger, LogLevel logLevel, String message, Object[] args)
-   at Microsoft.Extensions.Logging.LoggerExtensions.LogError(ILogger logger, String message, Object[] args)
-   at DJMixMaster.MainWindow.LogError(String message) in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 338
-   at DJMixMaster.MainWindow..ctor() in C:\Users\rogue\code\djmixmaster\MainWindow.xaml.cs:line 90
-   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean wrapExceptions)
-   --- End of inner exception stack trace ---
-   at System.Windows.Markup.XamlReader.RewrapException(Exception e, IXamlLineInfo lineInfo, Uri baseUri)
-   at System.Windows.Markup.WpfXamlLoader.Load(XamlReader xamlReader, IXamlObjectWriterFactory writerFactory, Boolean skipJournaledProperties, Object rootObject, XamlObjectWriterSettings settings, Uri baseUri)
-   at System.Windows.Markup.WpfXamlLoader.LoadBaml(XamlReader xamlReader, Boolean skipJournaledProperties, Object rootObject, XamlAccessLevel accessLevel, Uri baseUri)
-   at System.Windows.Markup.XamlReader.LoadBaml(Stream stream, ParserContext parserContext, Object parent, Boolean closeStream)
-   at System.Windows.Application.LoadBamlStreamWithSyncInfo(Stream stream, ParserContext pc)
-   at System.Windows.Application.DoStartup()
-   at System.Windows.Application.<.ctor>b__1_0(Object unused)
+2025-11-17 01:07:59 ERROR: Dispatcher exception: System.ArgumentException: Must disconnect specified child from current parent Visual before attaching to new parent Visual.
+   at System.Windows.Media.Visual.AddVisualChild(Visual child)
+   at System.Windows.Controls.ContentPresenter.UseContentTemplate.BuildVisualTree(FrameworkElement container)
+   at System.Windows.StyleHelper.ApplyTemplateContent(UncommonField`1 dataField, DependencyObject container, FrameworkElementFactory templateRoot, Int32 lastChildIndex, HybridDictionary childIndexFromChildID, FrameworkTemplate frameworkTemplate)
+   at System.Windows.FrameworkElement.ApplyTemplate()
+   at System.Windows.FrameworkElement.MeasureCore(Size availableSize)
+   at System.Windows.UIElement.Measure(Size availableSize)
+   at System.Windows.ContextLayoutManager.UpdateLayout()
+   at System.Windows.ContextLayoutManager.UpdateLayoutCallback(Object arg)
+   at System.Windows.Media.MediaContext.FireInvokeOnRenderCallbacks()
+   at System.Windows.Media.MediaContext.RenderMessageHandlerCore(Object resizedCompositionTarget)
+   at System.Windows.Media.MediaContext.RenderMessageHandler(Object resizedCompositionTarget)
    at System.Windows.Threading.ExceptionWrapper.InternalRealCall(Delegate callback, Object args, Int32 numArgs)
    at System.Windows.Threading.ExceptionWrapper.TryCatchWhen(Object source, Delegate callback, Object args, Int32 numArgs, Delegate catchHandler)

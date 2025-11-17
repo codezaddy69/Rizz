@@ -52,23 +52,35 @@ namespace DJMixMaster.Audio
                     float[] tempBuffer = new float[count];
                     int read = provider.Read(tempBuffer, 0, count);
 
+                    // Normalize each provider to prevent overdriving (soft limit at 0.8)
+                    float maxLevel = 0f;
+                    for (int i = 0; i < read; i++)
+                    {
+                        maxLevel = Math.Max(maxLevel, Math.Abs(tempBuffer[i]));
+                    }
+                    float gain = maxLevel > 0.8f ? 0.8f / maxLevel : 1.0f;
+
                     // Track max pre-sum
                     for (int i = 0; i < read; i++)
                     {
-                        maxPreSum = Math.Max(maxPreSum, Math.Abs(tempBuffer[i]));
-                        buffer[offset + i] += tempBuffer[i];
+                        float sample = tempBuffer[i] * gain;
+                        maxPreSum = Math.Max(maxPreSum, Math.Abs(sample));
+                        buffer[offset + i] += sample;
                         maxPostSum = Math.Max(maxPostSum, Math.Abs(buffer[offset + i]));
                     }
                     maxRead = Math.Max(maxRead, read);
                 }
             }
 
-            // Clamp to prevent clipping
+            // Soft clipping to prevent harsh distortion
             float maxPostClamp = 0f;
             for (int i = 0; i < maxRead; i++)
             {
-                buffer[offset + i] = Math.Clamp(buffer[offset + i], -1f, 1f);
-                maxPostClamp = Math.Max(maxPostClamp, Math.Abs(buffer[offset + i]));
+                float sample = buffer[offset + i];
+                // Soft clip: tanh approximation for smoother limiting
+                sample = (float)(Math.Tanh(sample) * 0.9); // Scale to avoid hard 1.0
+                buffer[offset + i] = sample;
+                maxPostClamp = Math.Max(maxPostClamp, Math.Abs(sample));
             }
 
             // Log every 100 reads to avoid spam

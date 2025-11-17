@@ -1,11 +1,18 @@
 {
-  "SelectedAsioDevice": "ASIO4ALL v2",
-  "AvailableDevices": [
+  "SelectedAsioDevice": "Realtek ASIO",
+  "SelectedOutputDevice": "Default",
+  "AvailableAsioDevices": [
     {
       "Id": "ASIO4ALL v2",
       "Name": "ASIO4ALL v2",
       "DriverName": "ASIO4ALL v2",
-      "MaxChannels": 0,
+      "MaxInputChannels": 0,
+      "MaxOutputChannels": 0,
+      "SampleRate": 0,
+      "FramesPerBuffer": 0,
+      "PlaybackLatency": 0,
+      "Supports44100": false,
+      "Supports48000": false,
       "IsActive": false,
       "Status": "Available"
     },
@@ -13,7 +20,13 @@
       "Id": "FL Studio ASIO",
       "Name": "FL Studio ASIO",
       "DriverName": "FL Studio ASIO",
-      "MaxChannels": 0,
+      "MaxInputChannels": 0,
+      "MaxOutputChannels": 0,
+      "SampleRate": 0,
+      "FramesPerBuffer": 0,
+      "PlaybackLatency": 0,
+      "Supports44100": false,
+      "Supports48000": false,
       "IsActive": false,
       "Status": "Available"
     },
@@ -21,7 +34,13 @@
       "Id": "RC-505",
       "Name": "RC-505",
       "DriverName": "RC-505",
-      "MaxChannels": 0,
+      "MaxInputChannels": 0,
+      "MaxOutputChannels": 0,
+      "SampleRate": 0,
+      "FramesPerBuffer": 0,
+      "PlaybackLatency": 0,
+      "Supports44100": false,
+      "Supports48000": false,
       "IsActive": false,
       "Status": "Available"
     },
@@ -29,8 +48,44 @@
       "Id": "Realtek ASIO",
       "Name": "Realtek ASIO",
       "DriverName": "Realtek ASIO",
-      "MaxChannels": 0,
+      "MaxInputChannels": 0,
+      "MaxOutputChannels": 0,
+      "SampleRate": 0,
+      "FramesPerBuffer": 0,
+      "PlaybackLatency": 0,
+      "Supports44100": false,
+      "Supports48000": false,
       "IsActive": false,
+      "Status": "Available"
+    }
+  ],
+  "AvailableWaveOutDevices": [
+    {
+      "DeviceNumber": 0,
+      "Name": "Headphones (Realtek(R) Audio)",
+      "Channels": 2,
+      "IsDefault": true,
+      "Status": "Available"
+    },
+    {
+      "DeviceNumber": 1,
+      "Name": "Line 1 (Virtual Audio Cable)",
+      "Channels": 2,
+      "IsDefault": false,
+      "Status": "Available"
+    },
+    {
+      "DeviceNumber": 2,
+      "Name": "1 - ASUS VG24VQ1B (AMD High Def",
+      "Channels": 2,
+      "IsDefault": false,
+      "Status": "Available"
+    },
+    {
+      "DeviceNumber": 3,
+      "Name": "Realtek (Realtek(R) Audio)",
+      "Channels": 2,
+      "IsDefault": false,
       "Status": "Available"
     }
   ],
@@ -43,16 +98,17 @@
   "Force16Bit": false,
   "SampleRate": 44100,
   "PreferredFormat": "Float32",
-  "CrossfaderCurve": "Linear",
+  "CrossfaderCurve": "",
   "CrossfaderRange": 1,
   "CrossfaderSensitivity": 1,
   "CrossfaderMode": "Additive",
   "CenterDetent": false,
-  "MasterOutputMode": "StereoMix",
-  "CueOutputSource": "Deck1",
+  "MasterOutputMode": "",
+  "CueOutputSource": "Deck 1",
   "BoothOutputSource": "Disabled",
   "MasterOutputLevel": 0,
   "HeadphoneMix": 0.5,
+  "ChannelOffset": 0,
   "ProcessPriority": "High",
   "CpuAffinity": false,
   "MaxThreads": 4,
@@ -65,7 +121,7 @@
   "GaplessPlayback": true,
   "PreBufferTime": 2,
   "MaxFileSize": 500,
-  "Theme": "DarkNeon",
+  "Theme": "Dark Neon",
   "WaveformZoom": 1,
   "AutoScrollWaveform": true,
   "KeyboardLayout": "Standard",

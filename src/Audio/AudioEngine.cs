@@ -26,6 +26,7 @@ namespace DJMixMaster.Audio
         void SetVolume(int deckNumber, float volume);
         float GetVolume(int deckNumber);
         bool IsPlaying(int deckNumber);
+        AudioFileProperties? GetDeckProperties(int deckNumber);
         void SetCrossfader(float position);
         float GetCrossfader();
         (float[] WaveformData, double Length) GetWaveformData(int deckNumber);
@@ -267,6 +268,12 @@ namespace DJMixMaster.Audio
         {
             Deck deck = deckNumber == 1 ? _deck1 : _deck2;
             return deck.IsPlaying;
+        }
+
+        public AudioFileProperties? GetDeckProperties(int deckNumber)
+        {
+            Deck deck = deckNumber == 1 ? _deck1 : _deck2;
+            return deck.FileProperties;
         }
 
         public void SetCrossfader(float position)

@@ -1627,11 +1627,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
+      "projectUniqueName": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
       "projectName": "DJMixMaster",
-      "projectPath": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
+      "projectPath": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
       "packagesPath": "C:\\Users\\rogue\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\rogue\\Code\\DJMixMaster\\obj\\",
+      "outputPath": "C:\\users\\rogue\\code\\djmixmaster\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1642,7 +1642,7 @@
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net9.0-windows7.0"
+        "net9.0-windows"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
@@ -1650,7 +1650,7 @@
       },
       "frameworks": {
         "net9.0-windows7.0": {
-          "targetAlias": "net9.0-windows7.0",
+          "targetAlias": "net9.0-windows",
           "projectReferences": {}
         }
       },
@@ -1668,7 +1668,7 @@
     },
     "frameworks": {
       "net9.0-windows7.0": {
-        "targetAlias": "net9.0-windows7.0",
+        "targetAlias": "net9.0-windows",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Json": {
             "target": "Package",

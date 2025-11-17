@@ -29,6 +29,8 @@ namespace DJMixMaster.UI.Handlers
         private TextBlock? leftTrackInfo;
         private TextBlock? rightTrackTitle;
         private TextBlock? rightTrackInfo;
+        private TextBlock? Deck1InfoText;
+        private TextBlock? Deck2InfoText;
         private Button? btnLeftPlay;
         private Button? btnRightPlay;
         private Slider? deck1PositionSlider;
@@ -42,7 +44,8 @@ namespace DJMixMaster.UI.Handlers
 
         public void SetUIElements(WaveformVisualizer? leftWaveform, WaveformVisualizer? rightWaveform,
             TextBlock? leftTrackTitle, TextBlock? leftTrackInfo, TextBlock? rightTrackTitle, TextBlock? rightTrackInfo,
-            Button? btnLeftPlay, Button? btnRightPlay, Slider? deck1PositionSlider, Slider? deck2PositionSlider)
+            Button? btnLeftPlay, Button? btnRightPlay, Slider? deck1PositionSlider, Slider? deck2PositionSlider,
+            TextBlock? deck1InfoText, TextBlock? deck2InfoText)
         {
             this.leftWaveform = leftWaveform;
             this.rightWaveform = rightWaveform;
@@ -54,12 +57,15 @@ namespace DJMixMaster.UI.Handlers
             this.btnRightPlay = btnRightPlay;
             this.deck1PositionSlider = deck1PositionSlider;
             this.deck2PositionSlider = deck2PositionSlider;
+            this.Deck1InfoText = deck1InfoText;
+            this.Deck2InfoText = deck2InfoText;
         }
 
         public async Task LoadButton_Click(Button loadButton, int deckNumber)
         {
             try
             {
+                Console.WriteLine($"Load button clicked for deck {deckNumber}");
                 // Check if we're ejecting or loading
                 if ((deckNumber == 1 && isLeftDeckLoaded) || (deckNumber == 2 && isRightDeckLoaded))
                 {
@@ -89,6 +95,7 @@ namespace DJMixMaster.UI.Handlers
                         leftTrackName = null;
                         if (leftTrackTitle != null) leftTrackTitle.Text = "No Track Loaded";
                         if (leftTrackInfo != null) leftTrackInfo.Text = "";
+                        if (Deck1InfoText != null) Deck1InfoText.Text = "No track loaded";
                         leftWaveform?.UpdateWaveform(Array.Empty<float>(), 0);
                         if (deck1PositionSlider != null) deck1PositionSlider.Maximum = 0;
                     }
@@ -98,6 +105,7 @@ namespace DJMixMaster.UI.Handlers
                         rightTrackName = null;
                         if (rightTrackTitle != null) rightTrackTitle.Text = "No Track Loaded";
                         if (rightTrackInfo != null) rightTrackInfo.Text = "";
+                        if (Deck2InfoText != null) Deck2InfoText.Text = "No track loaded";
                         rightWaveform?.UpdateWaveform(Array.Empty<float>(), 0);
                         if (deck2PositionSlider != null) deck2PositionSlider.Maximum = 0;
                     }
@@ -136,12 +144,16 @@ namespace DJMixMaster.UI.Handlers
                             // Update UI on UI thread
                             await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
+                                var properties = _audioEngine.GetDeckProperties(deckNumber);
+                                string infoText = properties != null ? properties.DetailedInfo : "";
+
                                 if (deckNumber == 1)
                                 {
                                     isLeftDeckLoaded = true;
                                     leftTrackName = fileName;
                                     if (leftTrackTitle != null) leftTrackTitle.Text = fileName;
                                     if (leftTrackInfo != null) leftTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss} @ {sampleRate}Hz";
+                                    if (Deck1InfoText != null) Deck1InfoText.Text = infoText;
                                     leftWaveform?.UpdateWaveform(waveformData, trackLength);
                                     if (deck1PositionSlider != null) deck1PositionSlider.Maximum = trackLength;
                                 }
@@ -151,6 +163,7 @@ namespace DJMixMaster.UI.Handlers
                                     rightTrackName = fileName;
                                     if (rightTrackTitle != null) rightTrackTitle.Text = fileName;
                                     if (rightTrackInfo != null) rightTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss} @ {sampleRate}Hz";
+                                    if (Deck2InfoText != null) Deck2InfoText.Text = infoText;
                                     rightWaveform?.UpdateWaveform(waveformData, trackLength);
                                     if (deck2PositionSlider != null) deck2PositionSlider.Maximum = trackLength;
                                 }

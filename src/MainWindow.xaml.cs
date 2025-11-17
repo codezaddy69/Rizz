@@ -45,7 +45,7 @@ namespace DJMixMaster
                 // Create deck event handler
                 var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
                 deckEventHandler = new DeckEventHandler(loggerFactory.CreateLogger<DeckEventHandler>(), audioEngine);
-                deckEventHandler.SetUIElements(leftWaveform, rightWaveform, leftTrackTitle, leftTrackInfo, rightTrackTitle, rightTrackInfo, btnLeftPlay, btnRightPlay, deck1PositionSlider, deck2PositionSlider);
+                deckEventHandler.SetUIElements(leftWaveform, rightWaveform, leftTrackTitle, leftTrackInfo, rightTrackTitle, rightTrackInfo, btnLeftPlay, btnRightPlay, deck1PositionSlider, deck2PositionSlider, Deck1InfoText, Deck2InfoText);
 
                 LogInfo("Using CSCore audio engine");
 

@@ -79,6 +79,7 @@ namespace DJMixMaster.Audio
         private PlayingSampleProvider _playingProvider;
         private SilentSampleProvider _silentProvider;
         private AudioFileInfo? _currentFileInfo;
+        private AudioFileProperties? _currentFileProperties;
         private float _baseVolume = 1.0f;
         private float _crossfaderGain = 1.0f;
         private bool _isPlaying;
@@ -132,6 +133,11 @@ namespace DJMixMaster.Audio
         /// Gets whether the deck is currently playing.
         /// </summary>
         public bool IsPlaying => _isPlaying;
+
+        /// <summary>
+        /// Gets the properties of the currently loaded audio file.
+        /// </summary>
+        public AudioFileProperties? FileProperties => _currentFileProperties;
 
         /// <summary>
         /// Initializes a new instance of the Deck class.
@@ -190,6 +196,19 @@ namespace DJMixMaster.Audio
 
                  // Load new file
                  _audioFileReader = new AudioFileReader(filePath);
+
+                 // Extract audio file properties
+                 var waveFormat = _audioFileReader.WaveFormat;
+                 _currentFileProperties = new AudioFileProperties
+                 {
+                     SampleRate = waveFormat.SampleRate,
+                     Channels = waveFormat.Channels,
+                     BitsPerSample = waveFormat.BitsPerSample,
+                     TotalSamples = _audioFileReader.Length / waveFormat.BlockAlign,
+                     Duration = _audioFileReader.TotalTime.TotalSeconds,
+                     Bitrate = waveFormat.SampleRate * waveFormat.Channels * waveFormat.BitsPerSample,
+                     FileSize = new System.IO.FileInfo(filePath).Length
+                 };
 
                  // Log format details for debugging
                  _logger.LogInformation("Deck {DeckNumber} original format: {SampleRate}Hz, {Channels}ch, {Bits}bit",

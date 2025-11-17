@@ -9,7 +9,9 @@ namespace DJMixMaster.Audio
     {
         // Device Selection
         public string SelectedAsioDevice { get; set; } = "ASIO4ALL v2";
-        public List<AsioDeviceInfo> AvailableDevices { get; set; } = new();
+        public string SelectedOutputDevice { get; set; } = "Default"; // Can be ASIO ID or WaveOut index
+        public List<AsioDeviceInfo> AvailableAsioDevices { get; set; } = new();
+        public List<WaveOutDeviceInfo> AvailableWaveOutDevices { get; set; } = new();
 
         // Buffer & Latency
         public int BufferSize { get; set; } = 512;
@@ -37,6 +39,7 @@ namespace DJMixMaster.Audio
         public string BoothOutputSource { get; set; } = "Disabled";
         public float MasterOutputLevel { get; set; } = 0.0f;
         public float HeadphoneMix { get; set; } = 0.5f;
+        public int ChannelOffset { get; set; } = 0;
 
         // Performance
         public string ProcessPriority { get; set; } = "High";
@@ -72,13 +75,46 @@ namespace DJMixMaster.Audio
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string DriverName { get; set; } = string.Empty;
-        public int MaxChannels { get; set; }
+        public int MaxInputChannels { get; set; }
+        public int MaxOutputChannels { get; set; }
+        public int SampleRate { get; set; }
+        public int FramesPerBuffer { get; set; }
+        public int PlaybackLatency { get; set; }
+        public bool Supports44100 { get; set; }
+        public bool Supports48000 { get; set; }
         public bool IsActive { get; set; }
         public string Status { get; set; } = "Available"; // Available, In Use, Unavailable
 
         public override string ToString()
         {
-            return $"{Name} ({Status})";
+            return $"{Name} ({Status}) - {MaxOutputChannels}ch out, {FramesPerBuffer} buffer";
         }
+    }
+
+    /// <summary>
+    /// Information about a WaveOut device
+    /// </summary>
+    public class WaveOutDeviceInfo
+    {
+        public int DeviceNumber { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int Channels { get; set; }
+        public bool IsDefault { get; set; }
+        public string Status { get; set; } = "Available"; // Available, In Use, Unavailable
+
+        public override string ToString()
+        {
+            return $"{Name} ({Status}) - {Channels}ch{(IsDefault ? " [Default]" : "")}";
+        }
+    }
+
+    /// <summary>
+    /// Combined device info for UI selection
+    /// </summary>
+    public class CombinedDeviceInfo
+    {
+        public string Type { get; set; } = string.Empty; // "ASIO" or "WaveOut"
+        public object Device { get; set; } = null!;
+        public string DisplayName { get; set; } = string.Empty;
     }
 }

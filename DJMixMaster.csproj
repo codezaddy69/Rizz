@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net9.0-windows7.0</TargetFramework>
+    <TargetFramework>net9.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -16,7 +16,11 @@
       <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
 
 
-    </ItemGroup>
+     </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ref\**\*.*" />
+  </ItemGroup>
 
   <Target Name="CopyNativeLibraries" AfterTargets="Build">
     <ItemGroup>

@@ -17,7 +17,8 @@
 - **Language**: C# 12.0 (.NET 9.0)
 - **UI Framework**: Windows Presentation Foundation (WPF)
 - **Audio Engine**: NAudio (.NET managed library) with ASIO4ALL
-  - Features: Low-latency playback, permanent pipeline, WDL resampling
+  - Features: Low-latency playback, permanent pipeline, WDL resampling, driver validation, soft limiting
+  - ASIO Implementation: ChannelOffset support, capability logging, WaveOut fallback
   - MIT License
 - **Build System**: .NET SDK (dotnet CLI)
 
@@ -35,6 +36,13 @@
 <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
 <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
 ```
+
+### ASIO Implementation Details
+- **Initialization**: AsioOut with driver validation (sample rate support, buffer size, latency logging)
+- **Format Chain**: AudioFileReader → MonoToStereo → WdlResamplingSampleProvider → LoopingSampleProvider → PlayingSampleProvider → VolumeSampleProvider → MixingSampleProvider → SampleToWaveProvider → AsioOut
+- **Mixing**: Per-provider normalization (0.8 max), soft clipping with tanh for distortion prevention
+- **Settings**: ChannelOffset in AudioSettings, runtime updates, control panel access
+- **Fallback**: Detailed WaveOut logging on ASIO failure
 
 ### Development Tools
 - **IDE**: Visual Studio 2022 (recommended) or VS Code with C# extensions

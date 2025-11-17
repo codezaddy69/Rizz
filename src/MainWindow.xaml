@@ -344,13 +344,17 @@
             <!-- Left Deck Controls -->
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
+                <!-- Track Info -->
+                <TextBlock x:Name="Deck1InfoText" Grid.Row="0" Text="No track loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#cccccc" FontSize="10" Margin="0,5"/>
+
                 <!-- Transport Controls + Load Row -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnLeftRew" Content="REW" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
                     <Button x:Name="btnLeftPlay" Content="PLAY" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
                     <Button x:Name="btnLeftFF" Content="FF" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
@@ -415,13 +419,17 @@
             <!-- Right Deck Controls -->
             <Grid Grid.Column="4">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
+                <!-- Track Info -->
+                <TextBlock x:Name="Deck2InfoText" Grid.Row="0" Text="No track loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#cccccc" FontSize="10" Margin="0,5"/>
+
                 <!-- Transport Controls + Load Row -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnRightRew" Content="REW" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                     <Button x:Name="btnRightPlay" Content="PLAY" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                     <Button x:Name="btnRightFF" Content="FF" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
@@ -430,14 +438,14 @@
                  </StackPanel>
 
                 <!-- Hot Cue Row -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnRightCue1" Content="CUE 1" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                     <Button x:Name="btnRightCue2" Content="CUE 2" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                     <Button x:Name="btnRightCue3" Content="CUE 3" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                 </StackPanel>
 
                 <!-- FX Row -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="FX 1" Style="{StaticResource NeonButton}" BorderBrush="#00F7FF" Margin="5,0"/>
                     <Button Content="FX 2" Style="{StaticResource NeonButton}" BorderBrush="#00F7FF" Margin="5,0"/>
                     <Button Content="FX 3" Style="{StaticResource NeonButton}" BorderBrush="#00F7FF" Margin="5,0"/>
