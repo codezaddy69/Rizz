@@ -213,35 +213,38 @@ namespace DJMixMaster.Audio
                  // Log format details for debugging
                  _logger.LogInformation("Deck {DeckNumber} original format: {SampleRate}Hz, {Channels}ch, {Bits}bit",
                      _deckNumber, _audioFileReader.WaveFormat.SampleRate, _audioFileReader.WaveFormat.Channels, _audioFileReader.WaveFormat.BitsPerSample);
-                ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
+                 ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
 
-                // Ensure stereo output BEFORE resampling
-                if (_audioFileReader.WaveFormat.Channels == 1)
-                {
-                    sampleProvider = new MonoToStereoSampleProvider(sampleProvider);
-                    _logger.LogInformation("Converted mono to stereo for deck {DeckNumber}", _deckNumber);
-                }
+                 // TEMPORARILY DISABLE CONVERSIONS FOR TESTING
+                 /*
+                 // Ensure stereo output BEFORE resampling
+                 if (_audioFileReader.WaveFormat.Channels == 1)
+                 {
+                     sampleProvider = new MonoToStereoSampleProvider(sampleProvider);
+                     _logger.LogInformation("Converted mono to stereo for deck {DeckNumber}", _deckNumber);
+                 }
 
-                // Resample to 44100 Hz if necessary
-                if (_audioFileReader.WaveFormat.SampleRate != 44100)
-                {
-                    _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using WDL resampler", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
-                    try
-                    {
-                        sampleProvider = new WdlResamplingSampleProvider(sampleProvider, 44100);
-                        _logger.LogInformation("WDL resampling initialized successfully for deck {DeckNumber}", _deckNumber);
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Failed to initialize WDL resampler for deck {DeckNumber}", _deckNumber);
-                        throw;
-                    }
-                }
+                 // Resample to 44100 Hz if necessary
+                 if (_audioFileReader.WaveFormat.SampleRate != 44100)
+                 {
+                     _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using WDL resampler", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
+                     try
+                     {
+                         sampleProvider = new WdlResamplingSampleProvider(sampleProvider, 44100);
+                         _logger.LogInformation("WDL resampling initialized successfully for deck {DeckNumber}", _deckNumber);
+                     }
+                     catch (Exception ex)
+                     {
+                         _logger.LogError(ex, "Failed to initialize WDL resampler for deck {DeckNumber}", _deckNumber);
+                         throw;
+                     }
+                 }
+                 */
 
-                _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} → 44100Hz stereo",
-                    _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown");
-                _logger.LogInformation("Deck {DeckNumber} final sample provider format: {SampleRate}Hz, {Channels}ch",
-                    _deckNumber, sampleProvider.WaveFormat.SampleRate, sampleProvider.WaveFormat.Channels);
+                 _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} (conversions disabled for testing)",
+                     _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown");
+                 _logger.LogInformation("Deck {DeckNumber} final sample provider format: {SampleRate}Hz, {Channels}ch",
+                     _deckNumber, sampleProvider.WaveFormat.SampleRate, sampleProvider.WaveFormat.Channels);
                 // Switch the source in the permanent provider chain
                 _loopingProvider.SetSource(sampleProvider, _audioFileReader);
                 // Volume provider is already set up permanently
