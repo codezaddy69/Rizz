@@ -26,7 +26,7 @@
             <Setter Property="Foreground" Value="#ffffff"/>
             <Setter Property="BorderBrush" Value="#404040"/>
         </Style>
-        <Style TargetType="ComboBox">
+        <Style x:Key="DarkComboBoxStyle" TargetType="ComboBox">
             <Setter Property="Background" Value="Black"/>
             <Setter Property="Foreground" Value="#ffffff"/>
             <Setter Property="BorderBrush" Value="#404040"/>
@@ -92,6 +92,7 @@
 
                         <Label Grid.Row="0" Grid.Column="0">ASIO Device:</Label>
                         <ComboBox x:Name="DeviceComboBox" Grid.Row="0" Grid.Column="1" Margin="0,0,0,5"
+                                Style="{StaticResource DarkComboBoxStyle}"
                                 SelectionChanged="DeviceComboBox_SelectionChanged"/>
 
                         <Label Grid.Row="1" Grid.Column="0">Buffer Size:</Label>
@@ -103,7 +104,7 @@
                         </StackPanel>
 
                         <Label Grid.Row="2" Grid.Column="0">Sample Rate:</Label>
-                        <ComboBox x:Name="SampleRateComboBox" Grid.Row="2" Grid.Column="1">
+                        <ComboBox x:Name="SampleRateComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>44100</ComboBoxItem>
                             <ComboBoxItem>48000</ComboBoxItem>
                             <ComboBoxItem IsSelected="True">44100</ComboBoxItem>
@@ -111,7 +112,7 @@
 
                         <Label Grid.Row="3" Grid.Column="0">Output Device:</Label>
                         <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal">
-                            <ComboBox x:Name="OutputDeviceComboBox" Width="300" Margin="0,0,10,0"/>
+                            <ComboBox x:Name="OutputDeviceComboBox" Width="300" Margin="0,0,10,0" Style="{StaticResource DarkComboBoxStyle}"/>
                             <Button x:Name="ApplyDeviceButton" Content="Apply" Width="60"/>
                         </StackPanel>
                     </Grid>
@@ -133,7 +134,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0">Curve:</Label>
-                        <ComboBox x:Name="CrossfaderCurveComboBox" Grid.Row="0" Grid.Column="1">
+                        <ComboBox x:Name="CrossfaderCurveComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Linear</ComboBoxItem>
                             <ComboBoxItem>Exponential</ComboBoxItem>
                             <ComboBoxItem>Logarithmic</ComboBoxItem>
@@ -157,7 +158,7 @@
                         </StackPanel>
 
                         <Label Grid.Row="3" Grid.Column="0">Mode:</Label>
-                        <ComboBox x:Name="CrossfaderModeComboBox" Grid.Row="3" Grid.Column="1">
+                        <ComboBox x:Name="CrossfaderModeComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Additive</ComboBoxItem>
                             <ComboBoxItem>Cut-Only</ComboBoxItem>
                             <ComboBoxItem>Boost-Cut</ComboBoxItem>
@@ -184,7 +185,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0">Master Output:</Label>
-                        <ComboBox x:Name="MasterOutputComboBox" Grid.Row="0" Grid.Column="1">
+                        <ComboBox x:Name="MasterOutputComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Stereo Mix</ComboBoxItem>
                             <ComboBoxItem>Deck 1 Only</ComboBoxItem>
                             <ComboBoxItem>Deck 2 Only</ComboBoxItem>
@@ -192,7 +193,7 @@
                         </ComboBox>
 
                         <Label Grid.Row="1" Grid.Column="0">Cue Output:</Label>
-                        <ComboBox x:Name="CueOutputComboBox" Grid.Row="1" Grid.Column="1">
+                        <ComboBox x:Name="CueOutputComboBox" Grid.Row="1" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Deck 1</ComboBoxItem>
                             <ComboBoxItem>Deck 2</ComboBoxItem>
                             <ComboBoxItem>Master</ComboBoxItem>
@@ -200,7 +201,7 @@
                         </ComboBox>
 
                         <Label Grid.Row="2" Grid.Column="0">Booth Output:</Label>
-                        <ComboBox x:Name="BoothOutputComboBox" Grid.Row="2" Grid.Column="1">
+                        <ComboBox x:Name="BoothOutputComboBox" Grid.Row="2" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Master</ComboBoxItem>
                             <ComboBoxItem>Cue</ComboBoxItem>
                             <ComboBoxItem>Disabled</ComboBoxItem>
@@ -288,7 +289,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Grid.Row="0" Grid.Column="0">Theme:</Label>
-                        <ComboBox x:Name="ThemeComboBox" Grid.Row="0" Grid.Column="1">
+                        <ComboBox x:Name="ThemeComboBox" Grid.Row="0" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Dark Neon</ComboBoxItem>
                             <ComboBoxItem>Light</ComboBoxItem>
                             <ComboBoxItem>Classic</ComboBoxItem>
@@ -305,7 +306,7 @@
                                 Content="Auto-Scroll Waveform"/>
 
                         <Label Grid.Row="3" Grid.Column="0">Keyboard Layout:</Label>
-                        <ComboBox x:Name="KeyboardLayoutComboBox" Grid.Row="3" Grid.Column="1">
+                        <ComboBox x:Name="KeyboardLayoutComboBox" Grid.Row="3" Grid.Column="1" Style="{StaticResource DarkComboBoxStyle}">
                             <ComboBoxItem>Standard</ComboBoxItem>
                             <ComboBoxItem>Traktor</ComboBoxItem>
                             <ComboBoxItem>Serato</ComboBoxItem>
