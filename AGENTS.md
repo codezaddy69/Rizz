@@ -28,6 +28,19 @@ Note: The Primary LOOP is I send you either Feedback or console errors or output
 - Include comprehensive logging for debugging
 - Follow existing error handling patterns
 
+### UI Theming
+- Dark mode theme: Black background (#000000) with white text (#ffffff)
+- All controls (TextBox, ComboBox, CheckBox, etc.) use dark theme
+- Avoid black-on-black text by ensuring Foreground is white on black backgrounds
+- ComboBox dropdown popups styled with black background
+
+### ASIO Troubleshooting
+- Check logs for driver capabilities: buffer size (256-512), latency, supported sample rates (44100/48000)
+- If garbled playback: Verify ASIO4ALL buffer settings, ensure ChannelOffset is correct, check for sample rate mismatches
+- Fallback to WaveOut logs detailed error reasons
+- Use ShowAsioControlPanel() to adjust driver settings
+- Monitor MixingSampleProvider logs for pre-sum levels >1.0 (indicates overdriving)
+
 ### Testing Checklist
 - [ ] 44100 Hz files (no resampling)
 - [ ] 48000 Hz files (resampling)
@@ -35,6 +48,15 @@ Note: The Primary LOOP is I send you either Feedback or console errors or output
 - [ ] Corrupted files (error handling)
 - [ ] ASIO vs WaveOut output
 - [ ] Pause/play state transitions
+
+## Autocompletion and Autodebug Section
+
+### Build and Run Process for Debugging
+1. **Locate dotnet.exe**: Use `/mnt/c/Program Files/dotnet/dotnet.exe` (default Windows dotnet installation path).
+2. **Build Command**: Run `/mnt/c/Program\ Files/dotnet/dotnet.exe build DJMixMaster.csproj` to compile the project.
+3. **Run Command**: Execute `/mnt/c/Program\ Files/dotnet/dotnet.exe run --project DJMixMaster.csproj` to launch the application.
+4. **Debugging**: Monitor terminal output for logs, errors, and audio pipeline details during runtime. WPF GUI will open separately; focus on console for troubleshooting ASIO, resampling, and playback issues.
+5. **Post-Run Review**: After testing, check logs (e.g., log20251116_*.txt) for anomalies, validate against Testing Checklist, and recommend fixes or next steps.
 
 </content>
 <parameter name="filePath">ref/JuceReferenceOutline.md
