@@ -50,8 +50,9 @@ namespace DJMixMaster.Audio
         private readonly ILogger<AudioEngine> _logger;
         private readonly Deck _deck1;
         private readonly Deck _deck2;
-        private MixingSampleProvider _realMixer;
-        private ISampleProvider _mixer;
+    private MixingSampleProvider _realMixer;
+    private ISampleProvider _mixer;
+    private System.Timers.Timer? _healthTimer;
         private IWavePlayer? _soundOut;
         private readonly SampleToWaveProvider _waveProvider;
         private float _crossfader = 0.5f;
@@ -184,6 +185,7 @@ namespace DJMixMaster.Audio
         {
             try
             {
+                var playStart = DateTime.Now;
                 Console.WriteLine($"Starting playback on deck {deckNumber}");
                 Deck deck = deckNumber == 1 ? _deck1 : _deck2;
                 Console.WriteLine($"Deck {deckNumber} IsPlaying before: {deck.IsPlaying}");
@@ -194,7 +196,8 @@ namespace DJMixMaster.Audio
                 {
                     Console.WriteLine($"SoundOut state before play: {_soundOut.PlaybackState}");
                     _soundOut.Play();
-                    _logger.LogInformation("Started playback on deck {DeckNumber}, ASIO state: {State}", deckNumber, _soundOut.PlaybackState);
+                    var playTime = DateTime.Now - playStart;
+                    _logger.LogInformation("Playback started for deck {DeckNumber} in {Time}ms, ASIO state: {State}", deckNumber, playTime.TotalMilliseconds, _soundOut.PlaybackState);
                     Console.WriteLine($"Playback started on deck {deckNumber}, output state: {_soundOut.PlaybackState}");
                 }
                 else if (_soundOut != null)
@@ -277,6 +280,26 @@ namespace DJMixMaster.Audio
         {
             Deck deck = deckNumber == 1 ? _deck1 : _deck2;
             return deck.FileProperties;
+        }
+
+        private void StartHealthMonitoring()
+        {
+            _healthTimer = new System.Timers.Timer(10000); // Every 10 seconds
+            _healthTimer.Elapsed += (s, e) =>
+            {
+                if (_soundOut is AsioOut asioOut)
+                {
+                    _logger.LogInformation("ASIO Health Check: Buffer {Buffer} samples, State {State}, Latency {Latency}ms",
+                        asioOut.FramesPerBuffer, asioOut.PlaybackState,
+                        (double)asioOut.PlaybackLatency / asioOut.FramesPerBuffer * 1000);
+                }
+                else if (_soundOut != null)
+                {
+                    _logger.LogInformation("Audio Health Check: State {State}", _soundOut.PlaybackState);
+                }
+            };
+            _healthTimer.Start();
+            _logger.LogInformation("Audio health monitoring started");
         }
 
         public void SetCrossfader(float position)
@@ -468,7 +491,14 @@ namespace DJMixMaster.Audio
                     _soundOut = new AsioOut(asioId);
                     var asioOut = (AsioOut)_soundOut;
                     asioOut.ChannelOffset = _currentSettings.ChannelOffset;
-                    Console.WriteLine($"Initialized ASIO output: {asioId}, ChannelOffset: {asioOut.ChannelOffset}");
+
+                    // Log ASIO metrics
+                    _logger.LogInformation("ASIO Driver: {Driver}", asioOut.DriverName);
+                    _logger.LogInformation("ASIO Buffer Size: {Buffer} samples", asioOut.FramesPerBuffer);
+                    _logger.LogInformation("ASIO Playback Latency: {Latency} samples ({Ms:F1}ms)", asioOut.PlaybackLatency, (double)asioOut.PlaybackLatency / asioOut.FramesPerBuffer * 1000);
+                    _logger.LogInformation("ASIO Sample Rate Supported (44100): {Supported}", asioOut.IsSampleRateSupported(44100));
+
+                    Console.WriteLine($"Initialized ASIO output: {asioId}, Buffer: {asioOut.FramesPerBuffer}, ChannelOffset: {asioOut.ChannelOffset}");
                     _logger.LogInformation("Switched to ASIO device: {Device}", asioId);
                 }
                 else if (deviceId.StartsWith("WaveOut:"))
@@ -487,6 +517,9 @@ namespace DJMixMaster.Audio
                 _soundOut.Init(_waveProvider);
                 Console.WriteLine("Reinitialized sound output with wave provider");
                 _logger.LogInformation("Output device updated successfully");
+
+                // Start health monitoring
+                StartHealthMonitoring();
             }
             catch (Exception ex)
             {

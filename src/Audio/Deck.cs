@@ -197,6 +197,8 @@ namespace DJMixMaster.Audio
                  // Load new file
                  _audioFileReader = new AudioFileReader(filePath);
 
+                 var chainStart = DateTime.Now;
+
                  // Extract audio file properties
                  var waveFormat = _audioFileReader.WaveFormat;
                  _currentFileProperties = new AudioFileProperties
@@ -216,34 +218,39 @@ namespace DJMixMaster.Audio
                  ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
                  sampleProvider = new LoggingSampleProvider(sampleProvider, $"Deck{_deckNumber}_Reader");
 
-                 // TEMPORARILY DISABLE CONVERSIONS FOR TESTING
-                 /*
                  // Ensure stereo output BEFORE resampling
                  if (_audioFileReader.WaveFormat.Channels == 1)
                  {
+                     var convertStart = DateTime.Now;
                      sampleProvider = new MonoToStereoSampleProvider(sampleProvider);
-                     _logger.LogInformation("Converted mono to stereo for deck {DeckNumber}", _deckNumber);
+                     var convertTime = DateTime.Now - convertStart;
+                     _logger.LogInformation("Mono→Stereo conversion for deck {DeckNumber}: {Time}ms", _deckNumber, convertTime.TotalMilliseconds);
                  }
 
                  // Resample to 44100 Hz if necessary
                  if (_audioFileReader.WaveFormat.SampleRate != 44100)
                  {
-                     _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using WDL resampler", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
+                     var resampleStart = DateTime.Now;
+                     _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using MediaFoundation", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
                      try
                      {
-                         sampleProvider = new WdlResamplingSampleProvider(sampleProvider, 44100);
-                         _logger.LogInformation("WDL resampling initialized successfully for deck {DeckNumber}", _deckNumber);
+                         var waveProvider = new SampleToWaveProvider(sampleProvider);
+                         var outputFormat = new WaveFormat(44100, waveProvider.WaveFormat.Channels, waveProvider.WaveFormat.BitsPerSample);
+                         var resampler = new MediaFoundationResampler(waveProvider, outputFormat);
+                         sampleProvider = resampler.ToSampleProvider();
+                         var resampleTime = DateTime.Now - resampleStart;
+                         _logger.LogInformation("MediaFoundation resampler initialized for deck {DeckNumber}: {Time}ms", _deckNumber, resampleTime.TotalMilliseconds);
                      }
                      catch (Exception ex)
                      {
-                         _logger.LogError(ex, "Failed to initialize WDL resampler for deck {DeckNumber}", _deckNumber);
+                         _logger.LogError(ex, "Failed to initialize MediaFoundation resampler for deck {DeckNumber}", _deckNumber);
                          throw;
                      }
                  }
-                 */
 
-                 _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} (conversions disabled for testing)",
-                     _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown");
+                 var chainBuildTime = DateTime.Now - chainStart; // Assume chainStart defined earlier
+                 _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} → 44100Hz stereo, Chain build: {Time}ms",
+                     _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown", chainBuildTime.TotalMilliseconds);
                  _logger.LogInformation("Deck {DeckNumber} final sample provider format: {SampleRate}Hz, {Channels}ch",
                      _deckNumber, sampleProvider.WaveFormat.SampleRate, sampleProvider.WaveFormat.Channels);
                  // Switch the source in the permanent provider chain
