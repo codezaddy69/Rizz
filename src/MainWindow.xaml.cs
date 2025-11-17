@@ -50,7 +50,7 @@ namespace DJMixMaster
                 LogInfo("Using CSCore audio engine");
 
                 // Open settings window automatically for testing
-                Dispatcher.InvokeAsync(() => OpenSettingsWindow());
+                // Dispatcher.InvokeAsync(() => OpenSettingsWindow());
 
                 // Wire up audio engine events
                 audioEngine.PlaybackPositionChanged += deckEventHandler.OnPlaybackPositionChanged;
