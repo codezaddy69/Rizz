@@ -214,6 +214,7 @@ namespace DJMixMaster.Audio
                  _logger.LogInformation("Deck {DeckNumber} original format: {SampleRate}Hz, {Channels}ch, {Bits}bit",
                      _deckNumber, _audioFileReader.WaveFormat.SampleRate, _audioFileReader.WaveFormat.Channels, _audioFileReader.WaveFormat.BitsPerSample);
                  ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
+                 sampleProvider = new LoggingSampleProvider(sampleProvider, $"Deck{_deckNumber}_Reader");
 
                  // TEMPORARILY DISABLE CONVERSIONS FOR TESTING
                  /*
@@ -245,8 +246,12 @@ namespace DJMixMaster.Audio
                      _deckNumber, _currentFileInfo?.FormatDescription ?? "unknown");
                  _logger.LogInformation("Deck {DeckNumber} final sample provider format: {SampleRate}Hz, {Channels}ch",
                      _deckNumber, sampleProvider.WaveFormat.SampleRate, sampleProvider.WaveFormat.Channels);
-                // Switch the source in the permanent provider chain
-                _loopingProvider.SetSource(sampleProvider, _audioFileReader);
+                 // Switch the source in the permanent provider chain
+                 _loopingProvider.SetSource(sampleProvider, _audioFileReader);
+
+                 // Recreate playing provider with logging wrapper
+                 var loggedLooping = new LoggingSampleProvider(_loopingProvider, $"Deck{_deckNumber}_Looping");
+                 _playingProvider = new PlayingSampleProvider(loggedLooping, () => _isPlaying);
                 // Volume provider is already set up permanently
 
                 LoadedFile = filePath;

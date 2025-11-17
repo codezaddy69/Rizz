@@ -50,7 +50,8 @@ namespace DJMixMaster.Audio
         private readonly ILogger<AudioEngine> _logger;
         private readonly Deck _deck1;
         private readonly Deck _deck2;
-        private readonly MixingSampleProvider _mixer;
+        private MixingSampleProvider _realMixer;
+        private ISampleProvider _mixer;
         private IWavePlayer? _soundOut;
         private readonly SampleToWaveProvider _waveProvider;
         private float _crossfader = 0.5f;
@@ -81,12 +82,13 @@ namespace DJMixMaster.Audio
 
                 // Initialize mixer with float format for stereo output
                 var waveFormat = WaveFormat.CreateIeeeFloatWaveFormat(44100, 2);
-                _mixer = new MixingSampleProvider(waveFormat);
+                _realMixer = new MixingSampleProvider(waveFormat);
+                _mixer = new LoggingSampleProvider(_realMixer, "Mixer");
                 _logger.LogInformation("Mixer initialized with format: {SampleRate}Hz, {Channels}ch", waveFormat.SampleRate, waveFormat.Channels);
 
                 // Connect permanent deck providers to mixer for continuous pipeline
-                _mixer.SetProvider(0, _deck1.SampleProvider);
-                _mixer.SetProvider(1, _deck2.SampleProvider);
+                _realMixer.SetProvider(0, _deck1.SampleProvider);
+                _realMixer.SetProvider(1, _deck2.SampleProvider);
                 _logger.LogInformation("Permanent deck inputs connected to mixer");
 
                 // Convert to wave provider for output (abstraction layer)
