@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -592,8 +593,11 @@ namespace DJMixMaster.Audio
                 // Save to file
                 SaveSettings();
 
-                UpdateStatus("Settings applied successfully");
+                UpdateStatus("Settings applied successfully - playing test audio...");
                 _logger.LogInformation("Audio settings applied and saved");
+
+                // Play test audio
+                PlayTestAudio();
             }
             catch (Exception ex)
             {
@@ -725,6 +729,11 @@ namespace DJMixMaster.Audio
             ApplySettings();
         }
 
+        private void TestAudioButton_Click(object sender, RoutedEventArgs e)
+        {
+            PlayTestAudio();
+        }
+
         private void RevertButton_Click(object sender, RoutedEventArgs e)
         {
             var result = MessageBox.Show("Revert all settings to defaults?", "Confirm Revert",
@@ -754,6 +763,39 @@ namespace DJMixMaster.Audio
             }
 
             Close();
+        }
+
+        private void PlayTestAudio()
+        {
+            try
+            {
+                string testFile = "assets/audio/test.wav";
+                if (!File.Exists(testFile))
+                {
+                    UpdateStatus("Test audio file not found");
+                    return;
+                }
+
+                using (var reader = new AudioFileReader(testFile))
+                using (var output = new WaveOutEvent())
+                {
+                    output.Init(reader);
+                    output.Play();
+
+                    // Wait for playback to complete (max 5 seconds)
+                    int timeout = Math.Min((int)reader.TotalTime.TotalMilliseconds + 500, 5000);
+                    Thread.Sleep(timeout);
+
+                    output.Stop();
+                }
+
+                UpdateStatus("Test audio played successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Test audio playback failed");
+                UpdateStatus("Test audio failed to play");
+            }
         }
 
         private bool SettingsEqual(AudioSettings a, AudioSettings b)

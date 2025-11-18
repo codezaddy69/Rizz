@@ -18,8 +18,10 @@ namespace DJMixMaster.Audio
         {
             _waveFormat = waveFormat ?? throw new ArgumentNullException(nameof(waveFormat));
 
-            // Create timestamped log file
-            string logFileName = $"log{DateTime.Now:yyyyMMdd_HHmm}.txt";
+            // Create timestamped log file in logs folder
+            string logsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs");
+            Directory.CreateDirectory(logsDir);
+            string logFileName = Path.Combine(logsDir, $"mixing_{DateTime.Now:yyyyMMdd_HHmm}.txt");
             _logWriter = new StreamWriter(logFileName, false);
             _logWriter.WriteLine($"Session started: {DateTime.Now}");
             _logWriter.WriteLine($"WaveFormat: {_waveFormat.SampleRate}Hz, {_waveFormat.BitsPerSample}bit, {_waveFormat.Channels}ch");
@@ -83,11 +85,14 @@ namespace DJMixMaster.Audio
                 maxPostClamp = Math.Max(maxPostClamp, Math.Abs(sample));
             }
 
-            // Log every 100 reads to avoid spam
-            if (_readCount++ % 100 == 0)
+            // Log every 10 reads for detailed troubleshooting
+            if (_readCount++ % 10 == 0)
             {
-                _logWriter.WriteLine($"Read {_readCount}: samples={maxRead}, pre-sum max={maxPreSum:F3}, post-sum max={maxPostSum:F3}, post-clamp max={maxPostClamp:F3}");
+                _logWriter.WriteLine($"Read {_readCount}: samples={maxRead}, pre-sum max={maxPreSum:F3}, post-sum max={maxPostSum:F3}, post-clamp max={maxPostClamp:F3}, providers active={_providers.Count(p => p != null)}");
                 _logWriter.Flush();
+
+                // Log to console for immediate visibility
+                Console.WriteLine($"Audio Output Level: {maxPostClamp:F3} (max), {maxRead} samples");
             }
 
             return maxRead;

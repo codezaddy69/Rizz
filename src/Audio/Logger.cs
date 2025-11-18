@@ -5,7 +5,7 @@ namespace DJMixMaster.Audio
 {
     public static class Logger
     {
-        private static readonly string LogFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "mix.log");
+        private static readonly string LogFile = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "mix.log");
         private static readonly object LockObj = new object();
 
         static Logger()

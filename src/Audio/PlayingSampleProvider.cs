@@ -37,14 +37,33 @@ namespace DJMixMaster.Audio
         /// <returns>The number of samples read.</returns>
         public int Read(float[] buffer, int offset, int count)
         {
-            if (_isPlayingGetter())
+            bool isPlaying = _isPlayingGetter();
+            Console.WriteLine($"PlayingSampleProvider Read: isPlaying={isPlaying}, count={count}");
+            if (isPlaying)
             {
-                return _source.Read(buffer, offset, count);
+                int read = _source.Read(buffer, offset, count);
+
+                // Validate audio content
+                float maxAmplitude = 0f;
+                for (int i = 0; i < read; i++)
+                {
+                    maxAmplitude = Math.Max(maxAmplitude, Math.Abs(buffer[offset + i]));
+                }
+
+                Console.WriteLine($"PlayingSampleProvider: read {read} samples, max amplitude={maxAmplitude:F3}");
+
+                if (maxAmplitude == 0f)
+                {
+                    Console.WriteLine("WARNING: Source returning silent audio data!");
+                }
+
+                return read;
             }
             else
             {
                 // Return silence when paused
                 Array.Clear(buffer, offset, count);
+                Console.WriteLine($"PlayingSampleProvider: returning silence");
                 return count;
             }
         }

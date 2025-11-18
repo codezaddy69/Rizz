@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using NAudio.Wave;
+using Microsoft.Extensions.Logging;
 
 namespace DJMixMaster.Audio
 {
@@ -9,58 +10,62 @@ namespace DJMixMaster.Audio
     /// </summary>
     public class LoggingSampleProvider : ISampleProvider
     {
-    private readonly ISampleProvider _source;
-    private readonly string _name;
-    private int _readCount = 0;
-    private long _totalSamplesRead = 0;
-    private long _totalReadTime = 0;
-    private int _slowReadCount = 0;
-    private Stopwatch _stopwatch = new Stopwatch();
+        private readonly ISampleProvider _source;
+        private readonly string _name;
+        private readonly ILogger _logger;
+        private int _readCount = 0;
+        private long _totalSamplesRead = 0;
+        private long _totalReadTime = 0;
+        private int _slowReadCount = 0;
 
-        public LoggingSampleProvider(ISampleProvider source, string name)
+        public LoggingSampleProvider(ISampleProvider source, string name, ILogger logger)
         {
             _source = source;
             _name = name;
-            _stopwatch.Start();
+            _logger = logger;
         }
 
         public WaveFormat WaveFormat => _source.WaveFormat;
 
         public int Read(float[] buffer, int offset, int count)
         {
-            var readStart = _stopwatch.ElapsedMilliseconds;
+            var readStart = DateTime.Now;
             int samplesRead = _source.Read(buffer, offset, count);
-            var readEnd = _stopwatch.ElapsedMilliseconds;
+            var readEnd = DateTime.Now;
             var readTime = readEnd - readStart;
 
             _readCount++;
             _totalSamplesRead += samplesRead;
-            _totalReadTime += readTime;
+            _totalReadTime += (long)readTime.TotalMilliseconds;
 
-            if (readTime > 5) // Log slow reads
+            if (readTime.TotalMilliseconds > 5) // Log slow reads
             {
                 _slowReadCount++;
-                Console.WriteLine($"{_name} SLOW READ #{_readCount}: {samplesRead} samples in {readTime}ms (requested {count})");
+                _logger.LogWarning("{Name} SLOW READ #{Count}: {Samples} samples in {Time}ms (requested {Requested})",
+                    _name, _readCount, samplesRead, readTime.TotalMilliseconds, count);
             }
-            else if (_readCount % 200 == 0) // Log periodic normal reads
+            else if (_readCount % 500 == 0) // Periodic logging
             {
-                Console.WriteLine($"{_name} Read #{_readCount}: {samplesRead} samples in {readTime}ms");
+                double avgTime = _readCount > 0 ? (double)_totalReadTime / _readCount : 0;
+                _logger.LogDebug("{Name} Read #{Count}: {Samples} samples, avg {Avg:F2}ms, {Slow} slow reads",
+                    _name, _readCount, samplesRead, avgTime, _slowReadCount);
             }
 
             // Log if no samples read (end of stream)
             if (samplesRead == 0)
             {
-                Console.WriteLine($"{_name} Read #{_readCount}: END OF STREAM (0 samples)");
+                _logger.LogWarning("{Name} Read #{Count}: END OF STREAM (0 samples)", _name, _readCount);
             }
 
             return samplesRead;
         }
 
-        public void LogStats()
+        public void LogPerformanceStats()
         {
             double avgTime = _readCount > 0 ? (double)_totalReadTime / _readCount : 0;
             double avgSamples = _readCount > 0 ? (double)_totalSamplesRead / _readCount : 0;
-            Console.WriteLine($"{_name} Stats: {_readCount} reads, {_totalSamplesRead} total samples, avg {avgSamples:F0} samples/read, avg {avgTime:F2}ms/read, {_slowReadCount} slow reads");
+            _logger.LogInformation("{Name} Performance Stats: {Reads} reads, {TotalSamples} total samples, avg {AvgSamples:F0} samples/read, avg {AvgTime:F2}ms/read, {SlowReads} slow reads",
+                _name, _readCount, _totalSamplesRead, avgSamples, avgTime, _slowReadCount);
         }
     }
 }

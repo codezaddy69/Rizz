@@ -1,5 +1,0 @@
-Session started: 11/17/2025 1:45:51 AM
-WaveFormat: 44100Hz, 32bit, 2ch
-Set provider 0: active
-Set provider 1: active
-Read 1: samples=13230, pre-sum max=0.000, post-sum max=0.000, post-clamp max=0.000

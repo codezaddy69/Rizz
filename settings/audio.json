@@ -1,5 +1,5 @@
 {
-  "SelectedAsioDevice": "Realtek ASIO",
+  "SelectedAsioDevice": "ASIO4ALL v2",
   "SelectedOutputDevice": "Default",
   "AvailableAsioDevices": [
     {
@@ -62,21 +62,21 @@
   "AvailableWaveOutDevices": [
     {
       "DeviceNumber": 0,
-      "Name": "Headphones (Realtek(R) Audio)",
+      "Name": "1 - ASUS VG24VQ1B (AMD High Def",
       "Channels": 2,
       "IsDefault": true,
       "Status": "Available"
     },
     {
       "DeviceNumber": 1,
-      "Name": "Line 1 (Virtual Audio Cable)",
+      "Name": "Headphones (Realtek(R) Audio)",
       "Channels": 2,
       "IsDefault": false,
       "Status": "Available"
     },
     {
       "DeviceNumber": 2,
-      "Name": "1 - ASUS VG24VQ1B (AMD High Def",
+      "Name": "Line 1 (Virtual Audio Cable)",
       "Channels": 2,
       "IsDefault": false,
       "Status": "Available"
@@ -96,7 +96,7 @@
   "AllowPullMode": true,
   "AlwaysResample": true,
   "Force16Bit": false,
-  "SampleRate": 44100,
+  "SampleRate": 48000,
   "PreferredFormat": "Float32",
   "CrossfaderCurve": "",
   "CrossfaderRange": 1,

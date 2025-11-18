@@ -36,18 +36,26 @@ namespace DJMixMaster
                 logger = initResult.Logger;
                 logWriter = initResult.LogWriter;
                 configuration = initResult.Configuration;
+                bool asioSetupRequired = initResult.AsioSetupRequired;
 
                 LogInfo("MainWindow constructor started");
 
                 InitializeComponent();
                 InitializeSliders();
 
+                // Check if ASIO setup is required
+                if (asioSetupRequired)
+                {
+                    var setupWindow = new Asio4AllSetupWindow();
+                    setupWindow.ShowDialog();
+                }
+
                 // Create deck event handler
                 var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
                 deckEventHandler = new DeckEventHandler(loggerFactory.CreateLogger<DeckEventHandler>(), audioEngine);
-                deckEventHandler.SetUIElements(leftWaveform, rightWaveform, leftTrackTitle, leftTrackInfo, rightTrackTitle, rightTrackInfo, btnLeftPlay, btnRightPlay, deck1PositionSlider, deck2PositionSlider, Deck1InfoText, Deck2InfoText);
+                deckEventHandler.SetUIElements(leftWaveform, rightWaveform, leftTrackTitle, leftTrackInfo, rightTrackTitle, rightTrackInfo, btnLeftPlay, btnRightPlay, deck1PositionSlider, deck2PositionSlider);
 
-                LogInfo("Using CSCore audio engine");
+                LogInfo("Using NAudio audio engine");
 
                 // Open settings window automatically for testing
                 // Dispatcher.InvokeAsync(() => OpenSettingsWindow());

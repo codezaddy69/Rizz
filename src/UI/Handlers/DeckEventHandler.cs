@@ -29,8 +29,6 @@ namespace DJMixMaster.UI.Handlers
         private TextBlock? leftTrackInfo;
         private TextBlock? rightTrackTitle;
         private TextBlock? rightTrackInfo;
-        private TextBlock? Deck1InfoText;
-        private TextBlock? Deck2InfoText;
         private Button? btnLeftPlay;
         private Button? btnRightPlay;
         private Slider? deck1PositionSlider;
@@ -44,8 +42,7 @@ namespace DJMixMaster.UI.Handlers
 
         public void SetUIElements(WaveformVisualizer? leftWaveform, WaveformVisualizer? rightWaveform,
             TextBlock? leftTrackTitle, TextBlock? leftTrackInfo, TextBlock? rightTrackTitle, TextBlock? rightTrackInfo,
-            Button? btnLeftPlay, Button? btnRightPlay, Slider? deck1PositionSlider, Slider? deck2PositionSlider,
-            TextBlock? deck1InfoText, TextBlock? deck2InfoText)
+            Button? btnLeftPlay, Button? btnRightPlay, Slider? deck1PositionSlider, Slider? deck2PositionSlider)
         {
             this.leftWaveform = leftWaveform;
             this.rightWaveform = rightWaveform;
@@ -57,8 +54,6 @@ namespace DJMixMaster.UI.Handlers
             this.btnRightPlay = btnRightPlay;
             this.deck1PositionSlider = deck1PositionSlider;
             this.deck2PositionSlider = deck2PositionSlider;
-            this.Deck1InfoText = deck1InfoText;
-            this.Deck2InfoText = deck2InfoText;
         }
 
         public async Task LoadButton_Click(Button loadButton, int deckNumber)
@@ -95,7 +90,6 @@ namespace DJMixMaster.UI.Handlers
                         leftTrackName = null;
                         if (leftTrackTitle != null) leftTrackTitle.Text = "No Track Loaded";
                         if (leftTrackInfo != null) leftTrackInfo.Text = "";
-                        if (Deck1InfoText != null) Deck1InfoText.Text = "No track loaded";
                         leftWaveform?.UpdateWaveform(Array.Empty<float>(), 0);
                         if (deck1PositionSlider != null) deck1PositionSlider.Maximum = 0;
                     }
@@ -105,7 +99,6 @@ namespace DJMixMaster.UI.Handlers
                         rightTrackName = null;
                         if (rightTrackTitle != null) rightTrackTitle.Text = "No Track Loaded";
                         if (rightTrackInfo != null) rightTrackInfo.Text = "";
-                        if (Deck2InfoText != null) Deck2InfoText.Text = "No track loaded";
                         rightWaveform?.UpdateWaveform(Array.Empty<float>(), 0);
                         if (deck2PositionSlider != null) deck2PositionSlider.Maximum = 0;
                     }
@@ -122,13 +115,29 @@ namespace DJMixMaster.UI.Handlers
                         Filter = "Audio Files|*.mp3;*.wav|All Files|*.*"
                     };
 
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        _logger.LogInformation($"Loading file for deck {deckNumber}: {openFileDialog.FileName}");
+                     if (openFileDialog.ShowDialog() == true)
+                     {
+                         // Check if deck is playing and confirm load
+                         if (_audioEngine.IsPlaying(deckNumber))
+                         {
+                             var result = System.Windows.MessageBox.Show(
+                                 $"Deck {deckNumber} is currently playing. Loading a new file will stop playback. Continue?",
+                                 "Confirm File Load",
+                                 System.Windows.MessageBoxButton.YesNo,
+                                 System.Windows.MessageBoxImage.Warning);
 
-                        // Show loading state
-                        loadButton.Content = "LOADING...";
-                        loadButton.IsEnabled = false;
+                             if (result != System.Windows.MessageBoxResult.Yes)
+                             {
+                                 _logger.LogInformation("File load cancelled by user for playing deck {Deck}", deckNumber);
+                                 return;
+                             }
+                         }
+
+                         _logger.LogInformation($"Loading file for deck {deckNumber}: {openFileDialog.FileName}");
+
+                         // Show loading state
+                         loadButton.Content = "LOADING...";
+                         loadButton.IsEnabled = false;
 
                         try
                         {
@@ -144,16 +153,12 @@ namespace DJMixMaster.UI.Handlers
                             // Update UI on UI thread
                             await Application.Current.Dispatcher.InvokeAsync(() =>
                             {
-                                var properties = _audioEngine.GetDeckProperties(deckNumber);
-                                string infoText = properties != null ? properties.DetailedInfo : "";
-
                                 if (deckNumber == 1)
                                 {
                                     isLeftDeckLoaded = true;
                                     leftTrackName = fileName;
                                     if (leftTrackTitle != null) leftTrackTitle.Text = fileName;
                                     if (leftTrackInfo != null) leftTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss} @ {sampleRate}Hz";
-                                    if (Deck1InfoText != null) Deck1InfoText.Text = infoText;
                                     leftWaveform?.UpdateWaveform(waveformData, trackLength);
                                     if (deck1PositionSlider != null) deck1PositionSlider.Maximum = trackLength;
                                 }
@@ -163,7 +168,6 @@ namespace DJMixMaster.UI.Handlers
                                     rightTrackName = fileName;
                                     if (rightTrackTitle != null) rightTrackTitle.Text = fileName;
                                     if (rightTrackInfo != null) rightTrackInfo.Text = $"{TimeSpan.FromSeconds(trackLength):mm\\:ss} @ {sampleRate}Hz";
-                                    if (Deck2InfoText != null) Deck2InfoText.Text = infoText;
                                     rightWaveform?.UpdateWaveform(waveformData, trackLength);
                                     if (deck2PositionSlider != null) deck2PositionSlider.Maximum = trackLength;
                                 }
@@ -194,41 +198,49 @@ namespace DJMixMaster.UI.Handlers
 
         public void TogglePlay(int deckNumber)
         {
-            try
+            _logger.LogInformation("UI: TogglePlay called for deck {Deck}", deckNumber);
+
+            if (deckNumber == 1)
             {
-                _logger.LogInformation($"Toggle play for deck {deckNumber}");
-                if (deckNumber == 1)
+                isLeftDeckPlaying = !isLeftDeckPlaying;
+                if (isLeftDeckPlaying)
                 {
-                    isLeftDeckPlaying = !isLeftDeckPlaying;
-                    if (isLeftDeckPlaying)
-                    {
-                        _audioEngine.Play(1);
-                        if (btnLeftPlay != null) btnLeftPlay.Content = "PAUSE";
-                    }
-                    else
-                    {
-                        _audioEngine.Pause(1);
-                        if (btnLeftPlay != null) btnLeftPlay.Content = "PLAY";
-                    }
+                    Console.WriteLine("Starting playback on deck 1");
+                    Console.WriteLine($"SoundOut state before play: {_audioEngine.GetSoundOutState()}");
+                    _audioEngine.Play(1);
+                    Console.WriteLine($"Playback started on deck 1, output state: {_audioEngine.GetSoundOutState()}");
+                    if (btnLeftPlay != null) btnLeftPlay.Content = "PAUSE";
+                    _logger.LogInformation("UI: Deck 1 started playing");
                 }
                 else
                 {
-                    isRightDeckPlaying = !isRightDeckPlaying;
-                    if (isRightDeckPlaying)
-                    {
-                        _audioEngine.Play(2);
-                        if (btnRightPlay != null) btnRightPlay.Content = "PAUSE";
-                    }
-                    else
-                    {
-                        _audioEngine.Pause(2);
-                        if (btnRightPlay != null) btnRightPlay.Content = "PLAY";
-                    }
+                    Console.WriteLine("Pausing playback on deck 1");
+                    _audioEngine.Pause(1);
+                    Console.WriteLine($"Playback paused on deck 1, output state: {_audioEngine.GetSoundOutState()}");
+                    if (btnLeftPlay != null) btnLeftPlay.Content = "PLAY";
+                    _logger.LogInformation("UI: Deck 1 paused");
                 }
             }
-            catch (Exception ex)
+            else if (deckNumber == 2)
             {
-                _logger.LogError($"Error toggling play for deck {deckNumber}: {ex}");
+                isRightDeckPlaying = !isRightDeckPlaying;
+                if (isRightDeckPlaying)
+                {
+                    Console.WriteLine("Starting playback on deck 2");
+                    Console.WriteLine($"SoundOut state before play: {_audioEngine.GetSoundOutState()}");
+                    _audioEngine.Play(2);
+                    Console.WriteLine($"Playback started on deck 2, output state: {_audioEngine.GetSoundOutState()}");
+                    if (btnRightPlay != null) btnRightPlay.Content = "PAUSE";
+                    _logger.LogInformation("UI: Deck 2 started playing");
+                }
+                else
+                {
+                    Console.WriteLine("Pausing playback on deck 2");
+                    _audioEngine.Pause(2);
+                    Console.WriteLine($"Playback paused on deck 2, output state: {_audioEngine.GetSoundOutState()}");
+                    if (btnRightPlay != null) btnRightPlay.Content = "PLAY";
+                    _logger.LogInformation("UI: Deck 2 paused");
+                }
             }
         }
 
@@ -293,14 +305,18 @@ namespace DJMixMaster.UI.Handlers
 
         public void OnBeatGridUpdated(object? sender, (int DeckNumber, double[] BeatPositions, double BPM) e)
         {
-            if (e.DeckNumber == 1)
+            // Use dispatcher to ensure UI updates happen on UI thread
+            System.Windows.Application.Current.Dispatcher.Invoke(() =>
             {
-                leftWaveform?.UpdateBeatGrid(e.BeatPositions);
-            }
-            else
-            {
-                rightWaveform?.UpdateBeatGrid(e.BeatPositions);
-            }
+                if (e.DeckNumber == 1)
+                {
+                    leftWaveform?.UpdateBeatGrid(e.BeatPositions);
+                }
+                else
+                {
+                    rightWaveform?.UpdateBeatGrid(e.BeatPositions);
+                }
+            });
         }
 
         public void UpdatePositionSlider(int deckNumber)

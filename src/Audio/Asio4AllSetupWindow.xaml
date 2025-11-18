@@ -1,0 +1,90 @@
+<Window x:Class="DJMixMaster.Audio.Asio4AllSetupWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ASIO4ALL Setup Required" Height="500" Width="600"
+        WindowStyle="ToolWindow" ResizeMode="NoResize"
+        Background="#1a1a1a" Foreground="#ffffff"
+        FontFamily="Segoe UI" FontSize="12">
+    <Window.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="0,0,0,10"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Background" Value="#404040"/>
+            <Setter Property="Foreground" Value="#ffffff"/>
+            <Setter Property="BorderBrush" Value="#606060"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" FontSize="16" FontWeight="Bold" Foreground="#00ffff">
+            ASIO4ALL Configuration Required
+        </TextBlock>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock FontWeight="Bold" Foreground="#ff6b6b">
+                    ASIO4ALL must be configured before use. Follow these steps:
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 1:</Run> Right-click the speaker icon in your Windows taskbar and select "Open Sound settings"
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 2:</Run> Click on "Sound control panel" under "Related settings"
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 3:</Run> Go to the "Playback" tab
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 4:</Run> Find "ASIO4ALL v2" in the list, right-click it, and select "Properties"
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 5:</Run> Click the "Advanced" tab
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 6:</Run> Check the boxes for the sample rates you want to use (44100 Hz recommended)
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 7:</Run> Click "Apply" then "OK"
+                </TextBlock>
+
+                <TextBlock>
+                    <Run FontWeight="Bold">Step 8:</Run> Restart this application
+                </TextBlock>
+
+                <TextBlock Foreground="#ff6b6b" FontWeight="Bold" Margin="0,20,0,10">
+                    Important: ASIO4ALL requires manual configuration. There is no automatic setup.
+                </TextBlock>
+
+                <TextBlock>
+                    If you continue to have issues:
+                    - Ensure no other ASIO applications are running
+                    - Try reinstalling ASIO4ALL
+                    - Check Windows audio services are running
+                </TextBlock>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Open Sound Settings" Click="OpenSoundSettingsButton_Click"/>
+            <Button Content="Close" Click="CloseButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

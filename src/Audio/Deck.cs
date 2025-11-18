@@ -6,84 +6,25 @@ using Microsoft.Extensions.Logging;
 
 namespace DJMixMaster.Audio
 {
-    /// <summary>
-    /// A sample provider that loops the underlying AudioFileReader indefinitely.
-    /// </summary>
-    public class LoopingSampleProvider : ISampleProvider
-    {
-        private ISampleProvider _source;
-        private AudioFileReader? _reader;
 
-        public LoopingSampleProvider(ISampleProvider source, AudioFileReader? reader)
-        {
-            _source = source ?? throw new ArgumentNullException(nameof(source));
-            _reader = reader; // Can be null for silent sources
-            WaveFormat = source.WaveFormat;
-        }
 
-        public WaveFormat WaveFormat { get; }
-
-        /// <summary>
-        /// Switches the audio source without changing the provider reference.
-        /// </summary>
-        /// <param name="newSource">The new sample provider source.</param>
-        /// <param name="newReader">The associated audio file reader (null for silent sources).</param>
-        public void SetSource(ISampleProvider newSource, AudioFileReader? newReader)
-        {
-            _source = newSource ?? throw new ArgumentNullException(nameof(newSource));
-            _reader = newReader; // Can be null
-        }
-
-        public int Read(float[] buffer, int offset, int count)
-        {
-            if (_source == null) return 0; // Safety check
-
-            int totalRead = 0;
-            while (totalRead < count)
-            {
-                int read = _source.Read(buffer, offset + totalRead, count - totalRead);
-                if (read == 0)
-                {
-                    // End of source, loop back if we have a reader
-                    if (_reader != null)
-                    {
-                        _reader.Position = 0;
-                        continue;
-                    }
-                    else
-                    {
-                        // Silent source, just return zeros for remaining buffer
-                        Array.Clear(buffer, offset + totalRead, count - totalRead);
-                        totalRead = count;
-                        break;
-                    }
-                }
-                totalRead += read;
-            }
-            return totalRead;
-        }
-    }
-
-    /// <summary>
-    /// Represents an individual audio deck responsible for loading, playing, and controlling a single audio file.
-    /// Follows Single Responsibility Principle by handling only deck-specific operations.
-    /// </summary>
     public class Deck : IDisposable
     {
         private readonly ILogger<Deck> _logger;
         private readonly int _deckNumber;
         private readonly AudioFileAnalyzer _analyzer;
-        private AudioFileReader? _audioFileReader;
+        private IWaveProvider? _currentWaveProvider;
         private VolumeSampleProvider? _volumeProvider;
         private LoopingSampleProvider _loopingProvider;
         private PlayingSampleProvider _playingProvider;
         private SilentSampleProvider _silentProvider;
         private AudioFileInfo? _currentFileInfo;
-        private AudioFileProperties? _currentFileProperties;
-        private float _baseVolume = 1.0f;
-        private float _crossfaderGain = 1.0f;
-        private bool _isPlaying;
-        private bool _disposed;
+    private AudioFileProperties? _currentFileProperties;
+    private float _baseVolume = 1.0f;
+    private float _crossfaderGain = 1.0f;
+    private bool _isPlaying;
+    private bool _disposed;
+    private System.Timers.Timer? _positionTimer;
 
         /// <summary>
         /// Gets the sample provider for this deck, used in mixing.
@@ -117,17 +58,17 @@ namespace DJMixMaster.Audio
         /// <summary>
         /// Gets the total length of the loaded audio in seconds.
         /// </summary>
-        public double Length => _audioFileReader?.TotalTime.TotalSeconds ?? 0;
+        public double Length => (_currentWaveProvider as WaveStream)?.TotalTime.TotalSeconds ?? 0;
 
         /// <summary>
         /// Gets the sample rate of the loaded audio in Hz.
         /// </summary>
-        public int SampleRate => _audioFileReader?.WaveFormat.SampleRate ?? 0;
+        public int SampleRate => _currentWaveProvider?.WaveFormat.SampleRate ?? 0;
 
         /// <summary>
         /// Gets the current playback position in seconds.
         /// </summary>
-        public double Position => _audioFileReader?.CurrentTime.TotalSeconds ?? 0;
+        public double Position => (_currentWaveProvider as WaveStream)?.CurrentTime.TotalSeconds ?? 0;
 
         /// <summary>
         /// Gets whether the deck is currently playing.
@@ -138,6 +79,32 @@ namespace DJMixMaster.Audio
         /// Gets the properties of the currently loaded audio file.
         /// </summary>
         public AudioFileProperties? FileProperties => _currentFileProperties;
+
+        private void StartPositionLogging()
+        {
+            _positionTimer = new System.Timers.Timer(2000); // Every 2 seconds
+            _positionTimer.Elapsed += (s, e) =>
+            {
+                  if (_isPlaying && _currentWaveProvider != null)
+                  {
+                      var waveStream = _currentWaveProvider as WaveStream;
+                      if (waveStream != null)
+                      {
+                          _logger.LogDebug("Deck {Deck} Position: {Position:F2}s / {Length:F2}s, Looping: {Looping}, Playing: {Playing}",
+                              _deckNumber, waveStream.CurrentTime.TotalSeconds,
+                              waveStream.TotalTime.TotalSeconds, true, _isPlaying); // Looping is always true for now
+                      }
+                  }
+            };
+            _positionTimer.Start();
+        }
+
+        private void StopPositionLogging()
+        {
+            _positionTimer?.Stop();
+            _positionTimer?.Dispose();
+            _positionTimer = null;
+        }
 
         /// <summary>
         /// Initializes a new instance of the Deck class.
@@ -194,32 +161,167 @@ namespace DJMixMaster.Audio
                  // Dispose existing resources
                  DisposeResources();
 
-                 // Load new file
-                 _audioFileReader = new AudioFileReader(filePath);
+                   // Create audio source with validation and fallback
+                   ISampleProvider validatedReader = null;
+                   IWaveProvider selectedWaveProvider = null;
+                   WaveFormat selectedWaveFormat = null;
+                   string selectedReaderType = "";
+                   float validatedAmplitude = 0f;
 
-                 var chainStart = DateTime.Now;
+                  string extension = Path.GetExtension(filePath).ToLowerInvariant();
 
-                 // Extract audio file properties
-                 var waveFormat = _audioFileReader.WaveFormat;
+                   // Primary reader selection based on format
+                   switch (extension)
+                   {
+                       case ".wav":
+                           // WaveFileReader primary
+                           try
+                           {
+                               var waveReader = new WaveFileReader(filePath);
+                               var waveSampleProvider = waveReader.ToSampleProvider();
+                               var (isValid, amplitude) = ValidateAudioContent(waveSampleProvider);
+
+                                if (isValid)
+                                {
+                                    selectedWaveProvider = waveReader;
+                                    selectedWaveFormat = waveReader.WaveFormat;
+                                    validatedReader = waveSampleProvider;
+                                    selectedReaderType = "WaveFileReader";
+                                    validatedAmplitude = amplitude;
+                                }
+                               else
+                               {
+                                   waveReader.Dispose();
+                                   throw new Exception("WaveFileReader validation failed - silent data");
+                               }
+                           }
+                           catch (Exception ex)
+                           {
+                               _logger.LogWarning(ex, "WaveFileReader failed for WAV {File}, falling back", filePath);
+                           }
+                           break;
+
+                       case ".mp3":
+                           // Mp3FileReader primary
+                           try
+                           {
+                               var mp3Reader = new Mp3FileReader(filePath);
+                               var mp3SampleProvider = mp3Reader.ToSampleProvider();
+                               var (mp3Valid, mp3Amplitude) = ValidateAudioContent(mp3SampleProvider);
+
+                                if (mp3Valid)
+                                {
+                                    selectedWaveProvider = mp3Reader;
+                                    selectedWaveFormat = mp3Reader.WaveFormat;
+                                    validatedReader = mp3SampleProvider;
+                                    selectedReaderType = "Mp3FileReader";
+                                    validatedAmplitude = mp3Amplitude;
+                                }
+                               else
+                               {
+                                   mp3Reader.Dispose();
+                                   throw new Exception("Mp3FileReader validation failed - silent data");
+                               }
+                           }
+                           catch (Exception ex)
+                           {
+                               _logger.LogWarning(ex, "Mp3FileReader failed for MP3 {File}, falling back", filePath);
+                           }
+                           break;
+
+                       default:
+                           // AudioFileReader primary
+                           try
+                           {
+                               var reader = new AudioFileReader(filePath);
+                               var (isValid, amplitude) = ValidateAudioContent(reader);
+
+                                if (isValid)
+                                {
+                                    selectedWaveProvider = reader;
+                                    selectedWaveFormat = reader.WaveFormat;
+                                    validatedReader = reader.ToSampleProvider();
+                                    selectedReaderType = "AudioFileReader";
+                                    validatedAmplitude = amplitude;
+                                }
+                               else
+                               {
+                                   reader.Dispose();
+                                   throw new Exception("AudioFileReader validation failed - silent data");
+                               }
+                           }
+                           catch (Exception ex)
+                           {
+                               _logger.LogWarning(ex, "AudioFileReader failed for {File}, falling back", filePath);
+                           }
+                           break;
+                   }
+
+                   // Fallback to MediaFoundationReader if primary failed
+                   if (validatedReader == null)
+                   {
+                       try
+                       {
+                           var mfReader = new MediaFoundationReader(filePath);
+                           var mfSampleProvider = mfReader.ToSampleProvider();
+                           var (mfValid, mfAmplitude) = ValidateAudioContent(mfSampleProvider);
+
+                            if (mfValid)
+                            {
+                                selectedWaveProvider = mfReader;
+                                selectedWaveFormat = mfReader.WaveFormat;
+                                validatedReader = mfSampleProvider;
+                                selectedReaderType = "MediaFoundationReader";
+                                validatedAmplitude = mfAmplitude;
+                            }
+                           else
+                           {
+                               mfReader.Dispose();
+                               throw new Exception("MediaFoundationReader validation failed - silent data");
+                           }
+                       }
+                       catch (Exception ex)
+                       {
+                           _logger.LogError(ex, "All reader attempts failed for {File}", filePath);
+                           throw new InvalidOperationException($"No compatible audio reader found for {filePath}", ex);
+                       }
+                   }
+
+                 // Log results
+                 _logger.LogInformation("Audio reader selected: {Reader} for {File}, amplitude: {Amplitude:F3}",
+                     selectedReaderType, filePath, validatedAmplitude);
+                  Console.WriteLine($"Audio Reader: {selectedReaderType}, File: {Path.GetFileName(filePath)}, Amplitude: {validatedAmplitude:F3}");
+
+                  _currentWaveProvider = selectedWaveProvider;
+
+                  var chainStart = DateTime.Now;
+
+                  // Extract audio file properties
+                  var waveFormat = selectedWaveFormat;
+                   var waveStream = selectedWaveProvider as WaveStream;
+                   long totalSamples = waveStream?.Length / waveFormat.BlockAlign ?? 0;
+                   double durationSeconds = waveStream?.TotalTime.TotalSeconds ?? 0;
+
                  _currentFileProperties = new AudioFileProperties
                  {
                      SampleRate = waveFormat.SampleRate,
                      Channels = waveFormat.Channels,
                      BitsPerSample = waveFormat.BitsPerSample,
-                     TotalSamples = _audioFileReader.Length / waveFormat.BlockAlign,
-                     Duration = _audioFileReader.TotalTime.TotalSeconds,
+                     TotalSamples = totalSamples,
+                     Duration = durationSeconds,
                      Bitrate = waveFormat.SampleRate * waveFormat.Channels * waveFormat.BitsPerSample,
                      FileSize = new System.IO.FileInfo(filePath).Length
                  };
 
                  // Log format details for debugging
-                 _logger.LogInformation("Deck {DeckNumber} original format: {SampleRate}Hz, {Channels}ch, {Bits}bit",
-                     _deckNumber, _audioFileReader.WaveFormat.SampleRate, _audioFileReader.WaveFormat.Channels, _audioFileReader.WaveFormat.BitsPerSample);
-                 ISampleProvider sampleProvider = _audioFileReader.ToSampleProvider();
-                 sampleProvider = new LoggingSampleProvider(sampleProvider, $"Deck{_deckNumber}_Reader");
+                 _logger.LogInformation("Deck {DeckNumber} format: {SampleRate}Hz, {Channels}ch, {Bits}bit, Reader: {Reader}",
+                     _deckNumber, waveFormat.SampleRate, waveFormat.Channels, waveFormat.BitsPerSample, selectedReaderType);
+                  ISampleProvider sampleProvider = validatedReader;
+                 _logger.LogInformation("Creating TimedSampleProvider: Deck{Deck}_Reader", _deckNumber);
+                 sampleProvider = new TimedSampleProvider(sampleProvider, $"Deck{_deckNumber}_Reader", _logger);
 
-                 // Ensure stereo output BEFORE resampling
-                 if (_audioFileReader.WaveFormat.Channels == 1)
+                  // Ensure stereo output BEFORE resampling
+                  if (waveFormat.Channels == 1)
                  {
                      var convertStart = DateTime.Now;
                      sampleProvider = new MonoToStereoSampleProvider(sampleProvider);
@@ -227,26 +329,24 @@ namespace DJMixMaster.Audio
                      _logger.LogInformation("Mono→Stereo conversion for deck {DeckNumber}: {Time}ms", _deckNumber, convertTime.TotalMilliseconds);
                  }
 
-                 // Resample to 44100 Hz if necessary
-                 if (_audioFileReader.WaveFormat.SampleRate != 44100)
-                 {
-                     var resampleStart = DateTime.Now;
-                     _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using MediaFoundation", _deckNumber, _audioFileReader.WaveFormat.SampleRate);
-                     try
-                     {
-                         var waveProvider = new SampleToWaveProvider(sampleProvider);
-                         var outputFormat = new WaveFormat(44100, waveProvider.WaveFormat.Channels, waveProvider.WaveFormat.BitsPerSample);
-                         var resampler = new MediaFoundationResampler(waveProvider, outputFormat);
-                         sampleProvider = resampler.ToSampleProvider();
-                         var resampleTime = DateTime.Now - resampleStart;
-                         _logger.LogInformation("MediaFoundation resampler initialized for deck {DeckNumber}: {Time}ms", _deckNumber, resampleTime.TotalMilliseconds);
-                     }
-                     catch (Exception ex)
-                     {
-                         _logger.LogError(ex, "Failed to initialize MediaFoundation resampler for deck {DeckNumber}", _deckNumber);
-                         throw;
-                     }
-                 }
+                  // Resample to 44100 Hz if necessary
+                   if (waveFormat.SampleRate != 44100)
+                   {
+                       var resampleStart = DateTime.Now;
+                       _logger.LogInformation("Resampling deck {DeckNumber} from {SampleRate}Hz to 44100Hz using WDL", _deckNumber, waveFormat.SampleRate);
+                      try
+                      {
+                          sampleProvider = new WdlResamplingSampleProvider(sampleProvider, 44100);
+                          sampleProvider = new TimedSampleProvider(sampleProvider, $"Deck{_deckNumber}_Resampler", _logger);
+                          var resampleTime = DateTime.Now - resampleStart;
+                          _logger.LogInformation("WDL resampler initialized for deck {DeckNumber}: {Time}ms", _deckNumber, resampleTime.TotalMilliseconds);
+                      }
+                      catch (Exception ex)
+                      {
+                          _logger.LogError(ex, "Failed to initialize WDL resampler for deck {DeckNumber}", _deckNumber);
+                          throw;
+                      }
+                  }
 
                  var chainBuildTime = DateTime.Now - chainStart; // Assume chainStart defined earlier
                  _logger.LogInformation("Deck {DeckNumber} processing complete: {Format} → 44100Hz stereo, Chain build: {Time}ms",
@@ -254,11 +354,14 @@ namespace DJMixMaster.Audio
                  _logger.LogInformation("Deck {DeckNumber} final sample provider format: {SampleRate}Hz, {Channels}ch",
                      _deckNumber, sampleProvider.WaveFormat.SampleRate, sampleProvider.WaveFormat.Channels);
                  // Switch the source in the permanent provider chain
-                 _loopingProvider.SetSource(sampleProvider, _audioFileReader);
+                  _loopingProvider.SetSource(sampleProvider, _currentWaveProvider as WaveStream);
 
-                 // Recreate playing provider with logging wrapper
-                 var loggedLooping = new LoggingSampleProvider(_loopingProvider, $"Deck{_deckNumber}_Looping");
-                 _playingProvider = new PlayingSampleProvider(loggedLooping, () => _isPlaying);
+                  // Recreate playing provider with timing wrapper
+                  _logger.LogInformation("Creating TimedSampleProvider: Deck{Deck}_Looping", _deckNumber);
+                  var timedLooping = new TimedSampleProvider(_loopingProvider, $"Deck{_deckNumber}_Looping", _logger);
+                  _logger.LogInformation("Creating PlayingSampleProvider with loop support for deck {Deck}", _deckNumber);
+                  var playingProvider = new PlayingSampleProvider(timedLooping, () => _isPlaying);
+                  _playingProvider = playingProvider;
                 // Volume provider is already set up permanently
 
                 LoadedFile = filePath;
@@ -272,6 +375,41 @@ namespace DJMixMaster.Audio
                 _logger.LogError(ex, "Error loading file for deck {DeckNumber}", _deckNumber);
                 DisposeResources();
                 throw;
+            }
+        }
+
+        /// <summary>
+        /// Validates that an audio reader contains real audio data (non-zero amplitude).
+        /// </summary>
+        private (bool isValid, float maxAmplitude) ValidateAudioContent(ISampleProvider reader)
+        {
+            const int testBufferSize = 4096; // Test larger buffer for better validation
+            float[] testBuffer = new float[testBufferSize];
+
+            try
+            {
+                int samplesRead = reader.Read(testBuffer, 0, testBufferSize);
+
+                if (samplesRead == 0)
+                {
+                    return (false, 0f); // No data read
+                }
+
+                // Calculate maximum absolute amplitude
+                float maxAmplitude = 0f;
+                for (int i = 0; i < samplesRead; i++)
+                {
+                    maxAmplitude = Math.Max(maxAmplitude, Math.Abs(testBuffer[i]));
+                }
+
+                // Consider valid if amplitude > threshold (avoid noise floor issues)
+                bool isValid = maxAmplitude > 0.001f; // Adjust threshold as needed
+
+                return (isValid, maxAmplitude);
+            }
+            catch (Exception)
+            {
+                return (false, 0f);
             }
         }
 
@@ -304,15 +442,10 @@ namespace DJMixMaster.Audio
         /// </summary>
         public void Play()
         {
-            if (_audioFileReader != null)
-            {
-                _isPlaying = true;
-                _logger.LogInformation("Playing deck {DeckNumber}", _deckNumber);
-            }
-            else
-            {
-                _logger.LogWarning("Cannot play deck {DeckNumber}: no file loaded", _deckNumber);
-            }
+            _logger.LogInformation("Deck {DeckNumber} Play() called - was playing: {WasPlaying}", _deckNumber, _isPlaying);
+            _isPlaying = true;
+            StartPositionLogging();
+            _logger.LogInformation("Deck {DeckNumber} now playing: {IsPlaying}", _deckNumber, _isPlaying);
         }
 
         /// <summary>
@@ -330,8 +463,9 @@ namespace DJMixMaster.Audio
         /// </summary>
         public void Pause()
         {
+            _logger.LogInformation("Deck {DeckNumber} Pause() called - was playing: {WasPlaying}", _deckNumber, _isPlaying);
             _isPlaying = false;
-            _logger.LogInformation("Pausing deck {DeckNumber}", _deckNumber);
+            _logger.LogInformation("Deck {DeckNumber} paused: {IsPlaying}", _deckNumber, _isPlaying);
         }
 
         /// <summary>
@@ -340,10 +474,7 @@ namespace DJMixMaster.Audio
         public void Stop()
         {
             _isPlaying = false;
-            if (_audioFileReader != null)
-            {
-                _audioFileReader.CurrentTime = TimeSpan.Zero;
-            }
+            StopPositionLogging();
             _logger.LogInformation("Stopping deck {DeckNumber}", _deckNumber);
         }
 
@@ -353,9 +484,10 @@ namespace DJMixMaster.Audio
         /// <param name="seconds">Position in seconds.</param>
         public void Seek(double seconds)
         {
-            if (_audioFileReader != null)
+            var waveStream = _currentWaveProvider as WaveStream;
+            if (waveStream != null)
             {
-                _audioFileReader.CurrentTime = TimeSpan.FromSeconds(Math.Clamp(seconds, 0, Length));
+                waveStream.CurrentTime = TimeSpan.FromSeconds(Math.Clamp(seconds, 0, Length));
                 _logger.LogInformation("Seeking deck {DeckNumber} to {Seconds}s", _deckNumber, seconds);
             }
         }
@@ -390,8 +522,8 @@ namespace DJMixMaster.Audio
         /// </summary>
         private void DisposeResources()
         {
-            _audioFileReader?.Dispose();
-            _audioFileReader = null;
+            (_currentWaveProvider as IDisposable)?.Dispose();
+            _currentWaveProvider = null;
             _volumeProvider = null;
         }
     }
