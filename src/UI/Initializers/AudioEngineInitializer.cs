@@ -75,13 +75,13 @@ namespace DJMixMaster.UI.Initializers
                  IAudioEngine audioEngine;
                  bool asioSetupRequired = false;
 
-                 audioEngine = new RizzAudioEngine(loggerFactory.CreateLogger<RizzAudioEngine>());
-                 LogBootStatus("AudioEngine", "CREATED", "Rizz engine ready");
+                 audioEngine = new AudioEngine(loggerFactory.CreateLogger<AudioEngine>());
+                 LogBootStatus("AudioEngine", "CREATED", "NAudio engine ready");
 
-                  // Check if ASIO setup is required (Rizz handles this internally)
-                  asioSetupRequired = false; // TODO: Implement ASIO detection in Rizz
+                  // Check if ASIO setup is required
+                  asioSetupRequired = (audioEngine as AudioEngine)?.AsioFailed ?? false;
 
-                 LogInfo(logger, logWriter, "Using Rizz audio engine");
+                 LogInfo(logger, logWriter, "Using NAudio audio engine");
 
                 return (audioEngine, logger, logWriter, configuration, asioSetupRequired);
             }
