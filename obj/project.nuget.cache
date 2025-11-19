@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5fGDc4NKtGc=",
+  "dgSpecHash": "xeQ9VkfbuvQ=",
   "success": true,
-  "projectFilePath": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+  "projectFilePath": "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rogue\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.0\\microsoft.extensions.configuration.9.0.0.nupkg.sha512",
     "C:\\Users\\rogue\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.0\\microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",
@@ -38,5 +38,12 @@
     "C:\\Users\\rogue\\.nuget\\packages\\system.security.accesscontrol\\4.7.0\\system.security.accesscontrol.4.7.0.nupkg.sha512",
     "C:\\Users\\rogue\\.nuget\\packages\\system.security.principal.windows\\4.7.0\\system.security.principal.windows.4.7.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1900",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Error occurred while getting package vulnerability data: Unable to load the service index for source https://api.nuget.org/v3/index.json."
+    }
+  ]
 }

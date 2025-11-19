@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {}
+    "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {}
   },
   "projects": {
-    "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {
+    "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+        "projectUniqueName": "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
         "projectName": "DJMixMaster",
-        "projectPath": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+        "projectPath": "C:\\Users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
         "packagesPath": "C:\\Users\\rogue\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\rogue\\code\\djmixmaster\\obj\\",
+        "outputPath": "C:\\Users\\rogue\\code\\djmixmaster\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

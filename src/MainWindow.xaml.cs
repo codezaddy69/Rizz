@@ -8,7 +8,7 @@ using System.Windows.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using DJMixMaster.Audio;
-using DJMixMaster.UI.Initializers;
+
 using DJMixMaster.UI.Handlers;
 using DJMixMaster.Visualization;
 
@@ -22,33 +22,24 @@ namespace DJMixMaster
         private IAudioEngine? audioEngine;
         private ILogger? logger;
         private StreamWriter? logWriter;
-        private IConfiguration? configuration;
+
         private DeckEventHandler? deckEventHandler;
         private DispatcherTimer? positionUpdateTimer;
 
-        public MainWindow()
+        public MainWindow(App.AppOptions? options = null)
         {
             try
             {
-                var initializer = new AudioEngineInitializer(LoggerFactory.Create(builder => builder.AddDebug().SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Debug)).CreateLogger<AudioEngineInitializer>());
-                var initResult = initializer.Initialize();
-                audioEngine = initResult.AudioEngine;
-                logger = initResult.Logger;
-                logWriter = initResult.LogWriter;
-                configuration = initResult.Configuration;
-                bool asioSetupRequired = initResult.AsioSetupRequired;
+                audioEngine = new RizzAudioEngine(LoggerFactory.Create(builder => builder.AddDebug().SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Debug)).CreateLogger<RizzAudioEngine>());
+                logger = LoggerFactory.Create(builder => builder.AddDebug()).CreateLogger<MainWindow>();
+                logWriter = new System.IO.StreamWriter("logs/audio_engine.log", true);
 
                 LogInfo("MainWindow constructor started");
 
                 InitializeComponent();
                 InitializeSliders();
 
-                // Check if ASIO setup is required
-                if (asioSetupRequired)
-                {
-                    var setupWindow = new Asio4AllSetupWindow();
-                    setupWindow.ShowDialog();
-                }
+                // Rizz handles ASIO setup internally
 
                 // Create deck event handler
                 var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
@@ -104,11 +95,40 @@ namespace DJMixMaster
                 positionUpdateTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
                 positionUpdateTimer.Tick += (s, e) => { deckEventHandler.UpdatePositionSlider(1); deckEventHandler.UpdatePositionSlider(2); };
                 positionUpdateTimer.Start();
+
+                // Handle command-line options
+                if (options?.AutoLoadFile != null && File.Exists(options.AutoLoadFile))
+                {
+                    LogInfo($"Auto-loading file: {options.AutoLoadFile}");
+                    deckEventHandler.LoadFile(1, options.AutoLoadFile);
+                    // Auto-play after a short delay to ensure system is ready
+                    Task.Delay(1000).ContinueWith(_ => Dispatcher.Invoke(() => deckEventHandler.Play(1)));
+                }
+
+                if (options?.TestTone == true)
+                {
+                    LogInfo("Playing test tone...");
+                    // TODO: Implement test tone
+                    Task.Delay(2000).ContinueWith(_ => Dispatcher.Invoke(() => PlayTestTone()));
+                }
             }
             catch (Exception ex)
             {
                 LogError($"Error initializing MainWindow: {ex}");
                 Console.WriteLine($"Error initializing application: {ex.Message}");
+            }
+        }
+
+        private void PlayTestTone()
+        {
+            try
+            {
+                audioEngine.PlayTestTone(1, 440, 5); // 440Hz for 5 seconds
+                LogInfo("Test tone played");
+            }
+            catch (Exception ex)
+            {
+                LogError($"Test tone failed: {ex.Message}");
             }
         }
 

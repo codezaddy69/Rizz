@@ -11,13 +11,57 @@ namespace DJMixMaster;
 public partial class App : System.Windows.Application
 {
     [STAThread]
-    public static void Main()
+    public static void Main(string[] args)
     {
+        // Parse command-line options
+        var options = ParseArgs(args);
+
         var app = new App();
-        var mainWindow = new MainWindow();
+        var mainWindow = new MainWindow(options);
         app.MainWindow = mainWindow;
         app.Run(mainWindow);
     }
+
+    private static AppOptions ParseArgs(string[] args)
+    {
+        var options = new AppOptions();
+        for (int i = 0; i < args.Length; i++)
+        {
+            switch (args[i])
+            {
+                case "--asio-device":
+                    if (i + 1 < args.Length) options.AsioDevice = args[++i];
+                    break;
+                case "--sample-rate":
+                    if (i + 1 < args.Length && int.TryParse(args[++i], out int rate)) options.SampleRate = rate;
+                    break;
+                case "--verbose":
+                    options.LogLevel = LogLevel.Debug;
+                    break;
+                case "--minimal":
+                    options.LogLevel = LogLevel.Error;
+                    break;
+                case "--test-tone":
+                    options.TestTone = true;
+                    break;
+                case "--file":
+                    if (i + 1 < args.Length) options.AutoLoadFile = args[++i];
+                    break;
+            }
+        }
+        return options;
+    }
+
+    public class AppOptions
+    {
+        public string? AsioDevice { get; set; }
+        public int SampleRate { get; set; } = 44100;
+        public LogLevel LogLevel { get; set; } = LogLevel.Information;
+        public bool TestTone { get; set; }
+        public string? AutoLoadFile { get; set; }
+    }
+
+    public enum LogLevel { Debug, Information, Warning, Error }
 
     private StreamWriter? appLogWriter;
 

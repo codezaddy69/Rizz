@@ -18,6 +18,10 @@ namespace DJMixMaster.Audio
             _scratchBuffer = new float[bufferSize * 2];
         }
 
+        public double Length => _reader.Length;
+        public int SampleRate => _reader.SampleRate;
+        public double Position => _currentFrame / (double)SampleRate;
+
         public void Process(int frames, float[] outputBuffer)
         {
             if (!_isPlaying)

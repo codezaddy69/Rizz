@@ -196,6 +196,35 @@ namespace DJMixMaster.UI.Handlers
             }
         }
 
+        public void LoadFile(int deckNumber, string filePath)
+        {
+            try
+            {
+                _audioEngine.LoadFile(deckNumber, filePath);
+                if (deckNumber == 1) isLeftDeckLoaded = true;
+                else if (deckNumber == 2) isRightDeckLoaded = true;
+                _logger.LogInformation("File loaded on deck {Deck}: {File}", deckNumber, filePath);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to load file on deck {Deck}", deckNumber);
+            }
+        }
+
+        public void Play(int deckNumber)
+        {
+            if ((deckNumber == 1 && !isLeftDeckLoaded) || (deckNumber == 2 && !isRightDeckLoaded))
+            {
+                _logger.LogWarning("Cannot play deck {Deck} - no file loaded", deckNumber);
+                return;
+            }
+
+            _audioEngine.Play(deckNumber);
+            if (deckNumber == 1) isLeftDeckPlaying = true;
+            else if (deckNumber == 2) isRightDeckPlaying = true;
+            _logger.LogInformation("Started playback on deck {Deck}", deckNumber);
+        }
+
         public void TogglePlay(int deckNumber)
         {
             _logger.LogInformation("UI: TogglePlay called for deck {Deck}", deckNumber);
@@ -327,7 +356,10 @@ namespace DJMixMaster.UI.Handlers
                 var length = _audioEngine.GetLength(deckNumber);
 
                 // For looping, show position within track length
-                position = position % length;
+                if (length > 0)
+                {
+                    position = position % length;
+                }
 
                 _logger.LogDebug("Updating position for deck {DeckNumber}: Position={Position:F2}s, Length={Length:F2}s", deckNumber, position, length);
 

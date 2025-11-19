@@ -35,6 +35,9 @@ namespace DJMixMaster.Audio
             _workerThread.Start();
         }
 
+        public double Length => _waveStream?.TotalTime.TotalSeconds ?? 0;
+        public int SampleRate => _waveStream?.WaveFormat.SampleRate ?? 44100;
+
         public int Read(long startFrame, int sampleCount, float[] buffer)
         {
             // Check cache first

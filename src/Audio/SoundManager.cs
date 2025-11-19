@@ -22,6 +22,7 @@ namespace DJMixMaster.Audio
         {
             if (_isInitialized) return;
 
+            _logger.LogInformation("SoundManager initialization starting...");
             try
             {
                 QueryDevices();
@@ -38,20 +39,39 @@ namespace DJMixMaster.Audio
         public void QueryDevices()
         {
             _devices.Clear();
+            _logger.LogInformation("Querying audio devices...");
 
-            // Enumerate ASIO devices
-            for (int i = 0; i < AsioOut.GetDriverNames().Length; i++)
+            // Enumerate ASIO devices first
+            var asioDrivers = AsioOut.GetDriverNames();
+            _logger.LogInformation("Found {Count} ASIO drivers", asioDrivers.Length);
+            for (int i = 0; i < asioDrivers.Length; i++)
             {
-                var driverName = AsioOut.GetDriverNames()[i];
+                var driverName = asioDrivers[i];
                 var device = new SoundDevice(i, driverName, _logger);
                 _devices.Add(device);
                 _logger.LogInformation("ASIO Device {Index}: {Name}", i, driverName);
             }
 
-            // Add WaveOut as fallback
+            // Add WaveOut as fallback (but prioritize ASIO)
             var waveOutDevice = new SoundDevice(-1, "WaveOut", _logger);
             _devices.Add(waveOutDevice);
             _logger.LogInformation("Added WaveOut fallback device");
+
+            // Try to initialize first ASIO device to show systray icon
+            if (_devices.Any(d => d.Index >= 0))
+            {
+                var firstAsio = _devices.First(d => d.Index >= 0);
+                _logger.LogInformation("Attempting to initialize first ASIO device: {Name}", firstAsio.Name);
+                try
+                {
+                    SetupDevice(firstAsio, 44100, 512);
+                    _logger.LogInformation("ASIO device initialized - check systray for driver icon");
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogWarning(ex, "Failed to initialize ASIO device {Name}", firstAsio.Name);
+                }
+            }
         }
 
         public List<SoundDevice> GetDevices(bool outputDevices = true, bool inputDevices = false)
@@ -59,11 +79,11 @@ namespace DJMixMaster.Audio
             return _devices.Where(d => outputDevices).ToList(); // Simplified
         }
 
-        public bool SetupDevice(SoundDevice device, int sampleRate, int bufferSize)
+        public bool SetupDevice(SoundDevice device, int sampleRate, int bufferSize, ISampleProvider? input = null)
         {
             try
             {
-                device.Open(sampleRate, bufferSize);
+                device.Open(sampleRate, bufferSize, input);
                 _currentDevice = device;
                 _logger.LogInformation("Device {Name} opened successfully", device.Name);
                 return true;
@@ -101,17 +121,29 @@ namespace DJMixMaster.Audio
             _logger = logger;
         }
 
-        public void Open(int sampleRate, int bufferSize)
+        public void Open(int sampleRate, int bufferSize, ISampleProvider? input = null)
         {
             if (Index >= 0)
             {
                 // ASIO
-                _player = new AsioOut(Index);
+                var asioOut = new AsioOut(Index);
+                if (input != null)
+                {
+                    asioOut.Init(input);
+                    asioOut.Play(); // Start playback
+                }
+                _player = asioOut;
             }
             else
             {
                 // WaveOut
-                _player = new WaveOutEvent();
+                var waveOut = new WaveOutEvent();
+                if (input != null)
+                {
+                    waveOut.Init(input);
+                    waveOut.Play(); // Start playback
+                }
+                _player = waveOut;
             }
         }
 
