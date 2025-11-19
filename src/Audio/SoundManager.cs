@@ -123,27 +123,38 @@ namespace DJMixMaster.Audio
 
         public void Open(int sampleRate, int bufferSize, ISampleProvider? input = null)
         {
-            if (Index >= 0)
+            _logger.LogInformation($"Opening device {Name} (Index {Index}) with buffer {bufferSize}, input: {input != null}");
+            try
             {
-                // ASIO
-                var asioOut = new AsioOut(Index);
-                if (input != null)
+                if (Index >= 0)
                 {
-                    asioOut.Init(input);
-                    asioOut.Play(); // Start playback
+                    // ASIO
+                    var asioOut = new AsioOut(Index);
+                    if (input != null)
+                    {
+                        asioOut.Init(input);
+                        _logger.LogInformation("ASIO device initialized with input, starting playback");
+                        asioOut.Play(); // Start playback
+                    }
+                    _player = asioOut;
                 }
-                _player = asioOut;
+                else
+                {
+                    // WaveOut
+                    var waveOut = new WaveOutEvent();
+                    if (input != null)
+                    {
+                        waveOut.Init(input);
+                        _logger.LogInformation("WaveOut device initialized with input, starting playback");
+                        waveOut.Play(); // Start playback
+                    }
+                    _player = waveOut;
+                }
+                _logger.LogInformation($"Device {Name} opened successfully");
             }
-            else
+            catch (Exception ex)
             {
-                // WaveOut
-                var waveOut = new WaveOutEvent();
-                if (input != null)
-                {
-                    waveOut.Init(input);
-                    waveOut.Play(); // Start playback
-                }
-                _player = waveOut;
+                _logger.LogError(ex, $"Failed to open device {Name}");
             }
         }
 

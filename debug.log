@@ -8,3 +8,71 @@
 11/19/2025 10:45:06 AM: RizzAudioEngine init starting
 11/19/2025 10:45:06 AM: SoundManager initialized
 11/19/2025 10:45:06 AM: Mixer initialized
+11/19/2025 10:53:59 AM: RizzAudioEngine init starting
+11/19/2025 10:54:00 AM: SoundManager initialized
+11/19/2025 10:54:00 AM: Mixer initialized
+11/19/2025 10:54:02 AM: Sine wave created
+11/19/2025 10:54:02 AM: Devices found: 5
+11/19/2025 10:54:02 AM: Setting up device ASIO4ALL v2
+11/19/2025 10:54:03 AM: Test tone started
+11/19/2025 10:54:57 AM: RizzAudioEngine init starting
+11/19/2025 10:54:57 AM: SoundManager initialized
+11/19/2025 10:54:57 AM: Mixer initialized
+11/19/2025 10:55:00 AM: Sine wave created
+11/19/2025 10:55:00 AM: Devices found: 5
+11/19/2025 10:55:00 AM: Setting up device ASIO4ALL v2
+11/19/2025 10:55:00 AM: Test tone started
+11/19/2025 10:55:20 AM: RizzAudioEngine init starting
+11/19/2025 10:55:20 AM: SoundManager initialized
+11/19/2025 10:55:20 AM: Mixer initialized
+11/19/2025 10:55:22 AM: Sine wave created
+11/19/2025 10:55:22 AM: Devices found: 5
+11/19/2025 10:55:22 AM: Setting up device ASIO4ALL v2
+11/19/2025 10:55:23 AM: Test tone started
+11/19/2025 10:56:16 AM: RizzAudioEngine init starting
+11/19/2025 10:56:17 AM: SoundManager initialized
+11/19/2025 10:56:17 AM: Mixer initialized
+11/19/2025 10:56:19 AM: Sine wave created
+11/19/2025 10:56:19 AM: Devices found: 5
+11/19/2025 10:56:19 AM: Setting up device ASIO4ALL v2
+11/19/2025 10:56:19 AM: Test tone started
+11/19/2025 10:57:32 AM: RizzAudioEngine init starting
+11/19/2025 10:57:33 AM: SoundManager initialized
+11/19/2025 10:57:33 AM: Mixer initialized
+11/19/2025 10:57:35 AM: Sine wave created
+11/19/2025 10:57:35 AM: Devices found: 5
+11/19/2025 10:57:35 AM: Setting up device WaveOut
+11/19/2025 10:57:35 AM: Test tone started
+11/19/2025 10:57:35 AM: Mixer read 1, level 0.572
+11/19/2025 10:57:35 AM: Sine read 13230 samples
+11/19/2025 10:57:35 AM: Sine read 13230 samples
+11/19/2025 10:57:36 AM: Sine read 13230 samples
+11/19/2025 10:57:36 AM: Sine read 13230 samples
+11/19/2025 10:57:36 AM: Sine read 13230 samples
+11/19/2025 10:57:36 AM: Mixer read 11, level 0.826
+11/19/2025 10:57:37 AM: Sine read 13230 samples
+11/19/2025 10:57:37 AM: Sine read 13230 samples
+11/19/2025 10:57:37 AM: Sine read 13230 samples
+11/19/2025 10:59:56 AM: RizzAudioEngine init starting
+11/19/2025 10:59:57 AM: SoundManager initialized
+11/19/2025 10:59:57 AM: Mixer initialized
+11/19/2025 11:01:03 AM: RizzAudioEngine init starting
+11/19/2025 11:02:23 AM: RizzAudioEngine init starting
+11/19/2025 11:02:24 AM: SoundManager initialized
+11/19/2025 11:02:24 AM: Mixer initialized
+11/19/2025 11:02:26 AM: Devices found: 5
+11/19/2025 11:02:26 AM: Setting up device WaveOut
+11/19/2025 11:02:26 AM: Test music started
+11/19/2025 11:02:26 AM: Mixer read 1, level 0.598
+11/19/2025 11:02:28 AM: Mixer read 11, level 0.512
+11/19/2025 11:04:06 AM: RizzAudioEngine init starting
+11/19/2025 11:04:07 AM: SoundManager initialized
+11/19/2025 11:04:07 AM: Mixer initialized
+11/19/2025 11:04:09 AM: Devices found: 5
+11/19/2025 11:04:09 AM: Setting up device WaveOut
+11/19/2025 11:04:09 AM: Test music started
+11/19/2025 11:04:09 AM: Mixer read 1, level 0.598
+11/19/2025 11:04:10 AM: Mixer read 11, level 0.512
+11/19/2025 11:05:12 AM: RizzAudioEngine init starting
+11/19/2025 11:05:12 AM: SoundManager initialized
+11/19/2025 11:05:12 AM: Mixer initialized

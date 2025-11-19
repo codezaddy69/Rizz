@@ -93,6 +93,7 @@ namespace DJMixMaster.Audio
 
                 // Log to console for immediate visibility
                 Console.WriteLine($"Audio Output Level: {maxPostClamp:F3} (max), {maxRead} samples");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Mixer read {_readCount}, level {maxPostClamp:F3}\n");
             }
 
             return maxRead;

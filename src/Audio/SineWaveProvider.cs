@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NAudio.Wave;
 
 namespace DJMixMaster.Audio
@@ -37,6 +38,12 @@ namespace DJMixMaster.Audio
             if (_position >= _totalSamples && samplesRead == 0)
             {
                 Console.WriteLine("Test tone finished");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Test tone finished\n");
+            }
+            if (samplesRead > 0 && _position % 4410 == 0) // Log every 0.1 seconds
+            {
+                Console.WriteLine($"Sine wave: pos {_position}, samples {samplesRead}");
+                File.AppendAllText("debug.log", $"{DateTime.Now}: Sine read {samplesRead} samples\n");
             }
             return samplesRead;
         }
