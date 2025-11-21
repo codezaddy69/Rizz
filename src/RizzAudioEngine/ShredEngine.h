@@ -1,15 +1,11 @@
 #pragma once
 
-#ifdef SHREDENGINE_EXPORTS
 #define SHRED_API __declspec(dllexport)
-#else
-#define SHRED_API __declspec(dllimport)
-#endif
 
 #include <string>
 
 extern "C" {
-    SHRED_API void InitializeEngine();
+    SHRED_API void InitializeEngine(bool isTestMode = false);
     SHRED_API int LoadFile(int deck, const char* filePath);
     SHRED_API void Play(int deck);
     SHRED_API void Pause(int deck);

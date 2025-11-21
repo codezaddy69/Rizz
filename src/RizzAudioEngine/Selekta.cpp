@@ -2,15 +2,11 @@
 #include <iostream>
 
 Selekta::Selekta() : m_stream(nullptr), m_bufferSize(512) {
-    // Improvement 3: PortAudio version check
-    const PaVersionInfo* version = Pa_GetVersionInfo();
-    std::cout << "PortAudio version: " << version->versionText << std::endl;
-
     PaError err = Pa_Initialize();
     if (err != paNoError) {
-        std::cout << "PortAudio init failed: " << Pa_GetErrorText(err) << std::endl;
+        std::cout << "[Selekta] PortAudio init failed: " << Pa_GetErrorText(err) << std::endl;
     } else {
-        std::cout << "Selekta created" << std::endl;
+        std::cout << "[Selekta] PortAudio initialized" << std::endl;
     }
 }
 
@@ -18,21 +14,26 @@ Selekta::~Selekta() {
     if (m_stream) {
         Pa_StopStream(m_stream);
         Pa_CloseStream(m_stream);
+        m_stream = nullptr;
     }
     Pa_Terminate();
-    std::cout << "Selekta destroyed" << std::endl;
+    std::cout << "[Selekta] PortAudio terminated" << std::endl;
 }
 
 std::vector<DeviceInfo> Selekta::enumerateDevices() {
     std::vector<DeviceInfo> devices;
     int numDevices = Pa_GetDeviceCount();
+    if (numDevices < 0) {
+        std::cout << "[Selekta] Pa_GetDeviceCount failed: " << Pa_GetErrorText(numDevices) << std::endl;
+        return devices;
+    }
     for (int i = 0; i < numDevices; ++i) {
         const PaDeviceInfo* deviceInfo = Pa_GetDeviceInfo(i);
-        if (deviceInfo && deviceInfo->maxOutputChannels > 0) {
+        if (deviceInfo) {
             devices.push_back({deviceInfo->name, deviceInfo->maxOutputChannels, (int)deviceInfo->defaultSampleRate});
         }
     }
-    std::cout << "Amp enumerated " << devices.size() << " devices" << std::endl;
+    std::cout << "[Selekta] Enumerated " << devices.size() << " devices" << std::endl;
     return devices;
 }
 
@@ -47,27 +48,26 @@ bool Selekta::openDevice(const std::string& name, int bufferSize) {
             break;
         }
     }
-
     if (deviceIndex == -1) {
-        std::cout << "Device not found: " << name << std::endl;
+        std::cout << "[Selekta] Device '" << name << "' not found" << std::endl;
         return false;
     }
 
     PaStreamParameters outputParameters;
     outputParameters.device = deviceIndex;
-    outputParameters.channelCount = 2;
+    outputParameters.channelCount = 2; // Stereo
     outputParameters.sampleFormat = paFloat32;
     outputParameters.suggestedLatency = Pa_GetDeviceInfo(deviceIndex)->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = nullptr;
 
     PaError err = Pa_OpenStream(&m_stream, nullptr, &outputParameters, 44100, bufferSize, paClipOff, nullptr, nullptr);
     if (err != paNoError) {
-        std::cout << "Failed to open stream: " << Pa_GetErrorText(err) << std::endl;
+        std::cout << "[Selekta] Failed to open stream: " << Pa_GetErrorText(err) << std::endl;
         return false;
     }
 
     m_bufferSize = bufferSize;
-    std::cout << "Amp opening device " << name << " with buffer size " << bufferSize << std::endl;
+    std::cout << "[Selekta] Opened device '" << name << "' with buffer size " << bufferSize << std::endl;
     return true;
 }
 
@@ -75,23 +75,27 @@ void Selekta::startStream() {
     if (m_stream) {
         PaError err = Pa_StartStream(m_stream);
         if (err != paNoError) {
-            std::cout << "Failed to start stream: " << Pa_GetErrorText(err) << std::endl;
+            std::cout << "[Selekta] Failed to start stream: " << Pa_GetErrorText(err) << std::endl;
         } else {
-            std::cout << "Amp starting audio stream" << std::endl;
+            std::cout << "[Selekta] Stream started" << std::endl;
         }
     }
 }
 
 void Selekta::stopStream() {
     if (m_stream) {
-        Pa_StopStream(m_stream);
-        std::cout << "Amp stopping audio stream" << std::endl;
+        PaError err = Pa_StopStream(m_stream);
+        if (err != paNoError) {
+            std::cout << "[Selekta] Failed to stop stream: " << Pa_GetErrorText(err) << std::endl;
+        } else {
+            std::cout << "[Selekta] Stream stopped" << std::endl;
+        }
     }
 }
 
 void Selekta::setBufferSize(int size) {
     m_bufferSize = size;
-    std::cout << "Amp setting buffer size to " << size << std::endl;
+    std::cout << "[Selekta] Buffer size set to " << size << std::endl;
 }
 
 PaStream* Selekta::getStream() {

@@ -194,17 +194,17 @@ User Input → Controls → EngineBuffer → CachingReader → SoundIO → Hardw
 **Issue Identified**: Current --test-tone uses RizzAudioEngine (C# NAudio), not ShredEngine (C++ PortAudio). This bypasses the Mixxx-inspired C++ boot engine.
 
 **Solid Plan for Integration**:
-1. **Create ShredEngineInterop Wrapper**: Extend RizzAudioEngine to optionally use ShredEngineInterop.DLL calls instead of NAudio.
-2. **Command-Line Flag**: Add --use-cpp-engine flag to RizzAudioEngine initialization.
-3. **Fallback Logic**: If DLL fails to load, fall back to NAudio with warning.
-4. **Device Management**: ShredEngine handles ASIO; RizzAudioEngine delegates device setup.
+1. **Replace RizzAudioEngine Core**: Replace NAudio SoundManager/mixer with ShredEngineInterop.InitializeEngine() at startup.
+2. **Playback Methods**: Delegate LoadFile/Play/Pause to ShredEngineInterop calls.
+3. **File Info Handling**: Use NAudio only for metadata if superior; otherwise find C# alternative (e.g., TagLib# for ID3).
+4. **Device Management**: ShredEngine handles ASIO exclusively; remove SoundManager NAudio dependencies.
 5. **Testing**: --test-tone loads file via ShredEngine.LoadFile() and plays via ShredEngine.Play().
 6. **Boot Validation**: Ensure ShredEngine initializes at app startup for true C++ engine testing.
 
 **3 Improvements for C++ Integration**:
-1. **Hybrid Mode**: Seamless switching between C# and C++ engines at runtime.
-2. **Performance Comparison**: Built-in benchmarks to compare latency between engines.
-3. **Error Recovery**: Automatic fallback with detailed logging when C++ fails.
+1. **Pure C++ Pipeline**: Eliminate all NAudio dependencies except optional file metadata.
+2. **Performance Monitoring**: Built-in latency/speed metrics for C++ engine validation.
+3. **Robust Error Handling**: Clear failure messages if C++ DLL unavailable, no fallbacks.
 
 **Timeline**: 1-2 days implementation. **Success**: --test-tone plays through C++ ShredEngine, validating boot-time C++ playback.
 

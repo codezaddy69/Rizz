@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Find PortAudio
-find_package(PkgConfig REQUIRED)
-pkg_check_modules(PORTAUDIO REQUIRED portaudio-2.0)
+set(PORTAUDIO_INCLUDE_DIRS "/mnt/c/users/rogue/code/djmixmaster/ref/portaudio-src/include")
+set(PORTAUDIO_LIBRARIES "/mnt/c/users/rogue/code/djmixmaster/ref/portaudio-src/build/libportaudio.dll")
 
 # Include directories
 include_directories(${PORTAUDIO_INCLUDE_DIRS})
@@ -16,7 +16,6 @@ include_directories(${PORTAUDIO_INCLUDE_DIRS})
 set(SOURCES
     ShredEngine.cpp
     ScratchBuffer.cpp
-    BeatSource.cpp
     ClubMixer.cpp
     Selekta.cpp
 )
@@ -25,7 +24,6 @@ set(SOURCES
 set(HEADERS
     ShredEngine.h
     ScratchBuffer.h
-    BeatSource.h
     ClubMixer.h
     Selekta.h
 )
@@ -41,6 +39,7 @@ if(MSVC)
     target_compile_options(ShredEngine PRIVATE /W4)
 else()
     target_compile_options(ShredEngine PRIVATE -Wall -Wextra)
+    target_link_options(ShredEngine PRIVATE -static-libgcc -static-libstdc++)
 endif()
 
 # Install

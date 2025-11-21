@@ -1,5 +1,5 @@
 {
-  "SelectedAsioDevice": "Realtek ASIO",
+  "SelectedAsioDevice": "ASIO4ALL v2",
   "SelectedOutputDevice": "Default",
   "AvailableAsioDevices": [
     {

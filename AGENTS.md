@@ -4,6 +4,15 @@ Note: The Primary LOOP is I send you either Feedback or console errors or output
 
 IMPORTANT: Do not commit changes unless explicitly told to by the user.
 
+## Daily Maintenance
+- Update docs/DEV_DIARY.md every day with events, decisions, direction, theory, and critiques.
+
+## Logging Guidelines
+See docs/log_policy.md for full policy.
+- Console logs: Only critical events (init, errors, major state changes).
+- Detailed logs: Route to files for debugging (e.g., audio processing, frame details).
+- Avoid per-frame logs to prevent console flooding and performance issues.
+
 ## Audio Pipeline Implementation Notes
 
 ### ASIO Requirements
@@ -62,139 +71,128 @@ IMPORTANT: Do not commit changes unless explicitly told to by the user.
 
 ## FOCUS.md: Current Project Focus
 
-# DJMixMaster Development Focus: Audio Playback System Debugging
+# DJMixMaster Development Focus: C++ RizzAudioEngine Integration & Auto-Testing
 
-## Current Project Status: Audio Pipeline Debugging & ASIO Integration
+## Current Project Status: C++ Engine Implementation & Headless Testing Setup
 
 ### Executive Summary
-The DJMixMaster application has a fully functional audio pipeline architecture, but encounters critical issues with audio data integrity and ASIO driver compatibility. The system successfully initializes, loads files, and processes audio data, but produces silent output due to reader implementation failures.
+Transitioned to pure C++ RizzAudioEngine (Mixxx-inspired) as sole audio backend. Implemented WAV file loading, extensive logging, and dual-deck support. Removed old NAudio systems to avoid confusion. Auto-testing harness simulates MIDI commands for headless dual-deck playback validation. C++ shared library built on Linux; awaiting Windows DLL cross-compilation with mingw-w64.
 
-### Key Findings from Debug Session
+### Key Findings from Implementation
 
-#### ✅ System Architecture: EXCELLENT
-- **Audio Pipeline**: Robust mixing, resampling, and playback systems
-- **Error Handling**: Comprehensive fallback mechanisms and logging
-- **UI Integration**: Proper threading and user interaction handling
-- **Performance**: Sub-millisecond latency, zero buffer underruns
+#### ✅ System Architecture: ROBUST
+- **C++ Engine**: ShredEngine, ScratchBuffer, ClubMixer, Selekta with dual-deck playback
+- **File Loading**: Basic WAV parser in ScratchBuffer (16-bit, 44100Hz, mono/stereo)
+- **Logging**: Comprehensive boot/init/process logging for failure detection
+- **Testing**: RizzAudioEngineTestHarness.cs for simulated MIDI commands
 
-#### ❌ Critical Issues Identified
+#### ❌ Current Blockers
+##### 1. DLL Build Pending
+**Problem**: C++ built as Linux .so; Windows .dll needed for P/Invoke
+**Impact**: Cannot run auto-test until DLL deployed
+**Status**: mingw-w64 installing; cross-compilation planned
+**Solution**: Build ShredEngine.dll, copy to C# bin directory
 
-##### 1. ASIO Driver Compatibility Failure
-**Problem**: ASIO4ALL v2 reports no support for standard sample rates (44100Hz, 48000Hz, 96000Hz)
-**Impact**: ASIO initialization fails, no systray icon, forces WaveOut fallback
-**Status**: Configuration issue - requires ASIO4ALL setup in Windows Sound settings
-**Solution**: User must configure ASIO4ALL to enable 44100Hz support
+##### 2. Audio Validation Incomplete
+**Problem**: C++ process() generates sine wave if no file loaded; actual playback untested
+**Impact**: Silent output possible if WAV loading fails
+**Status**: Code implemented; testing blocked by DLL
+**Evidence**: Logs will show "[ScratchBuffer] Processed X frames from audio data" on success
 
-##### 2. Audio Data Reader Corruption
-**Problem**: AudioFileReader passes validation (shows 0.590 amplitude) but returns zeros during playback
-**Impact**: Files appear to load correctly but produce silent audio
-**Status**: Code issue - reader implementation fails during streaming
-**Evidence**:
-```
-Audio Reader: AudioFileReader, File: Techno1.wav, Amplitude: 0.590  ← Validation
-PlayingSampleProvider: read 13230 samples, max amplitude=0.000     ← Playback
-WARNING: Source returning silent audio data!
-```
-
-##### 3. UI Component Errors
-**Problem**: NaN values in waveform visualization causing exceptions
-**Impact**: File loading succeeds but UI updates fail
-**Status**: Threading issue - beat grid updates on wrong thread
-**Solution**: Implemented Dispatcher.Invoke fix
+##### 3. Cross-Platform Build Complexity
+**Problem**: WSL Linux build vs Windows runtime
+**Impact**: Delays testing; potential compatibility issues
+**Status**: Mitigated by mingw cross-compilation
+**Solution**: Use x86_64-w64-mingw32-g++ for Windows DLL
 
 ### Implemented Solutions
 
-#### Phase 1: Reader Fallback System ✅
-- **AudioFileReader**: Primary for all formats
-- **WaveFileReader**: WAV fallback
-- **Mp3FileReader**: MP3 fallback
-- **MediaFoundationReader**: Universal fallback
-- **Validation**: Amplitude checking with 0.001 threshold
-- **Logging**: Reader selection and amplitude reporting
+#### Phase 1: C++ Engine Core ✅
+- **ShredEngine**: Dual-deck LoadFile/Play/Pause/Seek with logging
+- **ScratchBuffer**: WAV loading, process() for audio streaming
+- **ClubMixer**: Crossfader, volume mixing with logging
+- **Selekta**: Dummy audio device management
+- **Fixes**: Class names, includes, removed unused code
 
-#### Phase 2: Enhanced Diagnostics ✅
-- **Boot Logging**: Comprehensive initialization tracking
-- **Runtime Monitoring**: Audio level validation every 10 reads
-- **ASIO Detection**: Sample rate support checking before initialization
-- **Error Handling**: Graceful fallbacks with detailed logging
+#### Phase 2: Auto-Testing Framework ✅
+- **Test Harness**: Simulates load/play on both decks, monitors 10s, logs positions
+- **Headless Mode**: --run-test CLI option for no-GUI testing
+- **Compartmentalized**: RizzAudioEngineTestHarness.cs easy to remove
 
-#### Phase 3: UI Threading Fixes ✅
-- **Dispatcher Implementation**: OnBeatGridUpdated uses Invoke
-- **Load Confirmations**: Dialog prompts for playing deck interruptions
-- **Button State Updates**: Proper synchronization after operations
+#### Phase 3: Cleanup & Documentation ✅
+- **Removed Old Systems**: NAudio dependencies, BeatSource files, unused code
+- **DEV_DIARY.md**: Daily tracking of events/decisions/direction/theory/critiques
+- **AGENTS.md**: Added daily DEV_DIARY upkeep note
 
-### Current Test Results
+### Current Test Readiness
 
 #### System Health: EXCELLENT
-- **Initialization**: 100% success rate
-- **File Loading**: 75% success (validation working)
-- **Playback Start**: 100% success (pipeline active)
-- **Performance**: <0.1ms latency, 0 errors
+- **C# Build**: Success, no errors
+- **C++ Compile**: Success on Linux
+- **Integration**: P/Invoke ready for DLL
+- **Logging**: Extensive for debugging
 
-#### Audio Output: CRITICAL FAILURE
-- **Validation**: Detects audio presence correctly
-- **Streaming**: Returns zeros despite validation
-- **ASIO**: Fails due to driver configuration
-- **WaveOut**: Active but receiving silent data
+#### Audio Output: UNTESTED
+- **File Loading**: Implemented but unverified
+- **Playback**: Sine fallback if load fails
+- **Dual-Deck**: Structure supports simultaneous play
+- **Mixing**: Crossfader/volume logic in place
 
 ### Root Cause Analysis
 
-#### Primary Issue: Reader Streaming Failure
-**Hypothesis**: AudioFileReader works for metadata/header reading but fails during continuous sample streaming
-**Evidence**: Validation reads ~4KB successfully, playback reads fail over time
-**Possible Causes**:
-- File corruption (valid header, corrupted data)
-- Reader state management issues
-- Threading conflicts in continuous reading
-- NAudio library limitations for certain WAV encodings
+#### Primary Issue: Build Environment Mismatch
+**Hypothesis**: WSL Linux development vs Windows deployment requires cross-compilation
+**Evidence**: .so built successfully, but .dll needed
+**Possible Causes**: Platform differences, toolchain setup
+**Solution**: mingw-w64 for Windows DLL
 
-#### Secondary Issue: ASIO Configuration
-**Hypothesis**: ASIO4ALL not properly configured for audio applications
-**Evidence**: No standard sample rates supported
-**Solution**: Windows Sound settings configuration required
+#### Secondary Issue: Audio Pipeline Validation
+**Hypothesis**: C++ engine correct, but WAV parser may fail on complex files
+**Evidence**: Simple parser assumes 16-bit PCM; may not handle all WAV variants
+**Solution**: Test with ThisIsTrash.wav, expand parser if needed
 
 ### Next Steps & Recommendations
 
 #### Immediate Actions
-1. **Configure ASIO4ALL**: Enable 44100Hz in Windows Sound control panel
-2. **Test Different Files**: Verify if issue is file-specific or universal
-3. **Force WaveFileReader**: Modify code to prefer WaveFileReader for WAV files
+1. **Complete mingw Installation**: Finish sudo apt install -y mingw-w64
+2. **Cross-Compile DLL**: Use mingw toolchain, build ShredEngine.dll
+3. **Deploy & Test**: Copy DLL to bin/, run --run-test, analyze logs
 
 #### Code Fixes Needed
-1. **Reader Selection Logic**: Prioritize WaveFileReader for WAV files
-2. **Streaming Validation**: Add continuous amplitude monitoring
-3. **Error Recovery**: Implement reader restart on failure detection
+1. **WAV Parser Robustness**: Add error handling for unsupported formats
+2. **Audio Streaming**: Ensure looping and stereo handling correct
+3. **Logging Granularity**: Add amplitude checks in process()
 
 #### Testing Protocol
-1. **File Testing**: Load various WAV/MP3 files from different sources
-2. **ASIO Testing**: Verify systray icon appears after configuration
-3. **Playback Testing**: Confirm non-zero amplitude during streaming
+1. **DLL Deployment**: Verify ShredEngine.dll loads without errors
+2. **Headless Test**: Run --run-test, check console logs for success
+3. **Audio Validation**: Confirm non-sine output, dual positions advancing
 
 ### Performance Metrics
-- **Boot Time**: <2 seconds
-- **File Load Time**: <1 second
-- **Playback Latency**: <0.1ms
-- **CPU Usage**: <5% during playback
-- **Memory Usage**: Stable, no leaks detected
+- **C++ Boot Time**: <1 second (estimated)
+- **File Load Time**: <0.5 second (estimated)
+- **Playback Latency**: <0.1ms (target)
+- **CPU Usage**: <5% during playback (target)
+- **Memory Usage**: Stable, no leaks (target)
 
 ### Risk Assessment
-- **High Risk**: Audio output failure (blocks core functionality)
-- **Medium Risk**: ASIO configuration dependency
-- **Low Risk**: UI threading (already fixed)
+- **High Risk**: DLL build failure or compatibility issues
+- **Medium Risk**: WAV parser limitations
+- **Low Risk**: Testing framework (compartmentalized)
 
 ### Success Criteria
-- [ ] ASIO systray icon visible on startup
-- [ ] Audio playback produces non-zero amplitude
-- [ ] File loading works without UI errors
-- [ ] All readers properly validate and stream audio
-- [ ] System maintains <0.1ms latency
+- [ ] ShredEngine.dll builds and loads successfully
+- [ ] Auto-test runs without crashes, logs dual-deck playback
+- [ ] Audio output non-silent, positions update correctly
+- [ ] C++ engine handles ThisIsTrash.wav properly
+- [ ] System maintains low latency and stability
 
 ---
 
-**Focus Updated**: November 18, 2025
-**Status**: Active debugging - audio data streaming failure identified
-**Priority**: Critical - resolve reader implementation issues
-**Next Milestone**: Functional audio playback with ASIO support
+**Focus Updated**: November 20, 2025
+**Status**: C++ engine implemented, DLL build pending
+**Priority**: Critical - complete cross-compilation and test
+**Next Milestone**: Functional dual-deck playback via C++ engine
 
 </content>
 <parameter name="filePath">ref/JuceReferenceOutline.md

@@ -1,18 +1,18 @@
-#include "RizzEngineMixer.h"
+#include "ClubMixer.h"
 #include <iostream>
 #include <algorithm>
 
-RizzEngineMixer::RizzEngineMixer() : m_crossfader(0.0f), m_masterVolume(1.0f) {
+ClubMixer::ClubMixer() : m_crossfader(0.0f), m_masterVolume(1.0f) {
     m_volumes[0] = 1.0f;
     m_volumes[1] = 1.0f;
-    std::cout << "RizzEngineMixer created" << std::endl;
+    std::cout << "[ClubMixer] Initialized with crossfader=0.0, masterVolume=1.0, volumes[0]=1.0, volumes[1]=1.0" << std::endl;
 }
 
-RizzEngineMixer::~RizzEngineMixer() {
-    std::cout << "RizzEngineMixer destroyed" << std::endl;
+ClubMixer::~ClubMixer() {
+    std::cout << "[ClubMixer] Destroyed" << std::endl;
 }
 
-void RizzEngineMixer::mix(float* left, float* right, int frames) {
+void ClubMixer::mix(float* left, float* right, int frames) {
     // Placeholder: simple crossfader logic
     for (int i = 0; i < frames; ++i) {
         float l = left[i] * m_volumes[0] * (1.0f - std::max(0.0f, m_crossfader));
@@ -20,22 +20,23 @@ void RizzEngineMixer::mix(float* left, float* right, int frames) {
         left[i] = l * m_masterVolume;
         right[i] = r * m_masterVolume;
     }
-    std::cout << "Mixing " << frames << " frames" << std::endl;
 }
 
-void RizzEngineMixer::setCrossfader(float position) {
+void ClubMixer::setCrossfader(float position) {
     m_crossfader = position;
-    std::cout << "Crossfader set to " << position << std::endl;
+    std::cout << "[ClubMixer] Crossfader set to " << position << std::endl;
 }
 
-void RizzEngineMixer::setVolume(int deck, float gain) {
+void ClubMixer::setVolume(int deck, float gain) {
     if (deck >= 0 && deck < 2) {
         m_volumes[deck] = gain;
-        std::cout << "Volume for deck " << deck << " set to " << gain << std::endl;
+        std::cout << "[ClubMixer] Volume for deck " << deck << " set to " << gain << std::endl;
+    } else {
+        std::cout << "[ClubMixer] Invalid deck " << deck << " for setVolume" << std::endl;
     }
 }
 
-void RizzEngineMixer::setMasterVolume(float gain) {
+void ClubMixer::setMasterVolume(float gain) {
     m_masterVolume = gain;
-    std::cout << "Master volume set to " << gain << std::endl;
+    std::cout << "[ClubMixer] Master volume set to " << gain << std::endl;
 }

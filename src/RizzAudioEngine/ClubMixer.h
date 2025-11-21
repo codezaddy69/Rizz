@@ -2,8 +2,8 @@
 
 class ClubMixer {
 public:
-    RizzEngineMixer();
-    ~RizzEngineMixer();
+    ClubMixer();
+    ~ClubMixer();
 
     void mix(float* left, float* right, int frames);
     void setCrossfader(float position);

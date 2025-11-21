@@ -1,0 +1,7 @@
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/ShredEngine.dir
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/edit_cache.dir
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/list_install_components.dir
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/install.dir
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/install/local.dir
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/build/CMakeFiles/install/strip.dir

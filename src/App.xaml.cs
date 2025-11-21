@@ -47,6 +47,15 @@ public partial class App : System.Windows.Application
                 case "--file":
                     if (i + 1 < args.Length) options.AutoLoadFile = args[++i];
                     break;
+                case "--run-test":
+                    options.RunTest = true;
+                    break;
+                case "--debug":
+                    options.LogLevel = LogLevel.Information;
+                    break;
+                case "--debug-full":
+                    options.LogLevel = LogLevel.Debug;
+                    break;
             }
         }
         return options;
@@ -56,9 +65,10 @@ public partial class App : System.Windows.Application
     {
         public string? AsioDevice { get; set; }
         public int SampleRate { get; set; } = 44100;
-        public LogLevel LogLevel { get; set; } = LogLevel.Information;
+        public LogLevel LogLevel { get; set; } = LogLevel.Error;
         public bool TestTone { get; set; }
         public string? AutoLoadFile { get; set; }
+        public bool RunTest { get; set; }
     }
 
     public enum LogLevel { Debug, Information, Warning, Error }

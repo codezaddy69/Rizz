@@ -8,7 +8,7 @@ namespace DJMixMaster.Audio
         private const string DllName = "ShredEngine.dll";
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void InitializeEngine();
+        public static extern void InitializeEngine(bool isTestMode);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern int LoadFile(int deck, string filePath);

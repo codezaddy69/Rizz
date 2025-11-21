@@ -30,23 +30,48 @@ namespace DJMixMaster
         {
             try
             {
-                audioEngine = new RizzAudioEngine(LoggerFactory.Create(builder => builder.AddDebug().SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Debug)).CreateLogger<RizzAudioEngine>());
-                logger = LoggerFactory.Create(builder => builder.AddDebug()).CreateLogger<MainWindow>();
+                var loggerFactory = LoggerFactory.Create(builder =>
+
+                {
+
+                    builder.SetMinimumLevel((Microsoft.Extensions.Logging.LogLevel)options.LogLevel);
+
+                    if ((Microsoft.Extensions.Logging.LogLevel)options.LogLevel <= Microsoft.Extensions.Logging.LogLevel.Information)
+
+                    {
+
+                        builder.AddConsole();
+
+                    }
+
+                });
+
+                audioEngine = new RizzAudioEngine(loggerFactory.CreateLogger<RizzAudioEngine>());
+
+                logger = loggerFactory.CreateLogger<MainWindow>();
                 logWriter = new System.IO.StreamWriter("logs/audio_engine.log", true);
 
                 LogInfo("MainWindow constructor started");
 
                 InitializeComponent();
+
+                if (options?.RunTest == true)
+                {
+                    RizzAudioEngineTestHarness.RunDualDeckTest(logger);
+                    Application.Current.Shutdown();
+                    return;
+                }
+
                 InitializeSliders();
 
                 // Rizz handles ASIO setup internally
 
                 // Create deck event handler
-                var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
-                deckEventHandler = new DeckEventHandler(loggerFactory.CreateLogger<DeckEventHandler>(), audioEngine);
+                var deckLoggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
+                deckEventHandler = new DeckEventHandler(deckLoggerFactory.CreateLogger<DeckEventHandler>(), audioEngine);
                 deckEventHandler.SetUIElements(leftWaveform, rightWaveform, leftTrackTitle, leftTrackInfo, rightTrackTitle, rightTrackInfo, btnLeftPlay, btnRightPlay, deck1PositionSlider, deck2PositionSlider);
 
-                LogInfo("Using NAudio audio engine");
+                 LogInfo("Using RizzAudioEngine (C++) audio engine");
 
                 // Open settings window automatically for testing
                 // Dispatcher.InvokeAsync(() => OpenSettingsWindow());
@@ -60,7 +85,7 @@ namespace DJMixMaster
                 btnLeftPlay.Click += (s, e) => deckEventHandler.TogglePlay(1);
                 btnLeftRew.Click += (s, e) => deckEventHandler.Rewind(1);
                 btnLeftFF.Click += (s, e) => deckEventHandler.FastForward(1);
-                btnLeftTest.Click += (s, e) => audioEngine.PlayTestTone(1);
+                btnLeftTest.Click += (s, e) => RizzAudioEngineTestHarness.RunDualDeckTest(logger);
 
                 // Wire up button click events for right deck
                 btnRightLoad.Click += async (s, e) => await deckEventHandler.LoadButton_Click(btnRightLoad, 2);
