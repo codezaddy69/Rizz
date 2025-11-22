@@ -7,6 +7,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Threading;
 using NAudio.Wave;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,7 @@ namespace DJMixMaster.Audio
         private AudioSettings _currentSettings = new();
         private AudioSettings _originalSettings = new();
         private readonly string _configPath = "settings/audio.json";
+        private DispatcherTimer _masterVolumeUpdateTimer;
 
         public AudioSettingsWindow(ILogger<AudioSettingsWindow> logger, IAudioEngine audioEngine)
         {
@@ -38,6 +40,11 @@ namespace DJMixMaster.Audio
                 InitializeComponent();
                 _logger.LogInformation("XAML components loaded successfully");
                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: XAML components loaded successfully\n");
+
+                // Initialize master volume update timer
+                _masterVolumeUpdateTimer = new DispatcherTimer();
+                _masterVolumeUpdateTimer.Interval = TimeSpan.FromMilliseconds(200);
+                _masterVolumeUpdateTimer.Tick += MasterVolumeUpdateTimer_Tick;
 
                 _logger.LogInformation("Loading settings...");
                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Loading settings...\n");
@@ -759,11 +766,22 @@ namespace DJMixMaster.Audio
             {
                 MasterLevelTextBox.Text = e.NewValue.ToString("F0");
             }
+            // Restart timer for throttled update
+            _masterVolumeUpdateTimer.Stop();
+            _masterVolumeUpdateTimer.Start();
+        }
+
+        private void MasterVolumeUpdateTimer_Tick(object sender, EventArgs e)
+        {
+            _masterVolumeUpdateTimer.Stop();
+            // Set master volume after delay: 100% = 1.0
+            _audioEngine.SetMasterVolume((float)(MasterLevelSlider.Value / 100.0));
         }
 
         private void MasterLevelSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            // Set master volume only after dragging stops: 100% = 1.0
+            // Immediate update on drag completion
+            _masterVolumeUpdateTimer.Stop();
             _audioEngine.SetMasterVolume((float)(MasterLevelSlider.Value / 100.0));
         }
 

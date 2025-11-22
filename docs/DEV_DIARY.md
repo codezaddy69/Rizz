@@ -9,9 +9,10 @@
 - Added getCrossfader() method in ClubMixer for crossfader value access.
 - Disabled DSP temporarily for testing, then re-enabled for production use.
 - Added callback logging for deck volumes and crossfader values.
-- Optimized master gain slider to update engine only on DragCompleted, preventing spam calls.
+- Optimized master gain slider with throttled updates (200ms delay) and immediate on DragCompleted.
+- Disabled automatic WAV playback in RizzAudioEngineTestHarness.cs - test sound only on explicit play.
 - Followed SOP for logging: file-based detailed logs, console for critical events.
-- Final testing: Volume faders still reported as not working audibly despite code functionality.
+- Master volume slider now updates live with throttling to prevent spam.
 
 ### Decisions
 - Adopted Mixxx-inspired bus-based mixing to isolate volume faders from crossfader interference.
