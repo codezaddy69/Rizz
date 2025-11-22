@@ -7,7 +7,7 @@
 - Ensured full-range volume faders (0-1.0) with no artificial caps in ClubMixer.cpp.
 - Added bus mixing in callback for LEFT/RIGHT orientation buses, matching Mixxx standards.
 - Added getCrossfader() method in ClubMixer for crossfader value access.
-- Disabled DSP for testing to eliminate compression interference.
+- Disabled DSP temporarily for testing, then re-enabled for production use.
 - Added callback logging for deck volumes and crossfader values.
 - Optimized master gain slider to update engine only on DragCompleted, preventing spam calls.
 - Followed SOP for logging: file-based detailed logs, console for critical events.

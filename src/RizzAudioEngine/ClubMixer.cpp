@@ -13,7 +13,7 @@ ClubMixer::ClubMixer() : m_crossfader(0.0f), m_masterVolume(1.0f), m_curveType(0
     m_volumes[1] = 1.0f;
 
     // Initialize clipping protection parameters
-    m_clippingProtectionEnabled = false; // Disable for testing volume faders
+    m_clippingProtectionEnabled = true; // Re-enable DSP for production use
     m_deckVolumeCapEnabled = false; // Disable artificial cap, use full range + limiter
     m_peakDetectionEnabled = true;
     m_softKneeCompressorEnabled = true;
