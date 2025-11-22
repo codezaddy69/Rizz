@@ -759,8 +759,12 @@ namespace DJMixMaster.Audio
             {
                 MasterLevelTextBox.Text = e.NewValue.ToString("F0");
             }
-            // Set master volume: 100% = 1.0
-            _audioEngine.SetMasterVolume((float)(e.NewValue / 100.0));
+        }
+
+        private void MasterLevelSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            // Set master volume only after dragging stops: 100% = 1.0
+            _audioEngine.SetMasterVolume((float)(MasterLevelSlider.Value / 100.0));
         }
 
         private void CrossfaderCurveComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
