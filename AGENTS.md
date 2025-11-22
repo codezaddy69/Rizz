@@ -4,6 +4,14 @@ Note: The Primary LOOP is I send you either Feedback or console errors or output
 
 IMPORTANT: Do not commit changes unless explicitly told to by the user.
 
+## Post-Test Run Analysis Requirement
+After each test run (--run-test or --play), provide a full data analysis report in the style of a high-level data analyst, including:
+- Executive summary of issues (e.g., distortion, resampling failures).
+- Methodology (logs analyzed, metrics).
+- Findings and hypotheses (e.g., Playback Pipeline Breakdown).
+- Recommendations and action plan.
+Then, recommend 3 prioritized actions to the user before continuing to code.
+
 ## Daily Maintenance
 - Update docs/DEV_DIARY.md every day with events, decisions, direction, theory, and critiques.
 

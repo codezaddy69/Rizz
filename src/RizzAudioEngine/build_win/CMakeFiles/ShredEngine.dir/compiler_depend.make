@@ -46,6 +46,7 @@ CMakeFiles/ShredEngine.dir/ClubMixer.cpp.obj: /mnt/c/users/rogue/code/djmixmaste
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/range_access.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/refwrap.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/requires_hosted.h \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/specfun.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/std_abs.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_algo.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_algobase.h \
@@ -68,6 +69,7 @@ CMakeFiles/ShredEngine.dir/ClubMixer.cpp.obj: /mnt/c/users/rogue/code/djmixmaste
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cctype \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cerrno \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/clocale \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cmath \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstddef \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstdio \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstdlib \
@@ -86,6 +88,7 @@ CMakeFiles/ShredEngine.dir/ClubMixer.cpp.obj: /mnt/c/users/rogue/code/djmixmaste
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/iosfwd \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/iostream \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/istream \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/limits \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/new \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/ostream \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/pstl/execution_defs.h \
@@ -97,6 +100,18 @@ CMakeFiles/ShredEngine.dir/ClubMixer.cpp.obj: /mnt/c/users/rogue/code/djmixmaste
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/string \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/string_view \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/system_error \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/bessel_function.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/beta_function.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/ell_integral.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/exp_integral.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/gamma.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/hypergeometric.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/legendre_function.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/modified_bessel_func.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/poly_hermite.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/poly_laguerre.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/riemann_zeta.tcc \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/special_function_util.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tuple \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/type_traits \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/typeinfo \
@@ -129,6 +144,7 @@ CMakeFiles/ShredEngine.dir/ClubMixer.cpp.obj: /mnt/c/users/rogue/code/djmixmaste
   /usr/share/mingw-w64/include/limits.h \
   /usr/share/mingw-w64/include/locale.h \
   /usr/share/mingw-w64/include/malloc.h \
+  /usr/share/mingw-w64/include/math.h \
   /usr/share/mingw-w64/include/sdks/_mingw_ddk.h \
   /usr/share/mingw-w64/include/sec_api/stdio_s.h \
   /usr/share/mingw-w64/include/sec_api/stdlib_s.h \
@@ -273,16 +289,20 @@ CMakeFiles/ShredEngine.dir/ScratchBuffer.cpp.obj: /mnt/c/users/rogue/code/djmixm
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/gthr-default.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/gthr.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/os_defines.h \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/emmintrin.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/limits.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/mm_malloc.h \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/mmintrin.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stddef.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stdint.h \
   /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/syslimits.h \
+  /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/xmmintrin.h \
   /usr/share/mingw-w64/include/_mingw.h \
   /usr/share/mingw-w64/include/_mingw_mac.h \
   /usr/share/mingw-w64/include/_mingw_off_t.h \
   /usr/share/mingw-w64/include/_mingw_secapi.h \
   /usr/share/mingw-w64/include/_mingw_stat64.h \
+  /usr/share/mingw-w64/include/assert.h \
   /usr/share/mingw-w64/include/corecrt.h \
   /usr/share/mingw-w64/include/corecrt_stdio_config.h \
   /usr/share/mingw-w64/include/corecrt_wstdlib.h \
@@ -672,25 +692,9 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/share/mingw-w64/include/stdint.h:
 
-/usr/share/mingw-w64/include/math.h:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/emmintrin.h:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/special_function_util.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/poly_laguerre.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/modified_bessel_func.tcc:
-
-/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ShredEngine.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/legendre_function.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/gamma.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/ell_integral.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/basic_file.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/beta_function.tcc:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/mmintrin.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstring:
 
@@ -703,10 +707,6 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 /mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/dr_mp3.h:
 
 /mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ScratchBuffer.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/limits:
-
-/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ScratchBuffer.cpp:
 
 /usr/share/mingw-w64/include/wctype.h:
 
@@ -728,23 +728,39 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/share/mingw-w64/include/sdks/_mingw_ddk.h:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/exp_integral.tcc:
+/usr/share/mingw-w64/include/math.h:
 
-/usr/share/mingw-w64/include/malloc.h:
+/usr/share/mingw-w64/include/locale.h:
+
+/usr/share/mingw-w64/include/ctype.h:
+
+/usr/share/mingw-w64/include/corecrt_wstdlib.h:
+
+/usr/share/mingw-w64/include/corecrt.h:
+
+/mnt/c/users/rogue/code/djmixmaster/ref/portaudio-src/include/portaudio.h:
+
+/usr/share/mingw-w64/include/_mingw.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stddef.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_construct.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/pstl/pstl_config.h:
+
+/usr/share/mingw-w64/include/stdlib.h:
+
+/usr/share/mingw-w64/include/crtdefs.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/specfun.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/xmmintrin.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_pair.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/gthr-default.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/requires_hosted.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/bessel_function.tcc:
-
-/usr/share/mingw-w64/include/corecrt_stdio_config.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/range_access.h:
 
@@ -753,10 +769,6 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/pstl/glue_algorithm_defs.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/cpu_defines.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/riemann_zeta.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/postypes.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/ext/aligned_buffer.h:
 
@@ -776,25 +788,29 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/move.h:
 
-/usr/share/mingw-w64/include/ctype.h:
-
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/localefwd.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/limits.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/locale_facets.tcc:
 
+/usr/share/mingw-w64/include/_mingw_stat64.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/ios_base.h:
+
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_tempbuf.h:
+
+/usr/share/mingw-w64/include/limits.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/basic_string.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/std_abs.h:
 
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/syslimits.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/cxxabi_init_exception.h:
+
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/streambuf_iterator.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/specfun.h:
-
-/usr/share/mingw-w64/include/stdlib.h:
-
-/usr/share/mingw-w64/include/crtdefs.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/basic_ios.tcc:
 
@@ -814,15 +830,17 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/hash_bytes.h:
 
+/usr/share/mingw-w64/include/_mingw_off_t.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/ostream:
+
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/exception_defines.h:
 
 /usr/share/mingw-w64/include/sec_api/wchar_s.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/functexcept.h:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/string_view.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/algorithmfwd.h:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/ell_integral.tcc:
 
 /mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ShredEngine.cpp:
 
@@ -841,6 +859,10 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/ctime:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/charconv.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/basic_file.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/beta_function.tcc:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/new_allocator.h:
 
@@ -870,6 +892,14 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstdlib:
 
+/usr/share/mingw-w64/include/malloc.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/exp_integral.tcc:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/postypes.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/riemann_zeta.tcc:
+
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/alloc_traits.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/error_constants.h:
@@ -884,6 +914,12 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/exception_ptr.h:
 
+/usr/share/mingw-w64/include/corecrt_stdio_config.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/bessel_function.tcc:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/gamma.tcc:
+
 /mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ClubMixer.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/functional_hash.h:
@@ -894,9 +930,9 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/pstl/execution_defs.h:
 
-/mnt/c/users/rogue/code/djmixmaster/ref/portaudio-src/include/portaudio.h:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/algorithmfwd.h:
 
-/usr/share/mingw-w64/include/_mingw.h:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/string_view.tcc:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/parse_numbers.h:
 
@@ -906,10 +942,6 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/uses_allocator_args.h:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/hypergeometric.tcc:
-
-/usr/share/mingw-w64/include/_mingw_mac.h:
-
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/char_traits.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/utility.h:
@@ -918,9 +950,11 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/clocale:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/cxxabi_init_exception.h:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstdint:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/syslimits.h:
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_function.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/c++locale.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstddef:
 
@@ -929,8 +963,6 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cmath:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/debug/assertions.h:
-
-/usr/share/mingw-w64/include/corecrt_wstdlib.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/exception.h:
 
@@ -943,6 +975,10 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/exception:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/iosfwd:
+
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ScratchBuffer.cpp:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/limits:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/ext/alloc_traits.h:
 
@@ -962,8 +998,6 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/istream:
 
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stddef.h:
-
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/stdexcept:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/stdlib.h:
@@ -974,9 +1008,39 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/string_view:
 
+/usr/share/mingw-w64/include/_mingw_mac.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/hypergeometric.tcc:
+
+/mnt/c/users/rogue/code/djmixmaster/src/RizzAudioEngine/ShredEngine.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/legendre_function.tcc:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/modified_bessel_func.tcc:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/atomic_lockfree_defines.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stdint.h:
+
+/usr/share/mingw-w64/include/_mingw_secapi.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/new:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/poly_hermite.tcc:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/poly_laguerre.tcc:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/special_function_util.h:
+
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/unique_ptr.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/type_traits:
+
+/usr/share/mingw-w64/include/errno.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/uses_allocator.h:
+
+/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/typeinfo:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/vector.tcc:
 
@@ -992,17 +1056,13 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_raw_storage_iter.h:
 
+/usr/share/mingw-w64/include/assert.h:
+
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/c++allocator.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/locale_facets.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/c++config.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/cstdint:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_function.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/c++locale.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/stl_iterator_base_types.h:
 
@@ -1015,35 +1075,3 @@ CMakeFiles/ShredEngine.dir/ShredEngine.cpp.obj: /mnt/c/users/rogue/code/djmixmas
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/x86_64-w64-mingw32/bits/os_defines.h:
 
 /usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/mm_malloc.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/ostream:
-
-/usr/share/mingw-w64/include/_mingw_off_t.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/atomic_lockfree_defines.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/stdint.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/tr1/poly_hermite.tcc:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/new:
-
-/usr/share/mingw-w64/include/_mingw_secapi.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/ios_base.h:
-
-/usr/share/mingw-w64/include/_mingw_stat64.h:
-
-/usr/share/mingw-w64/include/corecrt.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/uses_allocator.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/typeinfo:
-
-/usr/share/mingw-w64/include/errno.h:
-
-/usr/lib/gcc/x86_64-w64-mingw32/13-win32/include/c++/bits/basic_string.h:
-
-/usr/share/mingw-w64/include/limits.h:
-
-/usr/share/mingw-w64/include/locale.h:

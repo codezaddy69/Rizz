@@ -34,14 +34,21 @@ namespace DJMixMaster
 
                 {
 
-                    builder.SetMinimumLevel((Microsoft.Extensions.Logging.LogLevel)options.LogLevel);
-
-                    if ((Microsoft.Extensions.Logging.LogLevel)options.LogLevel <= Microsoft.Extensions.Logging.LogLevel.Information)
-
+                    if (options != null)
                     {
+                        builder.SetMinimumLevel((Microsoft.Extensions.Logging.LogLevel)options.LogLevel);
 
-                        builder.AddConsole();
+                        if ((Microsoft.Extensions.Logging.LogLevel)options.LogLevel <= Microsoft.Extensions.Logging.LogLevel.Information)
 
+                        {
+
+                            builder.AddConsole();
+
+                        }
+                    }
+                    else
+                    {
+                        builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Information);
                     }
 
                 });
@@ -94,10 +101,16 @@ namespace DJMixMaster
                 btnRightFF.Click += (s, e) => deckEventHandler.FastForward(2);
                 btnRightTest.Click += (s, e) => audioEngine.PlayTestTone(2);
 
-                // Wire up volume and crossfader controls
-                sliderLeftVolume.ValueChanged += (s, e) => deckEventHandler.UpdateVolume(1, (float)e.NewValue);
-                sliderRightVolume.ValueChanged += (s, e) => deckEventHandler.UpdateVolume(2, (float)e.NewValue);
-                sliderCrossfader.ValueChanged += (s, e) => deckEventHandler.UpdateCrossfader((float)e.NewValue);
+                 // Wire up volume and crossfader controls
+                 sliderLeftVolume.ValueChanged += (s, e) => {
+                     deckEventHandler.UpdateVolume(1, (float)e.NewValue);
+                     if (textLeftVolume != null) textLeftVolume.Text = $"{e.NewValue * 100:F0}%";
+                 };
+                 sliderRightVolume.ValueChanged += (s, e) => {
+                     deckEventHandler.UpdateVolume(2, (float)e.NewValue);
+                     if (textRightVolume != null) textRightVolume.Text = $"{e.NewValue * 100:F0}%";
+                 };
+                 sliderCrossfader.ValueChanged += (s, e) => deckEventHandler.UpdateCrossfader((float)e.NewValue);
 
                 // Wire up hot cue buttons
                 btnLeftCue1.Click += (s, e) => deckEventHandler.HandleCuePoint(1, 0);
@@ -148,8 +161,15 @@ namespace DJMixMaster
         {
             try
             {
-                audioEngine.PlayTestTone(1, 440, 5); // 440Hz for 5 seconds
-                LogInfo("Test tone played");
+                if (audioEngine != null)
+                {
+                    audioEngine.PlayTestTone(1, 440, 5); // 440Hz for 5 seconds
+                    LogInfo("Test tone played");
+                }
+                else
+                {
+                    LogError("Audio engine not initialized");
+                }
             }
             catch (Exception ex)
             {
@@ -257,24 +277,26 @@ namespace DJMixMaster
             try
             {
                 // Initialize volume sliders
-                if (sliderLeftVolume != null)
-                {
-                    sliderLeftVolume.Minimum = 0;
-                    sliderLeftVolume.Maximum = 1;
-                    sliderLeftVolume.Value = 1;
-                }
-                if (sliderRightVolume != null)
-                {
-                    sliderRightVolume.Minimum = 0;
-                    sliderRightVolume.Maximum = 1;
-                    sliderRightVolume.Value = 1;
-                }
-                if (sliderCrossfader != null)
-                {
-                    sliderCrossfader.Minimum = -1;
-                    sliderCrossfader.Maximum = 1;
-                    sliderCrossfader.Value = 0;
-                }
+                 if (sliderLeftVolume != null)
+                 {
+                     sliderLeftVolume.Minimum = 0;
+                     sliderLeftVolume.Maximum = 1; // Full 0-100% range like professional DJ software
+                     sliderLeftVolume.Value = 1.0; // Start at 100%
+                     if (textLeftVolume != null) textLeftVolume.Text = "100%";
+                 }
+                 if (sliderRightVolume != null)
+                 {
+                     sliderRightVolume.Minimum = 0;
+                     sliderRightVolume.Maximum = 1; // Full 0-100% range like professional DJ software
+                     sliderRightVolume.Value = 1.0; // Start at 100%
+                     if (textRightVolume != null) textRightVolume.Text = "100%";
+                 }
+                 if (sliderCrossfader != null)
+                 {
+                     sliderCrossfader.Minimum = -1;
+                     sliderCrossfader.Maximum = 1;
+                     sliderCrossfader.Value = 0;
+                  }
             }
             catch (Exception ex)
             {

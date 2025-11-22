@@ -2,6 +2,7 @@
 #include <iostream>
 
 Selekta::Selekta() : m_stream(nullptr), m_bufferSize(512) {
+    std::cout << "Starting Selekta boot" << std::endl;
     PaError err = Pa_Initialize();
     if (err != paNoError) {
         std::cout << "[Selekta] PortAudio init failed: " << Pa_GetErrorText(err) << std::endl;

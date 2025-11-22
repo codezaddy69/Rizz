@@ -59,6 +59,23 @@ namespace DJMixMaster.Audio
         public float PreBufferTime { get; set; } = 2.0f;
         public int MaxFileSize { get; set; } = 500;
 
+        // Clipping Protection
+        public bool EnableDeckVolumeCap { get; set; } = true; // Default: ON (50% max)
+        public bool EnablePeakDetection { get; set; } = true; // Default: ON
+        public bool EnableSoftKneeCompressor { get; set; } = true; // Default: ON
+        public bool EnableLookAheadLimiter { get; set; } = false;
+        public bool EnableRmsMonitoring { get; set; } = false;
+        public bool EnableAutoGainReduction { get; set; } = false;
+        public bool EnableBrickwallLimiter { get; set; } = false;
+        public bool EnableClippingIndicator { get; set; } = false;
+        public bool EnableUserConfigurableThresholds { get; set; } = false;
+
+        // Clipping Protection Thresholds (when enabled)
+        public float ClippingThreshold { get; set; } = 0.9f; // 90% of full scale
+        public float CompressorRatio { get; set; } = 4.0f;
+        public float LimiterReleaseTime { get; set; } = 0.1f; // 100ms
+        public float LimiterAttackTime { get; set; } = 0.001f; // 1ms
+
         // UI
         public string Theme { get; set; } = "DarkNeon";
         public float WaveformZoom { get; set; } = 1.0f;

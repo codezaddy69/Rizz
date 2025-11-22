@@ -12,6 +12,7 @@ struct FileInfo {
     double duration;
     std::string title;
     std::string artist;
+    int audioFormat;
 };
 
 class ScratchBuffer {

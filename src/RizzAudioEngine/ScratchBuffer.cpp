@@ -9,6 +9,29 @@
 
 static std::ofstream debugLog("scratchbuffer_debug.log", std::ios::app);
 
+void resampleAudio(std::vector<float>& data, int channels, int srcRate, int dstRate) {
+    if (srcRate == dstRate) return;
+    debugLog << "[resampleAudio] Resampling from " << srcRate << " to " << dstRate << std::endl;
+    size_t srcSamples = data.size() / channels;
+    size_t dstSamples = (size_t)(srcSamples * (double)dstRate / srcRate);
+    std::vector<float> newData(dstSamples * channels);
+    for (size_t i = 0; i < dstSamples; ++i) {
+        double srcPos = (double)i * srcRate / dstRate;
+        size_t srcIdx = (size_t)srcPos;
+        double frac = srcPos - srcIdx;
+        if (srcIdx + 1 >= srcSamples) {
+            srcIdx = srcSamples - 1;
+            frac = 0.0;
+        }
+        for (int ch = 0; ch < channels; ++ch) {
+            float val1 = data[srcIdx * channels + ch];
+            float val2 = data[(srcIdx + 1) * channels + ch];
+            newData[i * channels + ch] = val1 * (1.0f - frac) + val2 * frac;
+        }
+    }
+    data = std::move(newData);
+}
+
 bool ScratchBuffer::getFileInfo(const std::string& filePath, FileInfo& info) {
     std::ifstream file(filePath, std::ios::binary);
     if (!file) {
@@ -47,6 +70,7 @@ bool ScratchBuffer::getFileInfo(const std::string& filePath, FileInfo& info) {
                 info.channels = numChannels;
                 info.sampleRate = sampleRate;
                 info.bitsPerSample = bits;
+                info.audioFormat = audioFormat;
                 file.seekg(chunkSize - 16, std::ios::cur);
                 break;
             } else {
@@ -85,6 +109,8 @@ bool ScratchBuffer::getFileInfo(const std::string& filePath, FileInfo& info) {
 }
 
 ScratchBuffer::ScratchBuffer() : m_stream(nullptr), m_isPlaying(false), m_currentFrame(0), m_speed(1.0), m_length(0), m_channels(0) {
+    debugLog << "Starting ScratchBuffer boot" << std::endl;
+    debugLog.flush();
     std::cout << "[ScratchBuffer] Created" << std::endl;
 }
 
@@ -105,6 +131,25 @@ bool ScratchBuffer::loadFile(const std::string& filePath) {
         return false;
     }
 
+    // Log file info
+    debugLog << "[ScratchBuffer] File info: " << filePath << " - Format: " << info.format
+             << ", SampleRate: " << info.sampleRate << ", Channels: " << info.channels
+             << ", Bits: " << info.bitsPerSample << ", Length: " << info.lengthSamples
+             << " samples (" << info.duration << "s)" << std::endl;
+    debugLog.flush();
+
+    // Validate
+    if (info.sampleRate != 44100 && info.sampleRate != 48000) {
+        debugLog << "[ScratchBuffer] Warning: Unusual sample rate " << info.sampleRate << " Hz" << std::endl;
+    }
+    if (info.channels < 1 || info.channels > 2) {
+        debugLog << "[ScratchBuffer] Warning: Unsupported channel count " << info.channels << std::endl;
+        return false;
+    }
+    if (info.bitsPerSample != 16) {
+        debugLog << "[ScratchBuffer] Warning: Non-16-bit files may not load correctly" << std::endl;
+    }
+
     if (info.format == "WAV") {
         return loadWAV(filePath, info);
     } else if (info.format == "MP3") {
@@ -115,6 +160,10 @@ bool ScratchBuffer::loadFile(const std::string& filePath) {
 }
 
 bool ScratchBuffer::loadWAV(const std::string& filePath, const FileInfo& info) {
+    debugLog << "Starting file load boot for " << filePath << std::endl;
+    debugLog.flush();
+    debugLog << "[ScratchBuffer] loadWAV start" << std::endl;
+    debugLog << "[ScratchBuffer] loadWAV called for " << filePath << std::endl;
     m_channels = info.channels;
     m_sampleRate = info.sampleRate;
     m_bitsPerSample = info.bitsPerSample;
@@ -143,10 +192,24 @@ bool ScratchBuffer::loadWAV(const std::string& filePath, const FileInfo& info) {
                     m_audioData[i] = rawData[i] / 32768.0f;
                 }
             } else if (m_bitsPerSample == 32) {
-                // Assume float
-                file.read(reinterpret_cast<char*>(m_audioData.data()), chunkSize);
+                if (info.audioFormat == 3) {
+                    // float
+                    file.read(reinterpret_cast<char*>(m_audioData.data()), chunkSize);
+                } else {
+                    // int32 PCM
+                    std::vector<int32_t> rawData(m_length * m_channels);
+                    file.read(reinterpret_cast<char*>(rawData.data()), chunkSize);
+                    for (size_t i = 0; i < rawData.size(); ++i) {
+                        m_audioData[i] = rawData[i] / 2147483648.0f;
+                    }
+                }
             }
-            std::cout << "[ScratchBuffer] Loaded WAV data, length=" << m_length << ", channels=" << m_channels << ", rate=" << m_sampleRate << ", bits=" << m_bitsPerSample << std::endl;
+            // Resample to 44100 Hz
+            debugLog << "[ScratchBuffer] Before resample, rate=" << m_sampleRate << std::endl;
+            resampleAudio(m_audioData, m_channels, m_sampleRate, 44100);
+            m_sampleRate = 44100;
+            m_length = m_audioData.size() / m_channels;
+            debugLog << "[ScratchBuffer] Loaded and resampled WAV data, length=" << m_length << ", channels=" << m_channels << ", rate=" << m_sampleRate << ", bits=" << m_bitsPerSample << std::endl;
             return true;
         } else {
             file.seekg(chunkSize, std::ios::cur);
@@ -158,6 +221,8 @@ bool ScratchBuffer::loadWAV(const std::string& filePath, const FileInfo& info) {
 }
 
 bool ScratchBuffer::loadMP3(const std::string& filePath, const FileInfo& info) {
+    debugLog << "Starting file load boot for " << filePath << std::endl;
+    debugLog.flush();
     drmp3 mp3;
     if (!drmp3_init_file(&mp3, filePath.c_str(), NULL)) {
         std::cout << "[ScratchBuffer] Failed to open MP3 file: " << filePath << std::endl;
@@ -179,7 +244,13 @@ bool ScratchBuffer::loadMP3(const std::string& filePath, const FileInfo& info) {
     }
 
     drmp3_uninit(&mp3);
-    std::cout << "[ScratchBuffer] Loaded MP3 data, length=" << m_length << ", channels=" << m_channels << ", rate=" << m_sampleRate << std::endl;
+    // Resample to 44100 Hz if needed
+    if (m_sampleRate != 44100) {
+        resampleAudio(m_audioData, m_channels, m_sampleRate, 44100);
+        m_sampleRate = 44100;
+        m_length = m_audioData.size() / m_channels;
+    }
+    debugLog << "[ScratchBuffer] Loaded and resampled MP3 data, length=" << m_length << ", channels=" << m_channels << ", rate=" << m_sampleRate << std::endl;
     return true;
 }
 

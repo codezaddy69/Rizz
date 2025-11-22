@@ -19,6 +19,7 @@ namespace DJMixMaster.Audio
             _logger = logger;
             try
             {
+                _logger.LogInformation("Starting RizzAudioEngine boot");
                 ShredEngineInterop.InitializeEngine(isTestMode);
             }
             catch (Exception ex)
@@ -28,10 +29,12 @@ namespace DJMixMaster.Audio
             }
 
             // Create decks (minimal, since C++ handles playback)
+            _logger.LogInformation("Starting deck initialization");
             var loggerFactory = LoggerFactory.Create(builder => builder.AddDebug());
             _decks = new Deck[2];
             for (int i = 0; i < _decks.Length; i++)
             {
+                _logger.LogInformation("Starting deck {Index} boot", i);
                 _decks[i] = new Deck(i, loggerFactory.CreateLogger<Deck>());
                 _logger.LogInformation("Deck {Index} created", i);
             }
@@ -161,6 +164,242 @@ namespace DJMixMaster.Audio
             }
         }
 
+        public void SetMasterVolume(float volume)
+        {
+            try
+            {
+                ShredEngineInterop.SetMasterVolume(volume);
+                _logger.LogInformation("Master volume set to {Volume} via ShredEngine", volume);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetMasterVolume");
+            }
+        }
+
+        public void SetCrossfaderCurve(int curveType)
+        {
+            try
+            {
+                ShredEngineInterop.SetCrossfaderCurve(curveType);
+                _logger.LogInformation("Crossfader curve set to {Curve} via ShredEngine", curveType);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetCrossfaderCurve");
+            }
+        }
+
+        // Clipping Protection Methods
+        public void SetClippingProtectionEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetClippingProtectionEnabled(enabled);
+                _logger.LogInformation("Clipping protection {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetClippingProtectionEnabled");
+            }
+        }
+
+        public void SetDeckVolumeCapEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetDeckVolumeCapEnabled(enabled);
+                _logger.LogInformation("Deck volume cap {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetDeckVolumeCapEnabled");
+            }
+        }
+
+        public void SetPeakDetectionEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetPeakDetectionEnabled(enabled);
+                _logger.LogInformation("Peak detection {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetPeakDetectionEnabled");
+            }
+        }
+
+        public void SetSoftKneeCompressorEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetSoftKneeCompressorEnabled(enabled);
+                _logger.LogInformation("Soft knee compressor {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetSoftKneeCompressorEnabled");
+            }
+        }
+
+        public void SetLookAheadLimiterEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetLookAheadLimiterEnabled(enabled);
+                _logger.LogInformation("Look-ahead limiter {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetLookAheadLimiterEnabled");
+            }
+        }
+
+        public void SetRmsMonitoringEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetRmsMonitoringEnabled(enabled);
+                _logger.LogInformation("RMS monitoring {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetRmsMonitoringEnabled");
+            }
+        }
+
+        public void SetAutoGainReductionEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetAutoGainReductionEnabled(enabled);
+                _logger.LogInformation("Auto gain reduction {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetAutoGainReductionEnabled");
+            }
+        }
+
+        public void SetBrickwallLimiterEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetBrickwallLimiterEnabled(enabled);
+                _logger.LogInformation("Brickwall limiter {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetBrickwallLimiterEnabled");
+            }
+        }
+
+        public void SetClippingIndicatorEnabled(bool enabled)
+        {
+            try
+            {
+                ShredEngineInterop.SetClippingIndicatorEnabled(enabled);
+                _logger.LogInformation("Clipping indicator {State} via ShredEngine", enabled ? "enabled" : "disabled");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetClippingIndicatorEnabled");
+            }
+        }
+
+        public void SetClippingThreshold(float threshold)
+        {
+            try
+            {
+                ShredEngineInterop.SetClippingThreshold(threshold);
+                _logger.LogInformation("Clipping threshold set to {Threshold} via ShredEngine", threshold);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetClippingThreshold");
+            }
+        }
+
+        public void SetCompressorRatio(float ratio)
+        {
+            try
+            {
+                ShredEngineInterop.SetCompressorRatio(ratio);
+                _logger.LogInformation("Compressor ratio set to {Ratio}:1 via ShredEngine", ratio);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetCompressorRatio");
+            }
+        }
+
+        public void SetLimiterAttackTime(float attackMs)
+        {
+            try
+            {
+                ShredEngineInterop.SetLimiterAttackTime(attackMs);
+                _logger.LogInformation("Limiter attack time set to {Attack}ms via ShredEngine", attackMs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetLimiterAttackTime");
+            }
+        }
+
+        public void SetLimiterReleaseTime(float releaseMs)
+        {
+            try
+            {
+                ShredEngineInterop.SetLimiterReleaseTime(releaseMs);
+                _logger.LogInformation("Limiter release time set to {Release}ms via ShredEngine", releaseMs);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in SetLimiterReleaseTime");
+            }
+        }
+
+        // Monitoring getters
+        public float GetCurrentPeakLevel()
+        {
+            try
+            {
+                return ShredEngineInterop.GetCurrentPeakLevel();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in GetCurrentPeakLevel");
+                return 0.0f;
+            }
+        }
+
+        public float GetCurrentRmsLevel()
+        {
+            try
+            {
+                return ShredEngineInterop.GetCurrentRmsLevel();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in GetCurrentRmsLevel");
+                return 0.0f;
+            }
+        }
+
+        public bool IsClipping()
+        {
+            try
+            {
+                return ShredEngineInterop.IsClipping();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception in IsClipping");
+                return false;
+            }
+        }
+
         public void Dispose()
         {
             try
@@ -180,7 +419,43 @@ namespace DJMixMaster.Audio
             LoadFile(deckNumber, @"C:\Users\rogue\Code\DJMixMaster\bin\Debug\net9.0-windows\..\..\..\assets\audio\ThisIsTrash.wav");
             Play(deckNumber);
         }
-        public void UpdateAudioSettings(AudioSettings settings) { }
+        public void UpdateAudioSettings(AudioSettings settings)
+        {
+            try
+            {
+                _logger.LogInformation("Updating audio settings in ShredEngine");
+
+                // Apply clipping protection settings
+                SetClippingProtectionEnabled(settings.EnableDeckVolumeCap || settings.EnablePeakDetection ||
+                                           settings.EnableSoftKneeCompressor || settings.EnableLookAheadLimiter ||
+                                           settings.EnableRmsMonitoring || settings.EnableAutoGainReduction ||
+                                           settings.EnableBrickwallLimiter || settings.EnableClippingIndicator);
+
+                SetDeckVolumeCapEnabled(settings.EnableDeckVolumeCap);
+                SetPeakDetectionEnabled(settings.EnablePeakDetection);
+                SetSoftKneeCompressorEnabled(settings.EnableSoftKneeCompressor);
+                SetLookAheadLimiterEnabled(settings.EnableLookAheadLimiter);
+                SetRmsMonitoringEnabled(settings.EnableRmsMonitoring);
+                SetAutoGainReductionEnabled(settings.EnableAutoGainReduction);
+                SetBrickwallLimiterEnabled(settings.EnableBrickwallLimiter);
+                SetClippingIndicatorEnabled(settings.EnableClippingIndicator);
+
+                // Apply thresholds if user configurable
+                if (settings.EnableUserConfigurableThresholds)
+                {
+                    SetClippingThreshold(settings.ClippingThreshold);
+                    SetCompressorRatio(settings.CompressorRatio);
+                    SetLimiterAttackTime(settings.LimiterAttackTime * 1000); // Convert to ms
+                    SetLimiterReleaseTime(settings.LimiterReleaseTime * 1000); // Convert to ms
+                }
+
+                _logger.LogInformation("Audio settings updated successfully");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to update audio settings");
+            }
+        }
         public AudioSettings GetCurrentSettings() => new AudioSettings();
         public void ShowAsioControlPanel() { }
         public object EnumerateDevices() => new List<object>();

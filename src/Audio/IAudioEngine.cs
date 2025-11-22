@@ -16,6 +16,8 @@ namespace DJMixMaster.Audio
         double GetLength(int deckNumber);
         int GetSampleRate(int deckNumber);
         void SetVolume(int deckNumber, float volume);
+        void SetMasterVolume(float volume);
+        void SetCrossfaderCurve(int curveType);
         float GetVolume(int deckNumber);
         bool IsPlaying(int deckNumber);
         object GetDeckProperties(int deckNumber);

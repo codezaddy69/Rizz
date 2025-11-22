@@ -1,6 +1,10 @@
 #pragma once
 
+#ifdef _WIN32
 #define SHRED_API __declspec(dllexport)
+#else
+#define SHRED_API __attribute__((visibility("default")))
+#endif
 
 #include <string>
 

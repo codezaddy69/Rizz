@@ -444,23 +444,51 @@ namespace DJMixMaster.Audio
                 _logger.LogInformation("Output Routing controls initialized");
                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Output Routing controls initialized\n");
 
-                // Audio Processing
-                _logger.LogInformation("Initializing Audio Processing controls...");
-                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Audio Processing controls...\n");
-                _logger.LogInformation("AlwaysResampleCheckBox exists: {Exists}", AlwaysResampleCheckBox != null);
-                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AlwaysResampleCheckBox exists: {AlwaysResampleCheckBox != null}\n");
-                _logger.LogInformation("HardwareBufferCheckBox exists: {Exists}", HardwareBufferCheckBox != null);
-                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: HardwareBufferCheckBox exists: {HardwareBufferCheckBox != null}\n");
-                _logger.LogInformation("AllowPullModeCheckBox exists: {Exists}", AllowPullModeCheckBox != null);
-                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AllowPullModeCheckBox exists: {AllowPullModeCheckBox != null}\n");
-                _logger.LogInformation("Force16BitCheckBox exists: {Exists}", Force16BitCheckBox != null);
-                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Force16BitCheckBox exists: {Force16BitCheckBox != null}\n");
-                if (AlwaysResampleCheckBox != null) AlwaysResampleCheckBox.IsChecked = _currentSettings.AlwaysResample;
-                if (HardwareBufferCheckBox != null) HardwareBufferCheckBox.IsChecked = _currentSettings.UseHardwareBuffer;
-                if (AllowPullModeCheckBox != null) AllowPullModeCheckBox.IsChecked = _currentSettings.AllowPullMode;
-                if (Force16BitCheckBox != null) Force16BitCheckBox.IsChecked = _currentSettings.Force16Bit;
-                _logger.LogInformation("Audio Processing controls initialized");
-                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Audio Processing controls initialized\n");
+                 // Audio Processing
+                 _logger.LogInformation("Initializing Audio Processing controls...");
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Audio Processing controls...\n");
+                 _logger.LogInformation("AlwaysResampleCheckBox exists: {Exists}", AlwaysResampleCheckBox != null);
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AlwaysResampleCheckBox exists: {AlwaysResampleCheckBox != null}\n");
+                 _logger.LogInformation("HardwareBufferCheckBox exists: {Exists}", HardwareBufferCheckBox != null);
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: HardwareBufferCheckBox exists: {HardwareBufferCheckBox != null}\n");
+                 _logger.LogInformation("AllowPullModeCheckBox exists: {Exists}", AllowPullModeCheckBox != null);
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: AllowPullModeCheckBox exists: {AllowPullModeCheckBox != null}\n");
+                 _logger.LogInformation("Force16BitCheckBox exists: {Exists}", Force16BitCheckBox != null);
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Force16BitCheckBox exists: {Force16BitCheckBox != null}\n");
+                 if (AlwaysResampleCheckBox != null) AlwaysResampleCheckBox.IsChecked = _currentSettings.AlwaysResample;
+                 if (HardwareBufferCheckBox != null) HardwareBufferCheckBox.IsChecked = _currentSettings.UseHardwareBuffer;
+                 if (AllowPullModeCheckBox != null) AllowPullModeCheckBox.IsChecked = _currentSettings.AllowPullMode;
+                 if (Force16BitCheckBox != null) Force16BitCheckBox.IsChecked = _currentSettings.Force16Bit;
+                 _logger.LogInformation("Audio Processing controls initialized");
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Audio Processing controls initialized\n");
+
+                 // Clipping Protection
+                 _logger.LogInformation("Initializing Clipping Protection controls...");
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Initializing Clipping Protection controls...\n");
+                 if (DeckVolumeCapCheckBox != null) DeckVolumeCapCheckBox.IsChecked = _currentSettings.EnableDeckVolumeCap;
+                 if (PeakDetectionCheckBox != null) PeakDetectionCheckBox.IsChecked = _currentSettings.EnablePeakDetection;
+                 if (SoftKneeCompressorCheckBox != null) SoftKneeCompressorCheckBox.IsChecked = _currentSettings.EnableSoftKneeCompressor;
+                 if (LookAheadLimiterCheckBox != null) LookAheadLimiterCheckBox.IsChecked = _currentSettings.EnableLookAheadLimiter;
+                 if (RmsMonitoringCheckBox != null) RmsMonitoringCheckBox.IsChecked = _currentSettings.EnableRmsMonitoring;
+                 if (AutoGainReductionCheckBox != null) AutoGainReductionCheckBox.IsChecked = _currentSettings.EnableAutoGainReduction;
+                 if (BrickwallLimiterCheckBox != null) BrickwallLimiterCheckBox.IsChecked = _currentSettings.EnableBrickwallLimiter;
+                 if (ClippingIndicatorCheckBox != null) ClippingIndicatorCheckBox.IsChecked = _currentSettings.EnableClippingIndicator;
+                 if (UserConfigurableThresholdsCheckBox != null) UserConfigurableThresholdsCheckBox.IsChecked = _currentSettings.EnableUserConfigurableThresholds;
+
+                 // Threshold controls
+                 if (ClippingThresholdSlider != null) ClippingThresholdSlider.Value = _currentSettings.ClippingThreshold;
+                 if (ClippingThresholdTextBox != null) ClippingThresholdTextBox.Text = (_currentSettings.ClippingThreshold * 100).ToString("F0");
+                 if (CompressorRatioSlider != null) CompressorRatioSlider.Value = _currentSettings.CompressorRatio;
+                 if (CompressorRatioTextBox != null) CompressorRatioTextBox.Text = _currentSettings.CompressorRatio.ToString("F1");
+                 if (LimiterAttackSlider != null) LimiterAttackSlider.Value = _currentSettings.LimiterAttackTime * 1000; // Convert to ms
+                 if (LimiterAttackTextBox != null) LimiterAttackTextBox.Text = (_currentSettings.LimiterAttackTime * 1000).ToString("F0");
+                 if (LimiterReleaseSlider != null) LimiterReleaseSlider.Value = _currentSettings.LimiterReleaseTime * 1000; // Convert to ms
+                 if (LimiterReleaseTextBox != null) LimiterReleaseTextBox.Text = (_currentSettings.LimiterReleaseTime * 1000).ToString("F0");
+
+                 // Show/hide thresholds based on user configurable setting
+                 UpdateThresholdsVisibility();
+                 _logger.LogInformation("Clipping Protection controls initialized");
+                 File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Clipping Protection controls initialized\n");
 
                 // File & Playback
                 _logger.LogInformation("Initializing File & Playback controls...");
@@ -554,11 +582,28 @@ namespace DJMixMaster.Audio
             if (MasterLevelSlider != null) _currentSettings.MasterOutputLevel = (float)MasterLevelSlider.Value;
             if (HeadphoneMixSlider != null) _currentSettings.HeadphoneMix = (float)HeadphoneMixSlider.Value;
 
-            // Audio Processing
-            _currentSettings.AlwaysResample = AlwaysResampleCheckBox?.IsChecked ?? false;
-            _currentSettings.UseHardwareBuffer = HardwareBufferCheckBox?.IsChecked ?? false;
-            _currentSettings.AllowPullMode = AllowPullModeCheckBox?.IsChecked ?? false;
-            _currentSettings.Force16Bit = Force16BitCheckBox?.IsChecked ?? false;
+             // Audio Processing
+             _currentSettings.AlwaysResample = AlwaysResampleCheckBox?.IsChecked ?? false;
+             _currentSettings.UseHardwareBuffer = HardwareBufferCheckBox?.IsChecked ?? false;
+             _currentSettings.AllowPullMode = AllowPullModeCheckBox?.IsChecked ?? false;
+             _currentSettings.Force16Bit = Force16BitCheckBox?.IsChecked ?? false;
+
+             // Clipping Protection
+             _currentSettings.EnableDeckVolumeCap = DeckVolumeCapCheckBox?.IsChecked ?? false;
+             _currentSettings.EnablePeakDetection = PeakDetectionCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableSoftKneeCompressor = SoftKneeCompressorCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableLookAheadLimiter = LookAheadLimiterCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableRmsMonitoring = RmsMonitoringCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableAutoGainReduction = AutoGainReductionCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableBrickwallLimiter = BrickwallLimiterCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableClippingIndicator = ClippingIndicatorCheckBox?.IsChecked ?? false;
+             _currentSettings.EnableUserConfigurableThresholds = UserConfigurableThresholdsCheckBox?.IsChecked ?? false;
+
+             // Thresholds
+             if (ClippingThresholdSlider != null) _currentSettings.ClippingThreshold = (float)ClippingThresholdSlider.Value;
+             if (CompressorRatioSlider != null) _currentSettings.CompressorRatio = (float)CompressorRatioSlider.Value;
+             if (LimiterAttackSlider != null) _currentSettings.LimiterAttackTime = (float)LimiterAttackSlider.Value / 1000f; // Convert from ms
+             if (LimiterReleaseSlider != null) _currentSettings.LimiterReleaseTime = (float)LimiterReleaseSlider.Value / 1000f; // Convert from ms
 
             // File & Playback
             _currentSettings.AutoLoadCuePoints = AutoLoadCuesCheckBox?.IsChecked ?? false;
@@ -712,7 +757,18 @@ namespace DJMixMaster.Audio
         {
             if (MasterLevelTextBox != null)
             {
-                MasterLevelTextBox.Text = e.NewValue.ToString("F1");
+                MasterLevelTextBox.Text = e.NewValue.ToString("F0");
+            }
+            // Set master volume: 100% = 1.0
+            _audioEngine.SetMasterVolume((float)(e.NewValue / 100.0));
+        }
+
+        private void CrossfaderCurveComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CrossfaderCurveComboBox != null && CrossfaderCurveComboBox.SelectedIndex >= 0)
+            {
+                int curveType = CrossfaderCurveComboBox.SelectedIndex;
+                _audioEngine.SetCrossfaderCurve(curveType);
             }
         }
 
@@ -769,7 +825,7 @@ namespace DJMixMaster.Audio
         {
             try
             {
-                string testFile = "assets/audio/test.wav";
+                string testFile = "assets/audio/ThisIsTrash.wav";
                 if (!File.Exists(testFile))
                 {
                     UpdateStatus("Test audio file not found");
@@ -790,10 +846,12 @@ namespace DJMixMaster.Audio
                 }
 
                 UpdateStatus("Test audio played successfully");
+                _logger.LogInformation("Test audio playback completed successfully");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Test audio playback failed");
+                File.AppendAllText("logs/audio_test_errors.log", $"{DateTime.Now}: Test audio playback failed: {ex.Message}\n");
                 UpdateStatus("Test audio failed to play");
             }
         }
@@ -802,6 +860,109 @@ namespace DJMixMaster.Audio
         {
             // Simple comparison - in production, use a more robust method
             return JsonSerializer.Serialize(a) == JsonSerializer.Serialize(b);
+        }
+
+        // Clipping Protection Event Handlers
+        private void UserConfigurableThresholdsCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateThresholdsVisibility();
+            UpdateAndSaveSettings();
+        }
+
+        private void UpdateThresholdsVisibility()
+        {
+            if (ThresholdsGroupBox != null)
+            {
+                ThresholdsGroupBox.Visibility = (UserConfigurableThresholdsCheckBox?.IsChecked ?? false)
+                    ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        private void ClippingThresholdSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (ClippingThresholdTextBox != null)
+                ClippingThresholdTextBox.Text = (e.NewValue * 100).ToString("F0");
+            UpdateAndSaveSettings();
+        }
+
+        private void CompressorRatioSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (CompressorRatioTextBox != null)
+                CompressorRatioTextBox.Text = e.NewValue.ToString("F1");
+            UpdateAndSaveSettings();
+        }
+
+        private void LimiterAttackSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (LimiterAttackTextBox != null)
+                LimiterAttackTextBox.Text = e.NewValue.ToString("F0");
+            UpdateAndSaveSettings();
+        }
+
+        private void LimiterReleaseSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (LimiterReleaseTextBox != null)
+                LimiterReleaseTextBox.Text = e.NewValue.ToString("F0");
+            UpdateAndSaveSettings();
+        }
+
+        // Auto-save methods for clipping protection checkboxes
+        private void DeckVolumeCapCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void PeakDetectionCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void SoftKneeCompressorCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void LookAheadLimiterCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void RmsMonitoringCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void AutoGainReductionCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void BrickwallLimiterCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void ClippingIndicatorCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            UpdateAndSaveSettings();
+        }
+
+        private void UpdateAndSaveSettings()
+        {
+            try
+            {
+                UpdateSettingsFromControls();
+                SaveSettings();
+                _logger.LogInformation("Clipping protection settings updated and saved automatically");
+                // Log to file for detailed tracking (SOP: detailed logs to files)
+                File.AppendAllText("logs/settings_changes.log", $"{DateTime.Now}: Clipping protection settings auto-saved\n");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to auto-save clipping protection settings");
+                File.AppendAllText("logs/settings_errors.log", $"{DateTime.Now}: Failed to auto-save clipping protection settings: {ex.Message}\n");
+                UpdateStatus("Failed to save settings automatically");
+            }
         }
     }
 }

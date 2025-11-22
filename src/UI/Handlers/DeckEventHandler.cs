@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -292,12 +293,21 @@ namespace DJMixMaster.UI.Handlers
         {
             _logger.LogDebug($"Volume slider for deck {deckNumber} changed to {volume}.");
             _logger.LogDebug($"UI setting volume for deck {deckNumber} to {volume}");
+            using (var writer = new StreamWriter("logs/volume_debug.log", true))
+            {
+                writer.WriteLine($"{DateTime.Now:yyyy-MM-dd HH:mm:ss} Volume slider for deck {deckNumber} changed to {volume}.");
+            }
             _audioEngine.SetVolume(deckNumber, volume);
         }
 
         public void UpdateCrossfader(float position)
         {
             _audioEngine.SetCrossfader(position);
+        }
+
+        public void UpdateMasterVolume(float volume)
+        {
+            _audioEngine.SetMasterVolume(volume);
         }
 
         public void HandleCuePoint(int deckNumber, int cueIndex)
