@@ -23,7 +23,7 @@ namespace DJMixMaster.Audio
         private AudioSettings _currentSettings = new();
         private AudioSettings _originalSettings = new();
         private readonly string _configPath = "settings/audio.json";
-        private DispatcherTimer _masterVolumeUpdateTimer;
+        private DispatcherTimer? _masterVolumeUpdateTimer;
 
         public AudioSettingsWindow(ILogger<AudioSettingsWindow> logger, IAudioEngine audioEngine)
         {
@@ -766,16 +766,21 @@ namespace DJMixMaster.Audio
             {
                 MasterLevelTextBox.Text = e.NewValue.ToString("F0");
             }
-            // Restart timer for throttled update
-            _masterVolumeUpdateTimer.Stop();
-            _masterVolumeUpdateTimer.Start();
+            File.AppendAllText("logs/debug.log", $"{DateTime.Now}: MasterLevelSlider changed to {e.NewValue}\n");
+            // Update immediately
+            _audioEngine.SetMasterVolume((float)(e.NewValue / 100.0));
         }
 
         private void MasterVolumeUpdateTimer_Tick(object sender, EventArgs e)
         {
             _masterVolumeUpdateTimer.Stop();
             // Set master volume after delay: 100% = 1.0
-            _audioEngine.SetMasterVolume((float)(MasterLevelSlider.Value / 100.0));
+            if (MasterLevelSlider != null)
+            {
+                float volume = (float)(MasterLevelSlider.Value / 100.0);
+                File.AppendAllText("logs/debug.log", $"{DateTime.Now}: Setting master volume to {volume}\n");
+                _audioEngine.SetMasterVolume(volume);
+            }
         }
 
         private void MasterLevelSlider_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

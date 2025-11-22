@@ -206,9 +206,13 @@ SHRED_API int LoadFile(int deck, const char* filePath) {
 
 SHRED_API void Play(int deck) {
     try {
-        if (deck == 1 && g_deck1) g_deck1->play();
-        else if (deck == 2 && g_deck2) g_deck2->play();
-        else std::cout << "[ShredEngine] Invalid deck or not initialized: " << deck << std::endl;
+        if (deck == 1 && g_deck1) {
+            g_deck1->play();
+            std::cout << "[ShredEngine] Play started on deck 1" << std::endl;
+        } else if (deck == 2 && g_deck2) {
+            g_deck2->play();
+            std::cout << "[ShredEngine] Play started on deck 2" << std::endl;
+        } else std::cout << "[ShredEngine] Invalid deck or not initialized: " << deck << std::endl;
     } catch (std::exception& e) {
         std::cout << "[ShredEngine] Exception in Play: " << e.what() << std::endl;
     }
