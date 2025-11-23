@@ -11,6 +11,9 @@
 - Added callback logging for deck volumes and crossfader values.
 - Optimized master gain slider with throttled updates (200ms delay) and immediate on DragCompleted.
 - Disabled automatic WAV playback in RizzAudioEngineTestHarness.cs - test sound only on explicit play.
+- Created DeepResearchBot.md with generic AI research framework.
+- Installed Gemini-CLI; attempted deep research but API timeout (network/API issues).
+- Simulated research/debate/report on DeepResearchBot.md outlines.
 - Followed SOP for logging: file-based detailed logs, console for critical events.
 - Master volume slider now updates live with throttling to prevent spam.
 
