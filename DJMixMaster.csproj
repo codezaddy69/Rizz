@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition>
+    <EnableDefaultEmbeddedResourceItems>false</EnableDefaultEmbeddedResourceItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
   </PropertyGroup>
 
      <ItemGroup>
@@ -23,7 +27,14 @@
      </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="src\**/*.cs" />
     <Compile Remove="ref\**\*.*" />
+    <Compile Remove="src\App.xaml.cs" />
+    <Compile Remove="src\Audio\AudioSettingsWindow.xaml.cs" />
+    <Compile Remove="src\Program.cs" />
+    <ApplicationDefinition Include="App.xaml" />
+    <Page Include="MainWindow.xaml" />
+    <EmbeddedResource Include="Resources.resx" />
   </ItemGroup>
 
   <Target Name="CopyNativeLibraries" AfterTargets="Build">

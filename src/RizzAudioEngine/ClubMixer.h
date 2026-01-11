@@ -5,11 +5,18 @@
 
 class ClubMixer {
 public:
+    // DJ Culture Enums
+    enum BeatBus { LEFT_BEAT, RIGHT_BEAT, CENTER_BEAT };
+    enum ScratchCurve { LINEAR_SCRATCH, EXPO_SCRATCH };
+
     ClubMixer();
     ~ClubMixer();
 
+    // Mixing functions
     void mix(float* left, float* right, int frames);
     void applyOutputDSP(float* left, float* right, int frames);
+
+    // Control functions
     void setCrossfader(float position);
     void setVolume(int deck, float gain);
     void setMasterVolume(float gain);

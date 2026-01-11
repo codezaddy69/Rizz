@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5fGDc4NKtGc=",
+  "dgSpecHash": "Dec/jntj2Lc=",
   "success": true,
-  "projectFilePath": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+  "projectFilePath": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rogue\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.0\\microsoft.extensions.configuration.9.0.0.nupkg.sha512",
     "C:\\Users\\rogue\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.0\\microsoft.extensions.configuration.abstractions.9.0.0.nupkg.sha512",

@@ -7,7 +7,6 @@
         xmlns:visualization="clr-namespace:DJMixMaster.Visualization"
         mc:Ignorable="d"
         Title="DJ Mix Master" Height="900" Width="1600"
-        WindowState="Maximized"
         Background="#FF121212">
     
     <Window.Resources>
@@ -345,13 +344,17 @@
             <!-- Left Deck Controls -->
             <Grid Grid.Column="0">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <!-- Track Info -->
+                <TextBlock x:Name="Deck1InfoText" Grid.Row="0" Text="No track loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#cccccc" FontSize="10" Margin="0,5"/>
+
                 <!-- Transport Controls + Load Row -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnLeftRew" Content="REW" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
                     <Button x:Name="btnLeftPlay" Content="PLAY" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
                     <Button x:Name="btnLeftFF" Content="FF" Style="{StaticResource NeonButton}" BorderBrush="#9D00FF" Margin="5,0"/>
@@ -375,84 +378,74 @@
             </Grid>
 
             <!-- Left Volume -->
-            <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                <Slider x:Name="sliderLeftVolume"
-                        Style="{StaticResource NeonVerticalSlider}"
-                        Orientation="Vertical"
-                        Margin="40,10"
-                        Height="120"
-                        Minimum="0"
-                        Maximum="1"
-                        Value="1"
-                        BorderBrush="#9D00FF"/>
-                <TextBlock x:Name="textLeftVolume"
-                           Text="100%"
-                           Foreground="#00F7FF"
-                           FontSize="14"
-                           HorizontalAlignment="Center"
-                           Margin="0,5"/>
-            </StackPanel>
+            <Slider x:Name="sliderLeftVolume" 
+                    Grid.Column="1" 
+                    Style="{StaticResource NeonVerticalSlider}"
+                    Orientation="Vertical" 
+                    Margin="40,10" 
+                    Height="120"
+                    Minimum="0"
+                    Maximum="1"
+                    Value="1"
+                    BorderBrush="#9D00FF"/>
 
-             <!-- Crossfader -->
-              <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                  <Slider x:Name="sliderCrossfader"
-                          Style="{StaticResource NeonCrossfader}"
-                          Margin="40,20"
-                          Height="30"
-                          Minimum="-1"
-                          Maximum="1"
-                          Value="0"
-                          BorderBrush="#00F7FF"/>
-                  <Button x:Name="btnSettings" Content="⚙" Style="{StaticResource NeonButton}"
-                          BorderBrush="#FFFF00" Margin="40,5" Width="50" Height="40"
-                          ToolTip="Audio Settings"/>
-              </StackPanel>
+            <!-- Crossfader -->
+             <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                 <Slider x:Name="sliderCrossfader"
+                         Style="{StaticResource NeonCrossfader}"
+                         Margin="40,20"
+                         Height="30"
+                         Minimum="-1"
+                         Maximum="1"
+                         Value="0"
+                         BorderBrush="#00F7FF"/>
+                 <Button x:Name="btnSettings" Content="⚙" Style="{StaticResource NeonButton}"
+                         BorderBrush="#FFFF00" Margin="40,5" Width="50" Height="40"
+                         ToolTip="Audio Settings"/>
+             </StackPanel>
 
             <!-- Right Volume -->
-            <StackPanel Grid.Column="3" VerticalAlignment="Center">
-                <Slider x:Name="sliderRightVolume"
-                        Style="{StaticResource NeonVerticalSlider}"
-                        Orientation="Vertical"
-                        Margin="40,10"
-                        Height="120"
-                        Minimum="0"
-                        Maximum="1"
-                        Value="1"
-                        BorderBrush="#39FF14"/>
-                <TextBlock x:Name="textRightVolume"
-                           Text="100%"
-                           Foreground="#39FF14"
-                           FontSize="14"
-                           HorizontalAlignment="Center"
-                           Margin="0,5"/>
-            </StackPanel>
+            <Slider x:Name="sliderRightVolume" 
+                    Grid.Column="3" 
+                    Style="{StaticResource NeonVerticalSlider}"
+                    Orientation="Vertical" 
+                    Margin="40,10" 
+                    Height="120"
+                    Minimum="0"
+                    Maximum="1"
+                    Value="1"
+                    BorderBrush="#39FF14"/>
 
             <!-- Right Deck Controls -->
             <Grid Grid.Column="4">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
+                <!-- Track Info -->
+                <TextBlock x:Name="Deck2InfoText" Grid.Row="0" Text="No track loaded" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#cccccc" FontSize="10" Margin="0,5"/>
+
                 <!-- Transport Controls + Load Row -->
-                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnRightRew" Content="REW" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                     <Button x:Name="btnRightPlay" Content="PLAY" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                     <Button x:Name="btnRightFF" Content="FF" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                      <Button x:Name="btnRightLoad" Content="LOAD" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
                      <Button x:Name="btnRightTest" Content="TEST" Style="{StaticResource NeonButton}" BorderBrush="#39FF14" Margin="5,0"/>
-                  </StackPanel>
+                 </StackPanel>
 
                 <!-- Hot Cue Row -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button x:Name="btnRightCue1" Content="CUE 1" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                     <Button x:Name="btnRightCue2" Content="CUE 2" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                     <Button x:Name="btnRightCue3" Content="CUE 3" Style="{StaticResource NeonButton}" BorderBrush="#FF00E4" Margin="5,0"/>
                 </StackPanel>
 
                 <!-- FX Row -->
-                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <Button Content="FX 1" Style="{StaticResource NeonButton}" BorderBrush="#00F7FF" Margin="5,0"/>
                     <Button Content="FX 2" Style="{StaticResource NeonButton}" BorderBrush="#00F7FF" Margin="5,0"/>
                     <Button Content="FX 3" Style="{StaticResource NeonButton}" BorderBrush="#00F7FF" Margin="5,0"/>

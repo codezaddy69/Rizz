@@ -4,13 +4,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using IOPath = System.IO.Path;
 
 namespace DJMixMaster.Visualization
 {
     public class WaveformVisualizer : Canvas
     {
         private float[]? waveformData;
-        private readonly PathGeometry waveformPath;
+        private readonly System.Windows.Media.PathGeometry waveformPath;
         private readonly Path waveformShape;
         private readonly Line playbackLine;
         private readonly List<Line> beatLines;

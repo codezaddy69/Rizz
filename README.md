@@ -1,152 +1,206 @@
-# DJMixMaster
+# DJ Mix Master
 
-A professional DJ mixing application built with C#/.NET WPF, inspired by Mixxx. Features dual-deck audio playback, ASIO low-latency support, crossfader controls, and extensible architecture for future VST integration.
+A professional DJ mixing software built with C# WPF and NAudio, featuring low-latency ASIO audio output, real-time waveform visualization, beat detection, and a hybrid C++/C# audio engine.
+
+## Features
+
+### Audio Engine
+- **NAudio Integration**: High-performance audio playback with ASIO support for sub-10ms latency
+- **RizzAudioEngine**: Hybrid C++/C# engine for advanced audio processing
+- **Permanent Audio Pipeline**: Continuous streaming architecture for uninterrupted playback
+- **Beat Detection**: Real-time BPM analysis and cue point detection
+- **Resampling**: High-quality audio resampling for format compatibility
+
+### User Interface
+- **Two-Deck Layout**: Professional DJ interface with dual decks
+- **Waveform Visualization**: Real-time waveform rendering with zoom and navigation
+- **Neon Styling**: Custom WPF controls with glow effects and dark theme
+- **Transport Controls**: Play, pause, cue, load buttons with hotkeys
+- **Mixer Controls**: Volume faders, crossfader, and EQ controls
+- **Track Management**: File loading, track info display, playlist integration
+
+### Audio Processing
+- **Deck Management**: Independent control of two audio decks
+- **Mixing**: Crossfading, volume control, and audio routing
+- **Effects**: Placeholder for VST plugin integration
+- **Recording**: Future support for session recording
 
 ## Architecture
-### Core Components
-- **RizzAudioEngine**: Main audio engine coordinating playback
-- **ScratchBuffer**: Per-deck buffer management (inspired by Mixxx EngineBuffer)
-- **BeatSource**: Audio file decoding (inspired by Mixxx SoundSource)
-- **ClubMixer**: Output mixing with crossfader (inspired by Mixxx EngineMixer)
-- **Selekta**: ASIO device management (inspired by Mixxx SoundManager)
-- **ShredEngine**: C++ DLL interface (future implementation)
 
-### UI Components
-- **MainWindow**: Primary interface with deck controls
-- **DeckEventHandler**: Handles user interactions
-- **AudioSettingsWindow**: Configuration dialog (planned)
-
-## Features Implemented
-### Audio Engine
-- CSCore/NAudio integration for playback
-- ASIO device enumeration and selection
-- Custom MixingSampleProvider with logging
-- SineWaveProvider for test tones
-- Command-line options: `--test-tone`, `--file`, `--verbose`, `--asio-device`, `--sample-rate`
-
-### UI Features
-- Dual-deck interface with play/pause/load buttons
-- Crossfader and volume sliders
-- Position sliders with timer updates
-- Settings button (placeholder)
-
-### Debugging & Testing
-- Comprehensive logging to console and `debug.log`
-- File-based logging for live debugging
-- Command-line auto-load and playback testing
-- ASIO systray icon verification
-
-## Code Structure
+### Project Structure
 ```
-src/
-├── Audio/
-│   ├── RizzAudioEngine.cs (main engine)
-│   ├── ScratchBuffer.cs (deck buffer)
-│   ├── BeatSource.cs (decoder)
-│   ├── ClubMixer.cs (mixer)
-│   ├── Selekta.cs (device manager)
-│   ├── SineWaveProvider.cs (test tone)
-│   ├── ShredEngineInterop.cs (C++ interface)
-│   └── MixingSampleProvider.cs (custom mixer)
-├── UI/Handlers/
-│   └── DeckEventHandler.cs
-├── MainWindow.xaml/cs
-├── App.xaml/cs
-└── AudioSettingsWindow.xaml/cs (planned)
-
-libtard/
-├── portaudio/ (Git cloned)
-└── README_PortAudio.md
-
-docs/
-├── SESSION_SUMMARY.md
-├── PORTABLE_OUTLINE.md
-└── README_PortAudio.md
+DJMixMaster/
+├── src/                          # Source code
+│   ├── Audio/                    # Audio engine components
+│   │   ├── Deck.cs              # Audio deck management
+│   │   ├── AudioEngine.cs       # Main audio engine
+│   │   ├── RizzAudioEngine.cs   # C# wrapper for C++ engine
+│   │   └── ...
+│   ├── Controls/                # Custom WPF controls
+│   ├── Converters/              # Value converters
+│   ├── UI/                      # UI handlers and utilities
+│   ├── Visualization/           # Waveform rendering
+│   ├── MainWindow.xaml          # Main DJ interface
+│   ├── App.xaml                 # Application entry point
+│   └── Program.cs               # Console entry point (alternative)
+├── RizzAudioEngine/             # C++ audio processing
+│   ├── ClubMixer.cpp/h         # Main mixing engine
+│   ├── ShredEngine.cpp/h       # Audio shredding effects
+│   ├── ScratchBuffer.cpp/h     # Audio buffering
+│   └── ...
+├── docs/                        # Documentation
+├── assets/                      # Audio samples and graphics
+└── settings/                    # Configuration files
 ```
 
-## Build & Run
+### Audio Pipeline
+1. **File Loading**: AudioFileReader loads WAV/MP3 files
+2. **Decoding**: dr_mp3 for MP3, native for WAV
+3. **Resampling**: WDL resampling to 44100Hz
+4. **Buffering**: ScratchBuffer for real-time processing
+5. **Mixing**: ClubMixer combines deck outputs
+6. **Output**: ASIO/WASAPI to audio device
+
+## Setup and Installation
+
 ### Prerequisites
 - .NET 9.0 SDK
-- Windows with ASIO drivers (e.g., ASIO4ALL)
+- Visual Studio 2022 or VS Code
+- ASIO drivers (recommended for low latency)
+- Windows 10/11
 
-### Build Commands
+### Building
 ```bash
-# Build C# project
+# Clone repository
+git clone <repository-url>
+cd DJMixMaster
+
+# Restore packages
+dotnet restore
+
+# Build project
 dotnet build DJMixMaster.csproj
 
-# Run with options
-dotnet run --project DJMixMaster.csproj --test-tone
-dotnet run --project DJMixMaster.csproj --file "path/to/song.wav"
+# Run application
+dotnet run --project DJMixMaster.csproj
 ```
 
-### Command-Line Options
-- `--test-tone`: Play 440Hz sine wave for 5 seconds
-- `--file <path>`: Load and auto-play specified file
-- `--verbose`: Enable detailed logging
-- `--asio-device <name>`: Specify ASIO device
-- `--sample-rate <rate>`: Set sample rate
+### Audio Setup
+1. Install ASIO drivers for your audio interface
+2. Configure audio settings in the app
+3. Select ASIO output device for best performance
 
-## Current Status
-### Working
-- Application launches and initializes
-- ASIO device detection and systray icon
-- UI controls and event handling
-- Logging system with file output
-- Command-line parsing and auto-load
+## Usage
 
-### In Progress
-- Audio playback (ASIO initialized but no sound output)
-- C++ ShredEngine DLL (planned)
-- Portable build (outlined but not implemented)
+### Basic Operation
+1. Launch the application
+2. Load tracks using the LOAD buttons
+3. Use PLAY buttons to start playback
+4. Adjust volume with sliders
+5. Use crossfader for mixing between decks
 
-### Known Issues
-- Test tone generates but no audible output
-- Playback pipeline may need buffer synchronization
-- ASIO device selection not fully tested
+### Keyboard Shortcuts
+- Space: Play/Pause deck 1
+- Shift+Space: Play/Pause deck 2
+- Q/W: Cue points deck 1
+- E/R: Cue points deck 2
+- Arrow keys: Navigate waveforms
 
-## Development Roadmap
-### Phase 1: Playback Fix (Current)
-- Debug why ASIO outputs silence despite initialization
-- Verify buffer sizes and sample rates
-- Test with different ASIO drivers
+### Configuration
+- Audio settings in `settings/audio.json`
+- UI customization in XAML files
+- Engine parameters in RizzAudioEngine
 
-### Phase 2: C++ Integration
-- Build ShredEngine.dll with PortAudio
-- Implement P/Invoke interface
-- Migrate playback to C++ for performance
+## Development
 
-### Phase 3: Full Features
-- VST support
-- Recording functionality
-- Advanced UI (waveforms, effects)
+### Adding Features
+- Audio features: Extend RizzAudioEngine or AudioEngine.cs
+- UI features: Modify MainWindow.xaml and code-behind
+- Effects: Implement in ShredEngine.cpp
 
-### Phase 4: Polish & Release
-- Portable packaging
-- Comprehensive testing
-- Documentation completion
+### Testing
+- Unit tests in `tests/` directory
+- Integration tests for audio pipeline
+- Manual testing with various audio formats
 
-## Technical Details
-### Audio Pipeline
-1. File loaded via BeatSource (NAudio decoders)
-2. Buffered in ScratchBuffer
-3. Mixed in ClubMixer
-4. Output via Selekta (ASIO/WaveOut)
+### Contributing
+1. Fork the repository
+2. Create a feature branch
+3. Make changes with proper documentation
+4. Submit a pull request
 
-### Logging System
-- Microsoft.Extensions.Logging for structured logs
-- File logging to `debug.log` for persistence
-- Console output for immediate feedback
+## API Reference
 
-### Dependencies
-- NAudio: Audio I/O and processing
-- CSCore: Alternative audio library (planned)
-- PortAudio: C++ audio backend (planned)
+### RizzApplication
+Main application class managing audio lifecycle.
 
-## Credits & Inspiration
-- **Mixxx**: Open-source DJ software providing architectural inspiration
-- **PortAudio**: Cross-platform audio library
-- **NAudio**: .NET audio processing library
+```csharp
+var app = new RizzApplication(logger);
+app.Initialize();
+// Audio processing active
+app.Shutdown();
+```
+
+### AudioEngine
+Core audio processing engine.
+
+```csharp
+var engine = new AudioEngine();
+engine.LoadTrack(deck, filePath);
+engine.Play(deck);
+engine.SetVolume(deck, level);
+```
+
+### Deck
+Individual audio deck management.
+
+```csharp
+var deck = new Deck();
+deck.Load(filePath);
+deck.Play();
+deck.SetPosition(position);
+```
+
+## Troubleshooting
+
+### Audio Issues
+- **No sound**: Check audio device selection and drivers
+- **Latency**: Switch to ASIO output mode
+- **Distortion**: Verify sample rate compatibility
+
+### Build Issues
+- **Missing dependencies**: Run `dotnet restore`
+- **Platform issues**: Ensure Windows target framework
+- **C++ compilation**: Check CMake configuration
+
+### Performance
+- Use ASIO for lowest latency
+- Close other audio applications
+- Monitor CPU usage in task manager
+
+## Roadmap
+
+### Short Term
+- [ ] Complete VST plugin integration
+- [ ] Add recording functionality
+- [ ] Implement advanced effects
+
+### Long Term
+- [ ] Multi-platform support (macOS, Linux)
+- [ ] Cloud sync for tracks and settings
+- [ ] Mobile companion app
 
 ## License
-See LICENSE file. PortAudio licensed under custom permissive terms with attribution.</content>
-<parameter name="filePath">README.md
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- NAudio library for .NET audio processing
+- dr_mp3 for MP3 decoding
+- WDL for resampling algorithms
+- WPF for UI framework
+
+## Contact
+
+For questions or contributions, please open an issue on GitHub.

@@ -1,524 +1,332 @@
-# DJMixMaster Development Documentation
+# DJ Mix Master - Developer Documentation
 
-## Table of Contents
-1. [Tech Stack](#tech-stack)
-2. [Development Environment Setup](#development-environment-setup)
-3. [Build and Run Instructions](#build-and-run-instructions)
-4. [Project Structure](#project-structure)
-5. [Feature List](#feature-list)
-6. [API Reference](#api-reference)
-7. [Development Guidelines](#development-guidelines)
-8. [Testing](#testing)
-9. [Deployment](#deployment)
+## Overview
 
-## Tech Stack
+DJ Mix Master is a professional-grade DJ mixing application built with a hybrid C++/C# architecture. The application provides real-time audio processing, waveform visualization, and a comprehensive DJ interface for live performance and production.
 
-### Core Technologies
-- **Language**: C# 12.0 (.NET 9.0)
-- **UI Framework**: Windows Presentation Foundation (WPF)
-- **Audio Engine**: NAudio (.NET managed library) with ASIO4ALL
-  - Features: Low-latency playback, permanent pipeline, WDL resampling, driver validation, soft limiting
-  - ASIO Implementation: ChannelOffset support, capability logging, WaveOut fallback
-  - MIT License
-- **Build System**: .NET SDK (dotnet CLI)
+## Architecture
 
-### Dependencies
-```xml
-<!-- Core .NET -->
-<TargetFramework>net9.0-windows</TargetFramework>
-<UseWPF>true</UseWPF>
-<Nullable>enable</Nullable>
-<ImplicitUsings>enable</ImplicitUsings>
+### Core Components
 
-<!-- Audio Libraries -->
-<PackageReference Include="NAudio" Version="2.2.1" />
-<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
-<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="8.0.0" />
-<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+#### RizzApplication (C#)
+- Main application entry point
+- Manages audio engine lifecycle
+- Handles logging and configuration
+- Coordinates between UI and audio layers
+
+#### AudioEngine (C#)
+- High-level audio management
+- Deck coordination and mixing
+- ASIO/WASAPI output handling
+- Integration with RizzAudioEngine
+
+#### RizzAudioEngine (C++/C#)
+- Low-level audio processing in C++
+- Real-time mixing and effects
+- File I/O and decoding
+- High-performance algorithms
+
+#### MainWindow (WPF)
+- Primary user interface
+- Two-deck DJ layout
+- Waveform visualization
+- Control binding and event handling
+
+### Audio Pipeline
+
+```
+File Input → Decoding → Resampling → Buffering → Processing → Mixing → Output
+    ↓           ↓           ↓           ↓           ↓           ↓           ↓
+   MP3/WAV   dr_mp3/WAV   WDL Resample ScratchBuf  ShredEngine ClubMixer  ASIO
 ```
 
-### ASIO Implementation Details
-- **Initialization**: AsioOut with driver validation (sample rate support, buffer size, latency logging)
-- **Format Chain**: AudioFileReader → MonoToStereo → WdlResamplingSampleProvider → LoopingSampleProvider → PlayingSampleProvider → VolumeSampleProvider → MixingSampleProvider → SampleToWaveProvider → AsioOut
-- **Mixing**: Per-provider normalization (0.8 max), soft clipping with tanh for distortion prevention
-- **Settings**: ChannelOffset in AudioSettings, runtime updates, control panel access
-- **Fallback**: Detailed WaveOut logging on ASIO failure
-
-### Development Tools
-- **IDE**: Visual Studio 2022 (recommended) or VS Code with C# extensions
-- **Version Control**: Git
-- **Build Tool**: .NET CLI (dotnet)
-- **Package Manager**: NuGet
-
-### Target Platform
-- **OS**: Windows 10/11 (64-bit)
-- **Architecture**: x64
-- **Audio**: ASIO4ALL (primary), WASAPI fallback
-
-## Development Environment Setup
+## Development Environment
 
 ### Prerequisites
-1. **Windows 10/11** (64-bit)
-2. **.NET 9.0 SDK** - Download from [Microsoft](https://dotnet.microsoft.com/download/dotnet/9.0)
-3. **Visual Studio 2022** (Community edition is free)
-   - Workloads: .NET desktop development, Desktop development with C++
-4. **Git** for version control
+- .NET 9.0 SDK
+- CMake 3.28+
+- Visual Studio 2022 (with C++ workload)
+- ASIO SDK (optional, for development)
 
-### Environment Setup Steps
+### Building the Project
 
-#### 1. Clone Repository
+#### Full Build
 ```bash
-git clone <repository-url>
-cd djmixmaster
+# Build C# components
+dotnet build DJMixMaster.csproj
+
+# Build C++ engine
+cd RizzAudioEngine
+cmake -B build -S .
+cmake --build build --config Release
 ```
 
-#### 2. Restore Dependencies
+#### Development Build
 ```bash
-dotnet restore
-```
+# Quick rebuild
+dotnet build --configuration Debug
 
-#### 3. Build Solution
-```bash
-dotnet build
-```
-
-#### 4. Run Application
-```bash
-dotnet run
-```
-
-**Build Status**: ✅ Application builds successfully with no warnings on .NET 9.0 Windows (ASIO permanent pipeline implementation).
-
-### Optional: JUCE Development Setup
-For VST plugin development, you'll need:
-1. **JUCE Framework** - Download from [JUCE.com](https://juce.com/)
-2. **Visual Studio Build Tools** for C++ compilation
-3. **CMake** for building native components
-
-## Build and Run Instructions
-
-### Standard Build
-```bash
-# Clean and build
-dotnet clean
-dotnet build
-
-# Run in debug mode
-dotnet run --configuration Debug
-
-# Run in release mode
-dotnet run --configuration Release
-```
-
-### Build Configurations
-- **Debug**: Full debugging symbols, no optimizations
-- **Release**: Optimized, no debugging symbols
-
-### Build Artifacts
-- **Output Directory**: `bin/Debug/net9.0-windows/` or `bin/Release/net9.0-windows/`
-- **Main Executable**: `DJMixMaster.exe`
-- **Dependencies**: Copied to output directory automatically
-
-### Troubleshooting Build Issues
-
-#### Common Issues
-1. **Missing .NET SDK**
-   ```
-   Error: .NET SDK not found
-   Solution: Install .NET 9.0 SDK from Microsoft
-   ```
-
-2. **Native Library Missing**
-   ```
-   Error: juce_dll.dll not found
-   Solution: Build JUCE native library (see JUCE setup)
-   ```
-
-3. **Platform Target Mismatch**
-   ```
-   Error: Platform not supported
-   Solution: Ensure x64 platform target
-   ```
-
-## Project Structure
-
-```
-DJMixMaster/
-├── Audio/                          # Audio processing components
-│   ├── AudioEngine.cs             # ASIO audio engine with permanent pipeline
-│   ├── Deck.cs                    # Individual deck with format conversion
-│   ├── SilentSampleProvider.cs    # Continuous silence for pipeline
-│   ├── PlayingSampleProvider.cs   # Pause-aware audio gating
-│   ├── MixingSampleProvider.cs    # Multi-deck audio mixing
-│   ├── BeatDetector.cs            # BPM detection algorithm
-│   └── LoopingSampleProvider.cs   # Audio looping (integrated in Deck.cs)
-├── Controls/                      # Custom WPF controls
-│   ├── Fader.cs                   # Volume fader logic
-│   └── FaderControl.cs            # Fader UI control
-├── Converters/                    # WPF value converters
-│   └── BrushOpacityConverter.cs
-├── Native/                        # Native interop layer
-│   └── JUCE/
-│       ├── JuceAudioEngine.cs     # JUCE audio engine wrapper
-│       └── JuceNative.cs          # P/Invoke declarations
-├── Visualization/                 # UI visualization components
-│   └── WaveformVisualizer.cs      # Real-time waveform display
-├── MainWindow.xaml/.cs            # Main application window
-├── App.xaml/.cs                   # Application entry point
-├── AGENTS.md                      # Agent development guidelines
-├── SYSTEM_ANALYSIS.md             # Technical architecture docs
-├── ANALYSIS_SUMMARY.md            # Executive summary
-├── Documentation.md               # General documentation
-├── TODO.md                        # Development tasks
-└── DJMixMaster.csproj             # Project configuration
-```
-
-## Feature List
-
-### ✅ Implemented Features
-
-#### Core Audio Playback
-- [x] **File Loading**: MP3, WAV, AIFF support with format validation
-- [x] **Transport Controls**: Play, pause, stop, seek with permanent pipeline
-- [x] **Low-Latency Output**: ASIO4ALL integration (sub-10ms latency)
-- [x] **Position Tracking**: Real-time position updates (sub-10ms precision)
-- [x] **Volume Control**: Per-deck volume with crossfader integration
-- [x] **Format Conversion**: WDL resampling, mono→stereo, error handling
-
-#### User Interface
-- [x] **Two-Deck Layout**: Professional DJ interface
-- [x] **Neon Styling**: Custom WPF controls with glow effects
-- [x] **Waveform Visualization**: Real-time scrolling waveform
-- [x] **Zoom & Navigation**: Mouse wheel zoom, auto-scroll
-- [x] **Mixer Controls**: Volume faders, crossfader UI
-- [x] **Transport Buttons**: Play/pause/stop/load controls
-- [x] **Hot Cue System**: 3 cue points per deck with visual indicators
-
-#### Audio Analysis
-- [x] **Beat Detection**: Energy-based algorithm
-- [x] **BPM Calculation**: Automatic tempo detection (60-200 BPM)
-- [x] **Beat Grid Visualization**: Yellow markers on waveform
-- [x] **Waveform Generation**: 1000-point amplitude data
-
-#### Architecture
-- [x] **Permanent Audio Pipeline**: Continuous streaming prevents disconnects
-- [x] **Sample Provider Chain**: Modular processing (Silent→Playing→Looping→Volume)
-- [x] **ASIO-First Design**: Low-latency output with WaveOut fallback
-- [x] **Comprehensive Logging**: Format validation and error diagnostics
-- [x] **Dependency Injection**: Microsoft.Extensions.Logging
-- [x] **Interface-Based Design**: IAudioEngine abstraction
-- [x] **Event-Driven Communication**: Loose coupling between components
-- [x] **Resource Management**: IDisposable pattern implementation
-
-### 🚧 Partially Implemented Features
-
-#### VST Plugin System
-- [x] **Framework Architecture**: P/Invoke declarations for VST loading
-- [x] **Plugin Interface**: Parameter control methods defined
-- [ ] **Plugin Loading**: Implementation incomplete
-- [ ] **Parameter Mapping**: GUI controls missing
-- [ ] **Plugin Browser**: UI not implemented
-
-#### Crossfader
-- [x] **UI Component**: Horizontal slider with neon styling
-- [x] **Position Tracking**: Value change events implemented
-- [ ] **Audio Mixing**: Backend crossfader logic missing
-- [ ] **Blend Algorithms**: Linear/crossfader curves not implemented
-
-#### Effects System
-- [x] **UI Framework**: FX buttons in mixer section
-- [x] **Architecture**: Extensible effects chain design
-- [ ] **Effect Processors**: No concrete effect implementations
-- [ ] **Parameter Controls**: No effect parameter UI
-
-### ❌ Planned/Missing Features
-
-#### Advanced DJ Features
-- [ ] **Beat Matching**: Automatic tempo sync between decks
-- [ ] **Loop Regions**: Loop points and regions
-- [ ] **Sampler**: Sample playback decks
-- [ ] **Recording**: Mix recording to file
-- [ ] **Key Detection**: Musical key analysis
-- [ ] **Harmonic Mixing**: Key compatibility visualization
-
-#### User Experience
-- [ ] **Playlist Management**: Load/save playlists
-- [ ] **File Browser**: Directory navigation
-- [ ] **Keyboard Shortcuts**: Hotkey support
-- [ ] **Settings Persistence**: Save user preferences
-- [ ] **Themes**: Additional UI themes
-- [ ] **Help System**: User documentation
-
-#### Audio Processing
-- [ ] **EQ Controls**: 3-band EQ per deck
-- [ ] **Filters**: High-pass/low-pass filters
-- [ ] **Reverb/Delay**: Time-based effects
-- [ ] **Distortion**: Wave shaping effects
-- [ ] **Master Output**: Final mix processing
-
-#### Integration
-- [ ] **MIDI Controller Support**: Hardware integration
-- [ ] **OSC Protocol**: External control support
-- [ ] **Streaming**: Icecast/Shoutcast output
-- [ ] **Database**: Track metadata storage
-
-## API Reference
-
-### IAudioEngine Interface
-```csharp
-public interface IAudioEngine : IDisposable
-{
-    // Transport Control
-    void LoadFile(int deckNumber, string filePath);
-    void Play(int deckNumber);
-    void Pause(int deckNumber);
-    void Stop(int deckNumber);
-    void Seek(int deckNumber, double seconds);
-
-    // State Queries
-    double GetPosition(int deckNumber);
-    double GetLength(int deckNumber);
-    void SetVolume(int deckNumber, float volume);
-    float GetVolume(int deckNumber);
-    bool IsPlaying(int deckNumber);
-
-    // Mixing
-    void SetCrossfader(float position);
-    float GetCrossfader();
-
-    // Events
-    event EventHandler<(int DeckNumber, double Position)> PlaybackPositionChanged;
-    event EventHandler<(int DeckNumber, double[] BeatPositions, double BPM)> BeatGridUpdated;
-}
-```
-
-### DeckPlayer Public API
-```csharp
-public class DeckPlayer : IDisposable
-{
-    // Constructor
-    public DeckPlayer(ILogger logger, Fader faderLeft, Fader faderRight);
-
-    // Playback Control
-    public void LoadAudioFile(string filePath);
-    public void Play();
-    public void Pause();
-    public void Stop();
-    public void Seek(TimeSpan position);
-    public void SetVolume(float volume);
-
-    // Navigation
-    public void FastForward(double seconds);
-    public void Rewind(double seconds);
-    public void SetSpeed(float speed);
-
-    // Cue Points
-    public void AddCuePoint(double position);
-    public void JumpToCuePoint(int index);
-    public double[] GetCuePoints();
-
-    // Properties
-    public double CurrentPosition { get; }
-    public bool IsPlaying { get; }
-    public float[] WaveformData { get; }
-    public double GetTrackLength();
-
-    // Events
-    public event EventHandler<double> PlaybackPositionChanged;
-}
-```
-
-### WaveformVisualizer API
-```csharp
-public class WaveformVisualizer : Canvas
-{
-    // Data Loading
-    public void UpdateWaveform(float[] data, double trackLength);
-
-    // Playback Tracking
-    public void UpdatePlaybackPosition(double timeSeconds);
-
-    // Beat Grid
-    public void UpdateBeatGrid(double[] beatPositions);
-
-    // Cue Points
-    public void AddCuePoint(double timeSeconds);
-}
-```
-
-### BeatDetector API
-```csharp
-public class BeatDetector
-{
-    // Analysis
-    public void AnalyzeFile(string filePath);
-
-    // Results
-    public List<double> BeatPositions { get; }
-    public double BPM { get; }
-
-    // Queries
-    public List<double> GetBeatPositionsInRange(double startTime, double endTime);
-}
-```
-
-## Development Guidelines
-
-### Code Style
-- **Language**: C# 12.0 with nullable reference types enabled
-- **Naming**: PascalCase for classes/methods/properties, camelCase for locals/parameters
-- **Formatting**: 4 spaces indentation, one class per file
-- **Imports**: System first, then third-party, then project namespaces
-
-### Architecture Patterns
-- **Dependency Injection**: Use Microsoft.Extensions.Logging
-- **Interface Segregation**: Define clear component boundaries
-- **Event-Driven**: Loose coupling between UI and audio components
-- **Resource Management**: Implement IDisposable for unmanaged resources
-
-### Error Handling
-- **Try-Catch**: Wrap all public methods
-- **Logging**: Use structured logging with context
-- **User Feedback**: Show user-friendly error messages
-- **Graceful Degradation**: Continue operation when possible
-
-### Audio Processing Guidelines
-- **Threading**: Keep audio operations off UI thread
-- **Synchronization**: Use Dispatcher for UI updates
-- **Resource Cleanup**: Dispose audio resources properly
-- **Format Consistency**: Convert to 44.1kHz stereo internally
-
-### UI Development
-- **MVVM Pattern**: Separate UI logic from presentation
-- **Data Binding**: Use WPF binding for reactive updates
-- **Performance**: Virtualize large lists, minimize redraws
-- **Accessibility**: Support keyboard navigation
-
-## Testing
-
-### Current State
-- **Test Framework**: None configured
-- **Coverage**: 0% (manual testing only)
-
-### Recommended Testing Strategy
-
-#### Unit Tests
-```csharp
-# Add to project file
-<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-<PackageReference Include="xunit" Version="2.6.1" />
-<PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" />
-<PackageReference Include="Moq" Version="4.20.69" />
-```
-
-#### Test Categories
-- **Audio Processing**: Beat detection, waveform generation
-- **Navigation**: Position tracking, speed control
-- **UI Logic**: Control interactions, data binding
-- **Integration**: End-to-end audio playback
-
-#### Test Structure
-```
-tests/
-├── UnitTests/
-│   ├── Audio/
-│   │   ├── BeatDetectorTests.cs
-│   │   └── WaveformTests.cs
-│   └── UI/
-│       └── ControlTests.cs
-└── IntegrationTests/
-    └── PlaybackTests.cs
+# With native library copy
+dotnet build && copy RizzAudioEngine\build\libShredEngine.dll bin\Debug\net9.0\
 ```
 
 ### Running Tests
 ```bash
-# Run all tests
+# Unit tests
 dotnet test
 
-# Run with coverage
-dotnet test --collect:"XPlat Code Coverage"
+# Integration tests
+dotnet run --project DJMixMaster.csproj -- test-mode
 ```
+
+## Code Organization
+
+### Source Structure
+```
+src/
+├── Audio/                    # Audio processing
+│   ├── CoreDjEngine.cs      # Engine interface
+│   ├── RizzAudioEngine.cs   # C++ wrapper
+│   ├── AudioEngine.cs       # Main engine
+│   ├── Deck.cs              # Deck management
+│   └── ...
+├── UI/                      # User interface
+│   ├── Handlers/            # Event handlers
+│   └── ...
+├── Visualization/           # Graphics rendering
+│   ├── Waveforms/           # Waveform display
+│   └── ...
+├── Controls/                # Custom controls
+├── Converters/              # Data converters
+└── MainWindow.xaml          # Main UI
+```
+
+### Key Classes
+
+#### RizzApplication
+```csharp
+public class RizzApplication
+{
+    public void Initialize() { /* Setup audio pipeline */ }
+    public void Shutdown() { /* Cleanup resources */ }
+    public ILogger Logger { get; }
+}
+```
+
+#### AudioEngine
+```csharp
+public class AudioEngine : IAudioEngine
+{
+    public void LoadTrack(int deck, string path) { }
+    public void Play(int deck) { }
+    public void SetVolume(int deck, float volume) { }
+    public void SetCrossfader(float position) { }
+}
+```
+
+#### Deck
+```csharp
+public class Deck
+{
+    public void Load(string path) { }
+    public void Play() { }
+    public void Pause() { }
+    public float Position { get; set; }
+    public AudioFileProperties Properties { get; }
+}
+```
+
+## Audio Processing Details
+
+### File Loading
+- Supports MP3 (via dr_mp3) and WAV
+- Automatic format detection
+- Metadata extraction (title, artist, duration)
+
+### Real-time Processing
+- 44100Hz sample rate
+- 32-bit float precision
+- Low-latency buffering
+- Thread-safe operations
+
+### Effects Pipeline
+- Beat detection algorithms
+- Time-stretching (future)
+- Pitch shifting (future)
+- VST plugin hosting (planned)
+
+## UI Development
+
+### WPF Architecture
+- MVVM pattern (partial implementation)
+- Custom controls for DJ interface
+- Real-time data binding
+- Neon styling with effects
+
+### Key UI Components
+- **WaveformVisualizer**: Real-time waveform rendering
+- **DeckCanvas**: Album art and visual feedback
+- **NeonButton**: Styled transport controls
+- **NeonVerticalSlider**: Volume controls
+- **NeonCrossfader**: Mixing control
+
+### Event Handling
+```csharp
+// Transport controls
+btnLeftPlay.Click += (s, e) => audioEngine.Play(0);
+btnRightLoad.Click += (s, e) => LoadTrackDialog(1);
+
+// Slider binding
+sliderLeftVolume.ValueChanged += (s, e) =>
+    audioEngine.SetVolume(0, (float)sliderLeftVolume.Value);
+```
+
+## C++ Engine Integration
+
+### RizzAudioEngine Structure
+```
+RizzAudioEngine/
+├── ClubMixer.h/cpp        # Main mixing logic
+├── ShredEngine.h/cpp      # Effects processing
+├── ScratchBuffer.h/cpp    # Audio buffering
+├── Selekta.h/cpp          # Track selection
+└── CMakeLists.txt         # Build configuration
+```
+
+### C# Interop
+```csharp
+[DllImport("libShredEngine.dll")]
+private static extern IntPtr CreateShredEngine();
+
+public class RizzAudioEngine
+{
+    private IntPtr engineHandle;
+
+    public RizzAudioEngine()
+    {
+        engineHandle = CreateShredEngine();
+    }
+}
+```
+
+### Build Process
+```cmake
+# CMakeLists.txt
+cmake_minimum_required(VERSION 3.28)
+project(ShredEngine)
+
+add_library(ShredEngine SHARED
+    ClubMixer.cpp
+    ShredEngine.cpp
+    ScratchBuffer.cpp
+    Selekta.cpp
+)
+
+target_include_directories(ShredEngine PUBLIC include)
+```
+
+## Testing Strategy
+
+### Unit Tests
+- Audio processing algorithms
+- UI component behavior
+- File I/O operations
+
+### Integration Tests
+- Full audio pipeline
+- UI interaction with engine
+- Performance benchmarks
+
+### Manual Testing
+- Audio quality assessment
+- Latency measurements
+- UI responsiveness
+
+## Performance Optimization
+
+### Audio Threading
+- Dedicated audio processing thread
+- Lock-free data structures
+- Minimal GC pressure
+
+### Memory Management
+- Pooled audio buffers
+- Efficient file streaming
+- Resource cleanup
+
+### Profiling
+- Use Visual Studio profiler
+- Monitor audio callback timing
+- Memory usage analysis
 
 ## Deployment
 
-### Build Configuration
+### Packaging
 ```xml
-<!-- Release configuration -->
-<PropertyGroup Condition="'$(Configuration)'=='Release'">
-  <Optimize>true</Optimize>
-  <DebugType>none</DebugType>
-  <DebugSymbols>false</DebugSymbols>
+<!-- DJMixMaster.csproj -->
+<PropertyGroup>
+  <OutputType>WinExe</OutputType>
+  <PublishSingleFile>true</PublishSingleFile>
+  <SelfContained>true</SelfContained>
+  <RuntimeIdentifier>win-x64</RuntimeIdentifier>
 </PropertyGroup>
 ```
 
-### Packaging
-```bash
-# Publish as self-contained application
-dotnet publish -c Release -r win-x64 --self-contained true
-
-# Create installer (requires WiX Toolset)
-# MSI installer with dependencies included
-```
-
 ### Distribution
-- **Target**: Windows 10/11 x64
-- **Dependencies**: .NET runtime included in self-contained build
-- **Size**: ~50MB (estimated with JUCE native library)
-- **Installation**: ClickOnce or MSI installer
+- Single executable with embedded runtime
+- Separate C++ DLL for audio processing
+- Configuration files for user settings
 
-### Runtime Requirements
-- **OS**: Windows 10 version 1903 or later
-- **Memory**: 4GB RAM minimum, 8GB recommended
-- **Storage**: 100MB free space
-- **Audio**: Windows-compatible audio device
+## Troubleshooting
+
+### Common Issues
+
+#### Build Failures
+- Ensure .NET 9.0 SDK is installed
+- Check CMake version compatibility
+- Verify Visual Studio workloads
+
+#### Runtime Errors
+- ASIO driver installation
+- Audio device permissions
+- File format support
+
+#### Performance Issues
+- Disable debug logging in release
+- Use release builds for C++
+- Monitor thread priorities
 
 ## Contributing
 
-### Development Workflow
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/new-feature`)
-3. **Implement** changes with tests
-4. **Test** thoroughly (manual + automated)
-5. **Commit** with descriptive messages
-6. **Push** to your fork
-7. **Create** pull request
+### Code Standards
+- C# naming conventions
+- C++ Google style guide
+- Comprehensive documentation
+- Unit test coverage
 
-### Commit Message Format
-```
-type(scope): description
+### Pull Request Process
+1. Create feature branch
+2. Implement with tests
+3. Update documentation
+4. Submit PR with description
 
-[optional body]
+### Issue Reporting
+- Use GitHub issues
+- Include system specs
+- Attach log files
+- Describe reproduction steps
 
-[optional footer]
-```
+## Future Development
 
-Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+### Planned Features
+- VST3 plugin support
+- Multi-track recording
+- Advanced effects rack
+- Cloud synchronization
+- Mobile remote control
 
-### Code Review Process
-- **Automated**: Build checks, linting
-- **Manual**: Architecture review, performance impact
-- **Testing**: Unit tests pass, integration verified
-
-## Support
-
-### Documentation
-- `AGENTS.md`: Agent development guidelines
-- `SYSTEM_ANALYSIS.md`: Technical architecture
-- `ANALYSIS_SUMMARY.md`: Executive summary
-
-### Issue Tracking
-- **Bug Reports**: Include steps to reproduce, system info
-- **Feature Requests**: Describe use case, expected behavior
-- **Performance Issues**: Include profiling data
-
-### Community
-- **Discussions**: GitHub Discussions for questions
-- **Issues**: GitHub Issues for bugs/features
-- **Wiki**: Project documentation and guides
-
----
-
-**Last Updated**: November 10, 2025
-**Version**: 0.1.0-alpha
-**Maintainer**: DJMixMaster Development Team</content>
-<parameter name="filePath">/mnt/c/users/rogue/code/djmixmaster/DEV_DOCS.md
+### Architecture Improvements
+- Complete MVVM implementation
+- Plugin architecture
+- Modular effects system
+- Cross-platform support

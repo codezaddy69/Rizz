@@ -22,3 +22,7 @@ bld/
 *.user
 *.userosscache
 *.sln.docstates
+
+# Archived files
+docs/archive/
+docs/agents/

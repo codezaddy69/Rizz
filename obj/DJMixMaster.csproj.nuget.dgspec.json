@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {}
+    "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj": {}
   },
   "projects": {
-    "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj": {
+    "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+        "projectUniqueName": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
         "projectName": "DJMixMaster",
-        "projectPath": "C:\\users\\rogue\\code\\djmixmaster\\DJMixMaster.csproj",
+        "projectPath": "C:\\Users\\rogue\\Code\\DJMixMaster\\DJMixMaster.csproj",
         "packagesPath": "C:\\Users\\rogue\\.nuget\\packages\\",
-        "outputPath": "C:\\users\\rogue\\code\\djmixmaster\\obj\\",
+        "outputPath": "C:\\Users\\rogue\\Code\\DJMixMaster\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -26,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,7 +45,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net9.0-windows7.0": {
@@ -106,7 +107,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.101/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

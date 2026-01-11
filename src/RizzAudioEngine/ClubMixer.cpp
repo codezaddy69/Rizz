@@ -6,7 +6,7 @@
 static std::ofstream mixerLog("logs/clubmixer.log", std::ios::app);
 
 ClubMixer::ClubMixer() : m_crossfader(0.0f), m_masterVolume(1.0f), m_curveType(0) {
-    std::cout << "Starting ClubMixer boot" << std::endl;
+    std::cout << "[ClubMixer] Boot start: Initializing mixer components" << std::endl;
 
     // Initialize basic parameters
     m_volumes[0] = 1.0f;
@@ -28,6 +28,8 @@ ClubMixer::ClubMixer() : m_crossfader(0.0f), m_masterVolume(1.0f), m_curveType(0
     m_compressorRatio = 2.0f; // Less aggressive compression
     m_limiterAttackTime = 0.001f; // 1ms
     m_limiterReleaseTime = 0.1f;   // 100ms
+
+    std::cout << "[ClubMixer] Boot finish: Mixer components initialized" << std::endl;
 
     // Initialize monitoring state
     m_currentPeakLevel = 0.0f;
@@ -124,26 +126,40 @@ float ClubMixer::applyCurve(float value, int curveType) {
 }
 
 void ClubMixer::setCrossfader(float position) {
-    m_crossfader = position;
-    std::cout << "[ClubMixer] Crossfader set to " << position << std::endl;
+    try {
+        if (position < -1.0f) position = -1.0f;
+        if (position > 1.0f) position = 1.0f;
+        m_crossfader = position;
+        std::cout << "[ClubMixer] Crossfader set to " << position << std::endl;
+    } catch (std::exception& e) {
+        std::cout << "[ClubMixer] Error in setCrossfader: " << e.what() << std::endl;
+    }
 }
 
 void ClubMixer::setVolume(int deck, float gain) {
-    if (deck >= 0 && deck < 2) {
-        m_volumes[deck] = gain;
-        auto now = std::chrono::system_clock::now();
-        std::time_t now_time = std::chrono::system_clock::to_time_t(now);
-        mixerLog << "[" << std::ctime(&now_time) << "] Volume set on deck " << deck << " to " << gain << std::endl;
-        mixerLog.flush();
-        std::cout << "[ClubMixer] Volume for deck " << deck << " set to " << gain << std::endl;
-    } else {
-        std::cout << "[ClubMixer] Invalid deck " << deck << " for setVolume" << std::endl;
+    try {
+        if (deck >= 0 && deck < 2) {
+            m_volumes[deck] = gain;
+            mixerLog << "[ClubMixer] Volume set on deck " << deck << " to " << gain << std::endl;
+            mixerLog.flush();
+            std::cout << "[ClubMixer] Volume for deck " << deck << " set to " << gain << std::endl;
+        } else {
+            std::cout << "[ClubMixer] Invalid deck " << deck << " for setVolume" << std::endl;
+        }
+    } catch (std::exception& e) {
+        std::cout << "[ClubMixer] Error in setVolume: " << e.what() << std::endl;
     }
 }
 
 void ClubMixer::setMasterVolume(float gain) {
-    m_masterVolume = gain;
-    std::cout << "[ClubMixer] Master volume set to " << gain << std::endl;
+    try {
+        if (gain < 0.0f) gain = 0.0f;
+        if (gain > 2.0f) gain = 2.0f; // Allow boost
+        m_masterVolume = gain;
+        std::cout << "[ClubMixer] Master volume set to " << gain << std::endl;
+    } catch (std::exception& e) {
+        std::cout << "[ClubMixer] Error in setMasterVolume: " << e.what() << std::endl;
+    }
 }
 
 void ClubMixer::setCrossfaderCurve(int curveType) {
