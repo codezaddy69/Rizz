@@ -1,11 +1,72 @@
 using System;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace DJMixMaster.Audio
 {
     public static class ShredEngineInterop
     {
-        private const string DllName = "ShredEngine.dll";
+        // Platform-specific library name
+        private static readonly string DllName = GetPlatformLibraryName();
+
+        private static string GetPlatformLibraryName()
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                return "ShredEngine.dll";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return "libShredEngine.so";
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                return "libShredEngine.dylib";
+            }
+            throw new PlatformNotSupportedException("Unsupported platform");
+        }
+
+        // Load library from custom path if needed
+        private static IntPtr LoadLibrary()
+        {
+            string libraryPath;
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                // On Linux, look for the library in bin directory relative to assembly location
+                var assemblyLocation = AppDomain.CurrentDomain.BaseDirectory;
+                libraryPath = Path.Combine(assemblyLocation, DllName);
+
+                if (!File.Exists(libraryPath))
+                {
+                    // Try looking in the project's bin directory
+                    var projectRoot = Path.GetFullPath(Path.Combine(assemblyLocation, "..", ".."));
+                    libraryPath = Path.Combine(projectRoot, "bin", DllName);
+                }
+            }
+            else
+            {
+                // On Windows/macOS, let P/Invoke search system paths
+                return IntPtr.Zero;
+            }
+
+            if (!File.Exists(libraryPath))
+            {
+                throw new DllNotFoundException($"Could not find {DllName} at {libraryPath}");
+            }
+
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                return dlopen(libraryPath, RTLD_NOW);
+            }
+
+            return IntPtr.Zero;
+        }
+
+        private const int RTLD_NOW = 2;
+
+        [DllImport("libdl.so.2", CharSet = CharSet.Ansi)]
+        private static extern IntPtr dlopen(string filename, int flags);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void InitializeEngine(bool isTestMode);
@@ -95,5 +156,14 @@ namespace DJMixMaster.Audio
 
         [DllImport(DllName, CallingConvention = CallingConvention.Cdecl)]
         public static extern void ShutdownEngine();
+
+        static ShredEngineInterop()
+        {
+            // Pre-load library on Linux to ensure proper path resolution
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                LoadLibrary();
+            }
+        }
     }
 }
