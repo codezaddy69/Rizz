@@ -5,9 +5,10 @@ project(RizzAudioEngine VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find PortAudio
-set(PORTAUDIO_INCLUDE_DIRS "/mnt/c/users/rogue/code/djmixmaster/ref/portaudio-src/include")
-set(PORTAUDIO_LIBRARIES "/mnt/c/users/rogue/code/djmixmaster/ref/portaudio-src/build/libportaudio.dll")
+# PortAudio configuration (local build)
+set(PORTAUDIO_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/../../external/portaudio/build")
+set(PORTAUDIO_INCLUDE_DIRS "${PORTAUDIO_ROOT}/include")
+set(PORTAUDIO_LIBRARIES "${PORTAUDIO_ROOT}/lib/libportaudio.so")
 
 # Include directories
 include_directories(${PORTAUDIO_INCLUDE_DIRS})
@@ -28,17 +29,17 @@ set(HEADERS
     Selekta.h
 )
 
-# Create DLL
+# Create shared library
 add_library(ShredEngine SHARED ${SOURCES})
 
 # Link libraries
-target_link_libraries(ShredEngine ${PORTAUDIO_LIBRARIES})
+target_link_libraries(ShredEngine ${PORTAUDIO_LIBRARIES} -lpthread -lrt -lm)
 
 # Compiler flags
 if(MSVC)
     target_compile_options(ShredEngine PRIVATE /W4)
 else()
-    target_compile_options(ShredEngine PRIVATE -Wall -Wextra)
+    target_compile_options(ShredEngine PRIVATE -Wall -Wextra -fPIC)
     target_link_options(ShredEngine PRIVATE -static-libgcc -static-libstdc++)
 endif()
 
