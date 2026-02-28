@@ -2,6 +2,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <fstream>
 
 static std::ofstream mixerLog("logs/clubmixer.log", std::ios::app);
 
